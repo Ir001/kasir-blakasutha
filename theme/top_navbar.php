@@ -12,7 +12,7 @@
      <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link"><i
-            class="fas fa-calendar-alt"></i><?php echo date('d-M-Y | ') ?> <span id="clock-wrapper"></span></a>
+            class="fas fa-calendar-alt"></i><?php echo date('d-M-Y | ') ?> <span id="clock-wrapper"></span> WIB</a>
       </li>
     </ul>
   </nav>

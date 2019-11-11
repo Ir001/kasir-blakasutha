@@ -50,30 +50,11 @@
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
                   <h3 class="card-title">Daftar Pelanggan</h3>
-                  <a href="javascript:void(0);">Tambah</a>
+                  <button id="btn_user_plus" class="btn btn-sm btn-success">Tambah</button>
                 </div>
               </div>
               <div class="card-body">
-                <table id="data_pelanggan" class="table table-bordered table-striped">
-                  <thead>
-                  <tr>
-                    <th>Custome</th>
-                    <th>Phone</th>
-                    <th>Instagram</th>
-                    <th>Opsi</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>Darjo</td>
-                    <td>082243440959
-                    </td>
-                    <td>@hjkwz</td>
-                    <td class="text-center"><button class=" btn btn-sm btn-success"><i class="fa fa-user-plus"></i></button></td>
-                  </tr>
-                  
-                  </tbody>
-                </table>
+                <div id="load_customer"></div>
                 <hr>
                 <table id="data_barang" class="table table-bordered table-striped">
                   <thead>
@@ -152,7 +133,7 @@
                           <input type="number" class="form-control" name="jumlah_bayar" placeholder="Jumlah Bayar" min="0" required></input>
                         </div>
                       </form>
-                      <button class="float-right btn btn-success"><i class="fa fa-money-bill-wave"></i> Bayar</button>
+                      <button id="btnBayar" class="float-right btn btn-success"><i class="fa fa-money-bill-wave"></i> Bayar</button>
                     </div>
                   </div>
                  
@@ -180,14 +161,127 @@
   <!-- /.control-sidebar -->
 
   <!-- Main Footer -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.0.0-rc.1
-    </div>
-  </footer>
+  <?php include 'theme/footer.php'; ?>
 </div>
+
+      <div class="modal fade" id="paymentModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Pembayaran Berhasil!</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="d-block">
+                <div class="row">
+                  <div class="col-6" style="line-height: 6px">
+                    <p>Kode Trx : <b>jsdfn73dbf237</b></p>
+                    <p>Customer : <b>Darjo</b></p>
+                  </div>
+                  <div class="col-6" style="line-height: 6px">
+                    <p>Tanggal : <b><?php echo date('d/M/Y H:i') ?> WIB</b></p>                    
+                    <p>Kasir : <b>Kasirnya Darjo</b></p>
+                  </div>
+                </div>
+              </div>
+              <table class="table table-striped">
+                <tr>
+                  <th>No</th>
+                  <th>Nama Barang</th>
+                  <th>Qty</th>
+                  <th>Satuan</th>
+                  <th>Subtotal</th>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>Oblong Putih</td>
+                  <td>1</td>
+                  <td>Rp.78.000</td>
+                  <td class="float-right">Rp.78.000</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Oblong Hitam</td>
+                  <td>3</td>
+                  <td>Rp.50.000</td>
+                  <td class="float-right">Rp.150.000</td>
+                </tr>
+                
+              </table>
+              <div class="row">
+                <div class="offset-md-4 col-8" style="line-height: 5px;">
+                  <p>Total: <span class="float-right">Rp.78.000</span></p>
+                  <hr>
+                  <p>Diskon: <span class="float-right">Rp.8.000</span></p>
+                  <hr>
+                  <p>Setelah Diskon: <span class="float-right">Rp.70.000</span></p>
+                  <hr>
+                  <p>Jumlah Bayar: <span class="float-right">Rp.100.000</span></p>
+                  <hr>
+                  <p>Kembalian: <span class="float-right">Rp.30.000</span></p>
+                  <hr>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Cetak <i class="fa fa-copy"></i></button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <div class="modal fade" id="addUser">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Tambah Customer</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_user_add">
+                  <input type="hidden" name="customer_add" value="1">
+                  <div class="form-group">
+                    <label>Nama:</label>
+                    <input type="text" class="form-control" name="fullname" placeholder="Nama Lengkap" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Phone:</label>
+                    <input type="text" class="form-control" name="phone" placeholder="Nomor HP Aktif">
+                  </div>
+                  <div class="form-group">
+                    <label>Instagram:</label>
+                    <input type="text" class="form-control" name="ig" placeholder="Username IG (tanpa @)">
+                  </div>
+                  <label>Status:</label>
+                  <div class="form-group">
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input" type="radio" id="customer" value="customer" name="role" checked>
+                          <label for="customer" class="custom-control-label">Customer</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input" type="radio" id="reseller" value="reseller" name="role">
+                          <label for="reseller" class="custom-control-label">Reseller</label>
+                        </div>
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Simpan <i class="fa fa-user-plus"></i></button>
+                  </div>
+                </form>
+
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
 
 <?php include 'theme/src_foot.php'; ?>
 <script>
@@ -195,6 +289,39 @@
     $("#data_pelanggan").DataTable();
     $('#data_barang').DataTable();
   });
+  $('#btnBayar').click(function(){
+    $('#paymentModal').modal('show');
+  });
+  $('#btn_user_plus').click(function(){
+    $('#addUser').modal('show');
+  });
+  $('#form_user_add').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+      type : 'POST',
+      url :'application/event.php',
+      data: $('#form_user_add').serialize(),
+      dataType : 'json',
+      success : function(data){
+        alert(data);
+
+        if (data.success) {
+          toastr['success'](data.message)
+        }else{
+          toastr['error'](data.message)
+
+        }
+      }
+    })
+  });
+
+  $(function(){
+    $.ajaxSetup({
+      cache:false
+    });
+    var loadUrl = "json/json_customer.php";
+    $('#load_customer').load(loadUrl);
+  })
 </script>
 </body>
 </html>
