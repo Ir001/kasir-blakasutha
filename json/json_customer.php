@@ -27,3 +27,4 @@ require '../application/system.php';
 	
 </tbody>
 </table>
+<script>$("#data_pelanggan").DataTable();</script>

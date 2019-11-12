@@ -320,7 +320,9 @@
       cache:false
     });
     var loadUrl = "json/json_customer.php";
-    $('#load_customer').load(loadUrl);
+    setInterval(function(){
+      $('#load_customer').load(loadUrl);
+    }, 500);
   })
 </script>
 </body>
