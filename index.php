@@ -313,18 +313,16 @@
       data: $('#form_user_add').serialize(),
       dataType : 'json',
       success : function(data){
-        alert(data);
         if (data.success) {
           toastr['success'](data.message);
           $('#addUser').modal('hide');
-
         }else{
           toastr['error'](data.message)
 
         }
       }
     })
-  })
+  });
 
   $(function(){
     $.ajaxSetup({
