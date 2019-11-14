@@ -27,17 +27,11 @@ require '../application/system.php';
 					<button type="submit" class="btn btn-sm btn-success"><i class="fa fa-user-plus"></i></button>
 				</form>
 			</td>
-			<td>
-				<?=$list['phone'];?>
-			</td>
-			<td><?=$list['instagram'];?></td>
-			<td class="text-center"><button class="btn btn-sm btn-success"><i class="fa fa-user-plus"></i></button></td>
 		</tr>
 	<?php } ?>
 	
 </tbody>
 </table>
-<<<<<<< HEAD
 <script>$("#data_pelanggan").DataTable();</script>
 <script>
 	$('.set_user').submit(function(e){
