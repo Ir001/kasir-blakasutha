@@ -54,30 +54,9 @@
                 </div>
               </div>
               <div class="card-body">
-                <div id="load_customer"></div>
+                <div id="load-customer"></div>
                 <hr>
-                <table id="data_barang" class="table table-bordered table-striped">
-                  <thead>
-                  <tr>
-                    <th>Kode</th>
-                    <th>Nama</th>
-                    <th>Stok</th>
-                    <th>Harga</th>
-                    <th>Opsi</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>BLKHTM</td>
-                    <td>Kaos Oblong
-                    </td>
-                    <td>8</td>
-                    <td>78.000</td>
-                    <td class="text-center"><button class=" btn btn-sm btn-success"><i class="fa fa-cart-plus"></i></button></td>
-                  </tr>
-                  
-                  </tbody>
-                </table>
+               <div id="load-barang"></div>
               </div>
             </div>
             <!-- /.card-body -->
@@ -228,47 +207,53 @@
 
 <?php include 'theme/src_foot.php'; ?>
 <script>
-  $(function () {
-    $("#data_pelanggan").DataTable();
-    $('#data_barang').DataTable();
-  });
-  $('#btnBayar').click(function(){
-    $('#paymentModal').modal('show');
-  });
-  $('#btn_user_plus').click(function(){
-    $('#addUser').modal('show');
-  });
-  $('#form_user_add').submit(function(e){
-    e.preventDefault();
-    $.ajax({
-      type : 'POST',
-      url :'application/event.php',
-      data: $('#form_user_add').serialize(),
-      dataType : 'json',
-      success : function(data){
-        if (data.success) {
-          toastr['success'](data.message);
-          $('#addUser').modal('hide');
-        }else{
-          toastr['error'](data.message)
-
-        }
-      }
-    })
-  });
-
   $(function(){
+    //Setup
     $.ajaxSetup({
       cache:false
     });
     var loadUrl = "json/json_customer.php";
     var loadUrl1 = "json/json_cart.php";
-    setInterval(function(){
-      $('#load_customer').load(loadUrl);
-    }, 1500)
-    setInterval(function(){
-      $('#load-cart').load(loadUrl1);
-    }, 1500)
+    var load_barang = "json/json_barang.php";
+    //
+    $('#load-customer').load(loadUrl);
+    $('#load-barang').load(load_barang);
+    $('#load-cart').load(loadUrl1);
+
+    //Data Table
+    $("#data_pelanggan").DataTable();
+    //Event
+    //Button Bayar
+    $('#btnBayar').click(function(){
+      $('#paymentModal').modal('show');
+    });
+    //End of button bayar
+    //Add User for show modal
+    $('#btn_user_plus').click(function(){
+      $('#addUser').modal('show');
+    });
+    //End of add user
+    //Submit Add customer    
+    $('#form_user_add').submit(function(e){
+      e.preventDefault();
+      $.ajax({
+        type : 'POST',
+        url :'application/event.php',
+        data: $('#form_user_add').serialize(),
+        dataType : 'json',
+        success : function(data){
+          if (data.success) {
+            toastr['success'](data.message);
+            $('#addUser').modal('hide');
+            $('#load_customer').load(loadUrl);
+          }else{
+            toastr['error'](data.message)
+
+          }
+        }
+      })
+    });
+
   })
 </script>
 </body>

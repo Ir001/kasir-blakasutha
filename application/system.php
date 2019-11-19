@@ -132,6 +132,44 @@
 
 
 		}
+		function list_barang(){
+			$sql = "SELECT * FROM barang WHERE 1=1";
+			$query = $this->query($sql);
+			$i = 0;
+			while ($res = $query->fetch_assoc()) {
+				$data[$i] = array(
+					'id_barang' => $res['id_barang'],
+					'kode_barang' => $res['kode_barang'],
+					'nama_barang' => $res['nama_barang'],
+					'stok' => $res['stok'],
+					'harga_1' => $res['harga_1'],
+					'harga_2' => $res['harga_2'],
+					'harga_3' => $res['harga_3'],
+					'updated_at' => $res['updated_at'],
+				);
+				$i++;
+			}
+			return @$data;
+		}
+		function get_info_barang($id){
+				$sql = "SELECT * FROM barang WHERE id_barang = '$id'";
+				$query = $this->query($sql);
+				$res = $query->fetch_assoc();
+				return @$res;
+		}
+		function add_cart($id, $jumlah){
+			if (empty($_SESSION['cart'][$id])) {
+				$_SESSION['cart'][$id]=1;
+			}else{
+				$jumlah_aktif = $_SESSION['cart'][$id];
+				$_SESSION['cart'][$id]=$jumlah+$jumlah_aktif;
+			}
+			return 1;
+		}
+		function remove_cart($id){
+			unset($_SESSION['cart'][$id]);
+			return 1;
+		}
 	}
 	$system = new System();
 	$setting = $system->get_setting();

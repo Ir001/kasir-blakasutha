@@ -34,6 +34,7 @@ require '../application/system.php';
 </table>
 <script>$("#data_pelanggan").DataTable();</script>
 <script>
+    var loadUrl1 = "json/json_cart.php";
 	$('.set_user').submit(function(e){
 		e.preventDefault();
 		$.ajax({
@@ -42,7 +43,9 @@ require '../application/system.php';
 			data : $(this).serialize(),
 			dataType : 'json',
 			success : function (data){
-				if (data.success) {}
+				if (data.success) {
+   					window.$('#load-cart').load(loadUrl1);
+				}
 			}
 		})
 	})

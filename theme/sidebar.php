@@ -51,23 +51,23 @@
           </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user-alt"></i>
+              <i class="nav-icon fas fa-tasks"></i>
               <p>
-                Pelanggan
+                Management
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Daftar Pelanggan</p>
+                  <p>Pelanggan</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Tambah Pelanggan</p>
+                  <p>Barang</p>
                 </a>
               </li>
             </ul>
