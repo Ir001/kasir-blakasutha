@@ -61,7 +61,7 @@
 			}
 		}
 		function logout(){
-			unset($_SESSION['user']);
+			session_destroy();
 			return 1;
 		}
 		function get_setting(){
@@ -169,6 +169,62 @@
 		function remove_cart($id){
 			unset($_SESSION['cart'][$id]);
 			return 1;
+		}
+		function generate_trx_code($length = 10) {
+		    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		    $charactersLength = strlen($characters);
+		    $randomString = '';
+		    for ($i = 0; $i < $length; $i++) {
+		        $randomString .= $characters[rand(0, $charactersLength - 1)];
+		    }
+		    return $randomString;
+		}
+		function penjualan($id_customer, $id_barang, $trx_code, $jumlah){
+			// $data_customer = get_info_customer($id_customer);
+			// $data_barang = get_info_customer($id_barang);
+			$sql = "INSERT INTO penjualan (id_customer, id_barang, trx_code, jumlah, tgl_penjualan) VALUES ($id_customer, $id_barang, '$trx_code', '$jumlah', NOW())";
+			$query = $this->query($sql);
+			if($query){
+				$sql_update = "UPDATE barang SET stok = stok-$jumlah WHERE id_barang = $id_barang";
+				$query_update = $this->query($sql_update);
+				if($query_update){
+						$msg = array(
+						'success' => true,
+						'message' => 'Transaksi sukses!',
+						'trx_id' => $trx_code,
+					);
+				}else{
+					$msg = array(
+						'success' => false,
+						'message' => 'Gagal pada update stok!',
+						'trx_id' => $trx_code,
+					);
+				}
+			}else{
+				$msg = array(
+					'success' => false,
+					'message' => 'Transaksi gagal!',
+					'trx_id' => $trx_code,
+				);
+			}
+			return $msg;
+
+		}
+		function trx($trx_code, $total_harga, $jumlah_bayar){
+			$sql = "INSERT INTO transaksi (trx_code, total_harga, jumlah_bayar, tgl_transaksi) VALUES ('$trx_code', '$total_harga', '$jumlah_bayar', NOW())";
+			$query = $this->query($sql);
+			if($query){
+				$msg = array(
+					'success' => true,
+					'message' => 'Berhasil menyimpan data transaksi'
+				);
+			}else{
+				$msg = array(
+					'success' => false,
+					'message' => 'Gagal menyimpan data transaksi'
+				);
+			}
+			return $msg;
 		}
 	}
 	$system = new System();

@@ -10,6 +10,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title><?=$setting['nama_bisnis'];?> | Penjualan</title>
+
   <?php include 'theme/src_head.php'; ?>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -94,58 +95,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
-              <div class="d-block">
-                <div class="row">
-                  <div class="col-6" style="line-height: 6px">
-                    <p>Kode Trx : <b>jsdfn73dbf237</b></p>
-                    <p>Customer : <b>Darjo</b></p>
-                  </div>
-                  <div class="col-6" style="line-height: 6px">
-                    <p>Tanggal : <b><?php echo date('d/M/Y H:i') ?></b></p>                    
-                    <p>Kasir : <b>Kasirnya Darjo</b></p>
-                  </div>
-                </div>
-              </div>
-              <table class="table table-striped">
-                <tr>
-                  <th>No</th>
-                  <th>Nama Barang</th>
-                  <th>Qty</th>
-                  <th>Satuan</th>
-                  <th>Subtotal</th>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>Oblong Putih</td>
-                  <td>1</td>
-                  <td>Rp.78.000</td>
-                  <td class="float-right">Rp.78.000</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Oblong Hitam</td>
-                  <td>3</td>
-                  <td>Rp.50.000</td>
-                  <td class="float-right">Rp.150.000</td>
-                </tr>
-                
-              </table>
-              <div class="row">
-                <div class="offset-md-4 col-8" style="line-height: 5px;">
-                  <p>Total: <span class="float-right">Rp.78.000</span></p>
-                  <hr>
-                  <p>Diskon: <span class="float-right">Rp.8.000</span></p>
-                  <hr>
-                  <p>Setelah Diskon: <span class="float-right">Rp.70.000</span></p>
-                  <hr>
-                  <p>Jumlah Bayar: <span class="float-right">Rp.100.000</span></p>
-                  <hr>
-                  <p>Kembalian: <span class="float-right">Rp.30.000</span></p>
-                  <hr>
-                </div>
-              </div>
-
+            <div class="modal-body" id="loadInvoice">
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -223,11 +173,7 @@
     //Data Table
     $("#data_pelanggan").DataTable();
     //Event
-    //Button Bayar
-    $('#btnBayar').click(function(){
-      $('#paymentModal').modal('show');
-    });
-    //End of button bayar
+    
     //Add User for show modal
     $('#btn_user_plus').click(function(){
       $('#addUser').modal('show');
@@ -243,9 +189,9 @@
         dataType : 'json',
         success : function(data){
           if (data.success) {
+            $('#load-customer').load(loadUrl);
             toastr['success'](data.message);
             $('#addUser').modal('hide');
-            $('#load_customer').load(loadUrl);
           }else{
             toastr['error'](data.message)
 

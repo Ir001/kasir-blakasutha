@@ -1,7 +1,9 @@
 <?php 
 require '../application/system.php';
 ?>
- 				<table id="data_barang" class="table table-bordered table-striped">
+<?php if (isset($_SESSION['id_customer'])): ?>
+  
+        <table id="data_barang" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Kode</th>
@@ -58,3 +60,4 @@ require '../application/system.php';
       })
     })
 </script>
+<?php endif ?>

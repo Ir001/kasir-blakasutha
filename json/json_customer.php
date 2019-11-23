@@ -34,6 +34,7 @@ require '../application/system.php';
 </table>
 <script>$("#data_pelanggan").DataTable();</script>
 <script>
+    var load_barang = "json/json_barang.php";
     var loadUrl1 = "json/json_cart.php";
 	$('.set_user').submit(function(e){
 		e.preventDefault();
@@ -44,6 +45,8 @@ require '../application/system.php';
 			dataType : 'json',
 			success : function (data){
 				if (data.success) {
+   					window.$('#load-barang').load(load_barang);
+
    					window.$('#load-cart').load(loadUrl1);
 				}
 			}

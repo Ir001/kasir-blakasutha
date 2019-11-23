@@ -26,10 +26,14 @@ require '../application/system.php';
                   
               </div>
               <div class="card-body">
-                <div class="d-flex">
+                <!-- <div class="d-flex"> -->
                   <div class="row">
                     <div class="col-md-12">
-                      <table id="data_pelanggan" class="table table-bordered table-striped">
+                      <form id="reset_cart">
+                        <input type="hidden" name="reset_cart" value="1">
+                        <button type="submit" id="reset_cart_btn" class="float-right btn btn-sm btn-danger">Hapus Semua</button>
+                      </form>
+                      <table id="data_pelanggan" class="mt-5 table table-bordered table-striped">
                         <thead>
                         <tr>
                           <th>Kode</th>
@@ -64,7 +68,7 @@ require '../application/system.php';
                           <td><?=$harga;?></td>
                           <td><?=$total;?></td>
                           <td>
-                            <button class=" btn btn-sm btn-success" title="Edit"><i class="fa fa-pen"></i></button>
+                            <button class="btn btn-sm btn-success" title="Edit"><i class="fa fa-pen"></i></button>
                             <form class="delete_cart">
                               <input type="hidden" name="delete_cart" value="1">
                               <input type="hidden" name="id" value="<?=$id;?>">
@@ -78,28 +82,44 @@ require '../application/system.php';
                       </table>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="col-12">
-                      <form>
+                    <div class="col-md-12">
+                      <form id="form_bayar">
                         <div class="form-group">
                           <label>Total</label>
-                          <input type="number" class="form-control" name="total" value="<?=@$total_semua;?>" min="0" disabled></input>
+                          <input type="hidden" name="form_bayar" value="1">
+                          <input type="hidden" name="id_customer" value="<?=$customer['id_customer'];?>">
+                          <input type="number" class="form-control" name="total" id="total" value="<?=@$total_semua;?>" min="0" style="pointer-events:none" readonly></input>
                         </div>
                         <div class="form-group">
                           <label>Jumlah Bayar</label>
-                          <input type="number" class="form-control" name="jumlah_bayar" placeholder="Jumlah Bayar" min="0" required></input>
+                          <input type="number" class="form-control" name="jumlah_bayar" id="jumlah_bayar" placeholder="Jumlah Bayar" min="0" required></input>
+                          <label>Kembalian</label>
+                          <input type="number" class="form-control" name="kembalian" id="kembalian" min="0" style="pointer-events:none" readonly></input>
                         </div>
+                          <button type="reset"  class="btn btn-danger">Reset</button>
+                          <button id="btnBayar" class="float-right btn btn-success"><i class="fa fa-money-bill-wave"></i> Bayar</button>
                       </form>
-                      <button id="btnBayar" class="float-right btn btn-success"><i class="fa fa-money-bill-wave"></i> Bayar</button>
                     </div>
                   </div>
                  
-                </div>
+                <!-- </div> -->
                 <!-- /.d-flex -->
               </div>
             </div>
            </div>
             <!-- /.card -->
 <script>
+  $('#jumlah_bayar').keyup(function(){
+    var total = parseInt($('#total').val());
+    var jumlah_bayar = parseInt($('#jumlah_bayar').val());
+    var kembalian = jumlah_bayar-total;
+    $('#kembalian').val(kembalian);
+  });
+  //
+  if ($('#total').val() === "") {
+    $('#btnBayar').attr("disabled", true)
+  }
+  var load_barang = "json/json_barang.php";
   var loadUrl1 = "json/json_cart.php";
   $('.delete_btn').click(function(){
     if (confirm('Apakah anda yakin?')) {
@@ -127,12 +147,14 @@ require '../application/system.php';
       });
     }
   });
-  $('#reset_user').submit(function(e){
-    e.preventDefault();
-    $.ajax({
+  $('#reset_cart_btn').click(function(){
+    if (confirm('Apakah anda yakin?')) {
+      $('#reset_cart').submit(function(e){
+        e.preventDefault();
+        $.ajax({
           type : 'POST',
           url : 'application/event.php',
-          data : $('#reset_user').serialize(),
+          data : $('#reset_cart').serialize(),
           dataType : 'json',
           success : function(data){
             if (data.success) {
@@ -143,6 +165,47 @@ require '../application/system.php';
             }
           }
         })
+      });
+
+    }else{
+       $('#reset_cart').submit(function(e){
+        e.preventDefault();
+      });
+    }
+  });
+  $('#reset_user').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+          type : 'POST',
+          url : 'application/event.php',
+          data : $('#reset_user').serialize(),
+          dataType : 'json',
+          success : function(data){
+            if (data.success) {
+                window.$('#load-cart').load(loadUrl1);
+                window.$('#load-barang').load(load_barang);
+                toastr['success'](data.message);
+            }else{
+                toastr['error'](data.message);
+            }
+          }
+        })
+  });
+  $('#form_bayar').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url : 'application/event.php',
+      data : $('#form_bayar').serialize(),
+      dataType : 'json',
+      success : function(data){
+        if (data.success) {
+          toastr['success'](data.message);
+          window.$('#loadInvoice').load("json/json_invoice.php");
+          window.$('#paymentModal').modal('show');
+        }
+      }
+    })
   })
   
 </script>
