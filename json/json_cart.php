@@ -184,6 +184,9 @@ require '../application/system.php';
             if (data.success) {
                 window.$('#load-cart').load(loadUrl1);
                 window.$('#load-barang').load(load_barang);
+                window.$('#hide-customer').show();
+                window.$('#load-customer').show();
+                window.$('#hide-barang').hide();
                 toastr['success'](data.message);
             }else{
                 toastr['error'](data.message);

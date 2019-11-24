@@ -85,20 +85,35 @@
 			$msg = null;
 			$fullname = $this->real_escape_string($fullname);
 			$phone = $this->real_escape_string($phone);
-			$ig = "@".$this->real_escape_string($ig);
-			$role = $this->real_escape_string($role);
-			$sql = "INSERT INTO customer (nama_lengkap, phone, instagram, role, created_at) VALUES ('$fullname', '$phone', '$ig', '$role', NOW())";
-			$query = $this->query($sql);
-			if ($query) {
-				$msg = array(
-					'success' => true,
-					'message' => "Customer baru berhasil ditambahkan!"
-				);
+			$check_ig = substr($ig, 0, 1);
+			if ($check_ig == "@") {
+				$ig = $this->real_escape_string($ig);
 			}else{
+				$ig = "@".$this->real_escape_string($ig);
+			}
+			$role = $this->real_escape_string($role);
+			//
+			$sql_check_phone = $this->query("SELECT phone FROM customer WHERE phone = '$phone'");
+			$checked_phone = $sql_check_phone->num_rows;
+			if ($checked_phone >= 1) {
 				$msg = array(
 					'success' => false,
-					'message' => "Error!"
+					'message' => "Nomor telephone telah terdaftar!"
 				);
+			}else{
+				$sql = "INSERT INTO customer (nama_lengkap, phone, instagram, role, created_at) VALUES ('$fullname', '$phone', '$ig', '$role', NOW())";
+				$query = $this->query($sql);
+				if ($query) {
+					$msg = array(
+						'success' => true,
+						'message' => "Customer baru berhasil ditambahkan!"
+					);
+				}else{
+					$msg = array(
+						'success' => false,
+						'message' => "Error!"
+					);
+				}
 			}
 			return @$msg;
 		}

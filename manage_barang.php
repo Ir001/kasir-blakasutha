@@ -9,7 +9,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?=$setting['nama_bisnis'];?> | Laporan</title>
+  <title><?=$setting['nama_bisnis'];?> | Manage Barang</title>
 
   <?php include 'theme/src_head.php'; ?>
 </head>
@@ -29,12 +29,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Laporan Transaksi</h1>
+            <h1 class="m-0 text-dark">Manage Barang</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-              <li class="breadcrumb-item active">Laporan Transaksi</li>
+              <li class="breadcrumb-item active">Manage Barang</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -50,17 +50,19 @@
             <div class="card" id="hide-customer">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daftar Laporan</h3>
+                  <h3 class="card-title">Daftar Barang</h3>
+                  <button id="btn_barang_plus" class="btn btn-sm btn-success">Tambah</button>
                 </div>
               </div>
               <div class="card-body">
                 <table id="data_barang" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>No</th>
-                    <th>Customer</th>
-                    <th>Tipe</th>
-                    <th>Total</th>
+                    <th>Kode</th>
+                    <th>Nama</th>
+                    <th>Stok</th>
+                    <th>Harga</th>
+                    <!-- <th>Jumlah</th> -->
                     <th>Opsi</th>
                   </tr>
                   </thead>
@@ -76,8 +78,8 @@
                       <td><?=$list['stok'];?></td>
                       <td><?=number_format($list['harga_1'],0,',','.');?></td>
                     <td>
-                      <button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Detail</button>
-                      <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</button>
+                      <button class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</button>
+                      <button class="btn btn-danger btn-sm"><i class="fa fa-remove"></i> Hapus</button>
                     </td>
                   </tr>
                 <?php } ?>

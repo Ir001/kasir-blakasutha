@@ -32,7 +32,6 @@ require '../application/system.php';
 	
 </tbody>
 </table>
-<script>$("#data_pelanggan").DataTable();</script>
 <script>
     var load_barang = "json/json_barang.php";
     var loadUrl1 = "json/json_cart.php";
@@ -45,12 +44,16 @@ require '../application/system.php';
 			dataType : 'json',
 			success : function (data){
 				if (data.success) {
+   					window.$('#hide-barang').show();
    					window.$('#load-barang').load(load_barang);
-
    					window.$('#load-cart').load(loadUrl1);
+   					window.$('#hide-customer').hide();
 				}
 			}
 		})
 	})
 </script>
-<script>$("#data_pelanggan").DataTable();</script>
+<script>$("#data_pelanggan").DataTable({
+	"lengthMenu": [[5, 10, 50, -1], [5, 10, 50, "All"]]
+
+});</script>

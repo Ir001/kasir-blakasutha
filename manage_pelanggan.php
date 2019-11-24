@@ -9,7 +9,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?=$setting['nama_bisnis'];?> | Penjualan</title>
+  <title><?=$setting['nama_bisnis'];?> | Manage Barang</title>
 
   <?php include 'theme/src_head.php'; ?>
 </head>
@@ -29,12 +29,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Penjualan</h1>
+            <h1 class="m-0 text-dark">Manage Pelanggan</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-              <li class="breadcrumb-item active">Penjualan</li>
+              <li class="breadcrumb-item active">Manage Pelanggan</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -46,7 +46,7 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-12">
             <div class="card" id="hide-customer">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
@@ -55,25 +55,44 @@
                 </div>
               </div>
               <div class="card-body">
-                <div id="load-customer"></div>
+                <table id="data_pelanggan" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Customer</th>
+                      <th>Phone</th>
+                      <th>Instagram</th>
+                      <th>Opsi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php 
+                    $list_customer = $system->list_customer();
+                    foreach ($list_customer as $list) {
+
+                      ?>
+                      <tr>
+                        <td><?=$list['nama_lengkap'];?> <span class="badge badge-sm badge-info"><?=ucwords($list['role']);?></span></td>
+                        <td><?=$list['phone'];?></td>
+                      <td><?=$list['instagram'];?></td>
+                      <td class="">
+                        <form class="d-inline detail_customer">
+                          <input type="hidden" name="detail_customer" value="1"> 
+                          <input type="hidden" name="id" value="<?=$list['id_customer'];?>"> 
+                          <button type="submit" title="Detail" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
+                        </form>
+                        <form class="d-inline delete_customer">
+                          <input type="hidden" name="delete_customer" value="1"> 
+                          <input type="hidden" name="id" value="<?=$list['id_customer'];?>"> 
+                          <button type="submit" title="Hapus" class="btn btn-sm btn-danger"><i class="fa fa-user-minus"></i></button>
+                        </form>
+                      </td>
+                    </tr>
+                  <?php } ?>
+                  </tbody>
+                </table>
+
               </div>
             </div>
-            <div class="card" id="hide-barang">
-              <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daftar Barang</h3>
-                  <!-- <button id="btn_user_plus" class="btn btn-sm btn-success">Tambah</button> -->
-                </div>
-              </div>
-              <div class="card-body">
-               <div id="load-barang"></div>
-              </div>
-            </div>
-            <!-- /.card-body -->
-          </div>
-          <!-- /.col-md-6 -->
-          <div class="col-md-6">
-            <div id="load-cart"></div>
           </div>
           <!-- /.col-md-6 -->
         </div>
@@ -95,27 +114,6 @@
   <?php include 'theme/footer.php'; ?>
 </div>
 
-      <div class="modal fade" id="paymentModal">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Pembayaran Berhasil!</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" id="loadInvoice">
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Cetak <i class="fa fa-copy"></i></button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
       <div class="modal fade" id="addUser">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -171,25 +169,13 @@
     $.ajaxSetup({
       cache:false
     });
-    var loadUrl = "json/json_customer.php";
-    var loadUrl1 = "json/json_cart.php";
-    var load_barang = "json/json_barang.php";
-    //
-    $('#load-customer').load(loadUrl);
-    $('#load-barang').load(load_barang);
-    $('#load-cart').load(loadUrl1);
-
     //Data Table
-    $("#data_pelanggan").DataTable();
-    //Event
-    
-    //Add User for show modal
+    $('#data_pelanggan').DataTable();
     $('#btn_user_plus').click(function(){
       $('#addUser').modal('show');
     });
-    //End of add user
-    //Submit Add customer    
-    $('#form_user_add').submit(function(e){
+    //
+     $('#form_user_add').submit(function(e){
       e.preventDefault();
       $.ajax({
         type : 'POST',
@@ -198,9 +184,9 @@
         dataType : 'json',
         success : function(data){
           if (data.success) {
-            $('#load-customer').load(loadUrl);
             toastr['success'](data.message);
             $('#addUser').modal('hide');
+            // setTimeout(function(){window.location.replace="manage_pelanggan.php"},1000);
           }else{
             toastr['error'](data.message)
 
@@ -208,6 +194,7 @@
         }
       })
     });
+
 
   })
 </script>
