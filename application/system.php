@@ -241,6 +241,35 @@
 			}
 			return $msg;
 		}
+		function view_trx($trx_code){
+			$sql = "SELECT * FROM penjualan LEFT JOIN transaksi ON penjualan.trx_code = transaksi.trx_code LEFT JOIN barang ON penjualan.id_barang=barang.id_barang LEFT JOIN customer ON customer.id_customer = penjualan.id_customer WHERE penjualan.trx_code = '$trx_code'";
+			$query = $this->query($sql);
+			if ($query) {
+				// $res = $query->fetch_assoc();
+				$i=0;
+				while ($res = $query->fetch_assoc()) {
+					$data['nama_lengkap'] = $res['nama_lengkap'];
+					$data['trx_code'] = $res['trx_code'];
+					$data['total_harga'] = $res['total_harga'];
+					$data['jumlah_bayar'] = $res['jumlah_bayar'];
+					$data['tgl_transaksi'] = $res['tgl_transaksi'];
+					$data[$i] = array(
+							'kode_barang' => $res['kode_barang'],
+							'nama_barang' => $res['nama_barang'],
+							'jumlah' => $res['jumlah'],
+							'harga_1' => $res['harga_1'],
+							'harga_2' => $res['harga_2'],
+							'harga_3' => $res['harga_3'],
+					);
+					$i++;
+
+				}
+
+
+				
+			}
+			return @$data;
+		}
 	}
 	$system = new System();
 	$setting = $system->get_setting();

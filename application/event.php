@@ -66,22 +66,22 @@
 		$jumlah_bayar = $_POST['jumlah_bayar'];
 		$total = $_POST['total'];
 
-		$trx_code = $system->generate_trx_code();
+		$trx_code = $_POST['trx_code'];
 		$transaksi = $system->trx($trx_code, $total, $jumlah_bayar);
 		if ($transaksi) {
 			foreach ($_SESSION['cart'] as $id_barang => $jumlah) {
 				$penjualan = $system->penjualan($id_customer, $id_barang, $trx_code, $jumlah);
 				if ($penjualan) {
-					// unset($_SESSION['cart']);
-					// unset($_SESSION['id_customer']);
 					$msg = array(
 						'success' => true,
 						'message' => 'Berhasil melakukan transaksi',
+						'trx_code' => $trx_code,
 					);
 				}else{
 					$msg = array(
 						'success' => false,
 						'message' => 'Gagal saat melakukan penjualan',
+						'trx_code' => null,
 
 					);
 				}
@@ -91,6 +91,7 @@
 			$msg = array(
 						'success' => false,
 						'message' => 'Gagal saat melakukan transaksi',
+						'trx_code' => null,
 			);
 		}
 		echo $system->convert_to_json($msg);

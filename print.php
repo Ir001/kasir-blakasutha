@@ -1,34 +1,30 @@
 <?php 	
-	require '/application/system.php';
+	require 'application/system.php';
+	$trx_code = trim($_GET['trx_code']);
+	$data = $system->view_trx($trx_code);
+	$kembalian = $data['jumlah_bayar']-$data['total_harga']; 
+	$jumlah_bayar = $data['jumlah_bayar'];
+
  ?>
  <!DOCTYPE html>
  <html lang="en">
  <head>
  	<meta charset="UTF-8">
  	<title>Invoice</title>
- 	<link rel="stylesheet" href="invoice.css">
+ 	<link rel="stylesheet" href="json/invoice.css">
  </head>
  <body>
 
   <div id="invoice-POS">
-    
-    <center id="top">
-      <div class="logo"></div>
-      <div class="info"> 
-        <h2><?=$setting['nama_bisnis'];?></h2>
-      </div><!--End Info-->
-    </center><!--End InvoiceTop-->
-    
-    <div id="mid">
-      <div class="info">
-        <h2>Contact Info</h2>
-        <p> 
-            Address : <?=$setting['alamat'];?></br>
-            Email   : <?=$setting['email'];?></br>
-            Phone   : <?=$setting['phone'];?></br>
+  	<div class="info">
+        <h2>Bukti Pembayaran</h2>
+        <p style="font-size: 8px"> 
+            Nama : <?=$data['nama_lengkap'];?></br>
+            Kode Transaksi : <?=$data['trx_code'];?></br>
+            Tgl Transaksi : <?=$data['tgl_transaksi'];?></br>
         </p>
       </div>
-    </div><!--End Invoice Mid-->
+    
     
     <div id="bot">
 
@@ -74,13 +70,20 @@
 								<td class="Rate"><h2>Total</h2></td>
 								<td class="payment"><h2>Rp.<?=number_format(@$total_semua,0,',','.');?></h2></td>
 							</tr>
+							<tr class="tabletitle">
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="Rate"><h2>Jumlah Bayar</h2></td>
+								<td class="payment"><h2>Rp.<?=number_format(@$jumlah_bayar,0,',','.');?></h2></td>
+							</tr>
 
 							<tr class="tabletitle">
 								<td></td>
 								<td></td>
 								<td></td>
 								<td class="Rate"><h2>Kembalian</h2></td>
-								<td class="payment"><h2>Rp.<?=number_format(@$total_semua,0,',','.');?></h2></td>
+								<td class="payment"><h2>Rp.<?=number_format(@$kembalian,0,',','.');?></h2></td>
 							</tr>
 
 						</table>
@@ -91,7 +94,19 @@
 						</p>
 					</div>
 
+
 				</div><!--End InvoiceBot-->
+				<div id="mid">
+      <div class="info">
+        <h2>Contact Info</h2>
+        <p style="font-size: 8px"> 
+            Address : <?=$setting['alamat'];?></br>
+            Email   : <?=$setting['email'];?></br>
+            Phone   : <?=$setting['phone'];?></br>
+        </p>
+      </div>
+    </div><!--End Invoice Mid-->
+    
   </div><!--End Invoice-->
 
  	

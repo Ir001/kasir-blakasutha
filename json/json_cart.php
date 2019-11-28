@@ -87,6 +87,7 @@ require '../application/system.php';
                         <div class="form-group">
                           <label>Total</label>
                           <input type="hidden" name="form_bayar" value="1">
+                          <input type="hidden" name="trx_code" value="<?=$system->generate_trx_code();?>">
                           <input type="hidden" name="id_customer" value="<?=$customer['id_customer'];?>">
                           <input type="number" class="form-control" name="total" id="total" value="<?=@$total_semua;?>" min="0" style="pointer-events:none" readonly></input>
                         </div>
@@ -204,8 +205,9 @@ require '../application/system.php';
       success : function(data){
         if (data.success) {
           toastr['success'](data.message);
-          window.$('#loadInvoice').load("json/json_invoice.php");
-          window.$('#paymentModal').modal('show');
+          setTimeout(function(){
+            window.open('print.php?trx_code='+data.trx_code, '_blank');
+          }, 1200);
         }
       }
     })
