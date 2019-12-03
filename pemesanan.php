@@ -46,7 +46,9 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-12" id="load-content">
+          </div>
+          <div class="col-lg-12" id="load-customer-div">
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
@@ -56,16 +58,9 @@
               </div>
               <div class="card-body">
                 <div id="load-customer"></div>
-                <hr>
-               <!-- <div id="load-barang"></div> -->
-               <form action="" class=""></form>
               </div>
             </div>
             <!-- /.card-body -->
-          </div>
-          <!-- /.col-md-6 -->
-          <div class="col-md-6">
-            <div id="load-cart"></div>
           </div>
           <!-- /.col-md-6 -->
         </div>
@@ -87,27 +82,7 @@
   <?php include 'theme/footer.php'; ?>
 </div>
 
-      <div class="modal fade" id="paymentModal">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Pembayaran Berhasil!</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" id="loadInvoice">
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Cetak <i class="fa fa-copy"></i></button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
+     
       <div class="modal fade" id="addUser">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -163,19 +138,13 @@
     $.ajaxSetup({
       cache:false
     });
-    var loadUrl = "json/json_customer.php";
-    var loadUrl1 = "json/json_cart.php";
-    var load_barang = "json/json_barang.php";
+    var loadUrl = "json/view_customer.php";
     //
     $('#load-customer').load(loadUrl);
-    $('#load-barang').load(load_barang);
-    $('#load-cart').load(loadUrl1);
 
     //Data Table
     $("#data_pelanggan").DataTable();
     //Event
-    
-    $('#loadInvoice').load("json/json_invoice.php");
     //Add User for show modal
     $('#btn_user_plus').click(function(){
       $('#addUser').modal('show');
@@ -201,6 +170,11 @@
         }
       })
     });
+    <?php if (isset($_SESSION['id_customer'])): ?>
+      $('#load-content').load('json/view_pemesanan.php');
+      $('#load-customer-div').hide();
+
+    <?php endif; ?>
 
   })
 </script>

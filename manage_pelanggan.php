@@ -186,7 +186,6 @@
           if (data.success) {
             toastr['success'](data.message);
             $('#addUser').modal('hide');
-            // setTimeout(function(){window.location.replace="manage_pelanggan.php"},1000);
           }else{
             toastr['error'](data.message)
 
@@ -194,6 +193,7 @@
         }
       })
     });
+    
 
 
   })

@@ -54,37 +54,8 @@
                   <button id="btn_barang_plus" class="btn btn-sm btn-success">Tambah</button>
                 </div>
               </div>
-              <div class="card-body">
-                <table id="data_barang" class="table table-bordered table-striped">
-                  <thead>
-                  <tr>
-                    <th>Kode</th>
-                    <th>Nama</th>
-                    <th>Stok</th>
-                    <th>Harga</th>
-                    <!-- <th>Jumlah</th> -->
-                    <th>Opsi</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                 <?php 
-                  $list_barang = $system->list_barang();
-                  foreach ($list_barang as $list) {
-
-                    ?>
-                    <tr>
-                      <td><?=$list['kode_barang'];?></span></td>
-                      <td><?=$list['nama_barang'];?></td>
-                      <td><?=$list['stok'];?></td>
-                      <td><?=number_format($list['harga_1'],0,',','.');?></td>
-                    <td>
-                      <button class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</button>
-                      <button class="btn btn-danger btn-sm"><i class="fa fa-remove"></i> Hapus</button>
-                    </td>
-                  </tr>
-                <?php } ?>
-                  </tbody>
-                </table>
+              <div class="card-body" id="show-barang">
+                
               </div>
             </div>
           </div>
@@ -119,7 +90,7 @@
               </button>
             </div>
             <div class="modal-body">
-                <form id="form_user_add">
+                <form id="form_barang_add">
                   <input type="hidden" name="add_data_barang" value="1">
                   <div class="form-group">
                     <label>Kode Barang:</label>
@@ -134,16 +105,16 @@
                     <input type="number" class="form-control" name="stok" placeholder="Stok" required>
                   </div>
                   <div class="form-group">
-                    <label>Harga Selusin:</label>
+                    <label>Harga Satuan:</label>
                     <input type="number" class="form-control" name="harga_1" placeholder="Harga 1 lusin" required>
                   </div>
                   <div class="form-group">
-                    <label>Harga 2 lusin:</label>
-                    <input type="number" class="form-control" name="harga_2" placeholder="Harga 2 lusin" required>
+                    <label>Harga 1 lusin:</label>
+                    <input type="number" class="form-control" name="harga_2" placeholder="Harga 1 lusin" required>
                   </div>
                   <div class="form-group">
-                    <label>Harga 3 lusin:</label>
-                    <input type="number" class="form-control" name="harga_3" placeholder="Harga 3 lusin" required>
+                    <label>Harga 2 lusin:</label>
+                    <input type="number" class="form-control" name="harga_3" placeholder="Harga 2 lusin" required>
                   </div>
                   <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -157,6 +128,7 @@
         </div>
         <!-- /.modal-dialog -->
       </div>
+      <div id="modal-edit"></div>
 
 <?php include 'theme/src_foot.php'; ?>
 <script>
@@ -166,9 +138,28 @@
       cache:false
     });
     //Data Table
-    $('#data_barang').DataTable();
+    $('#show-barang').load("json/show_barang.php");
     $('#btn_barang_plus').click(function(){
       $('#modalBarang').modal('show');
+    });
+    //
+    $('#form_barang_add').submit(function(e){
+      e.preventDefault();
+      $.ajax({
+        type : 'POST',
+        url :'application/event.php',
+        data: $('#form_barang_add').serialize(),
+        dataType : 'json',
+        success : function(data){
+          if (data.success) {
+            toastr['success'](data.message);
+            $('#show-barang').load("json/show_barang.php");
+            $('#modalBarang').modal('hide');
+          }else{
+            toastr['error'](data.message);
+          }
+        }
+      })
     });
 
   })

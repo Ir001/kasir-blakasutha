@@ -96,5 +96,28 @@
 		}
 		echo $system->convert_to_json($msg);
 
+	}elseif(isset($_POST['add_data_barang'])){
+		$kode_barang = $_POST['kode_barang'];
+		$nama_barang = $_POST['nama_barang'];
+		$stok = $_POST['stok'];
+		$harga_1 = $_POST['harga_1'];
+		$harga_2 = $_POST['harga_2'];
+		$harga_3 = $_POST['harga_3'];
+		$add_data_barang = $system->add_data_barang($kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3);
+		echo $system->convert_to_json($add_data_barang);
+	}elseif(isset($_POST['edit_data_barang'])){
+		$id_barang = $_POST['id_barang'];
+		$kode_barang = $_POST['kode_barang'];
+		$nama_barang = $_POST['nama_barang'];
+		$stok = $_POST['stok'];
+		$harga_1 = $_POST['harga_1'];
+		$harga_2 = $_POST['harga_2'];
+		$harga_3 = $_POST['harga_3'];
+		$edit_data_barang = $system->edit_data_barang($id_barang,$kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3);
+		echo $system->convert_to_json($edit_data_barang);
+	}elseif(isset($_POST['delete_barang'])){
+		$id_barang = $_POST['id'];
+		$delete_barang = $system->delete_data_barang($id_barang);
+		echo $system->convert_to_json($delete_barang);
 	}
  ?>

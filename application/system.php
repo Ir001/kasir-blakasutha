@@ -117,6 +117,79 @@
 			}
 			return @$msg;
 		}
+		function add_data_barang($kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3){
+			$kode_barang = $this->real_escape_string($kode_barang);
+			$nama_barang = $this->real_escape_string($nama_barang);
+			$sql_check_kode = $this->query("SELECT kode_barang FROM barang WHERE kode_barang = '$kode_barang'");
+			$checked_kode = $sql_check_kode->num_rows;
+			if ($checked_kode >= 1) {
+				$msg = array(
+							'success' => false,
+							'message' => "Kode barang sudah terdaftar!"
+					);
+			}else{
+					
+				$sql = "INSERT INTO barang (kode_barang, nama_barang, stok, harga_1, harga_2, harga_3, updated_at) VALUES ('$kode_barang', '$nama_barang', '$stok', '$harga_1', '$harga_2', '$harga_3', NOW())";
+				$query = $this->query($sql);
+				if ($query) {
+					$msg = array(
+							'success' => true,
+							'message' => "Barang berhasil ditambahkan!"
+					);
+				}else{
+					$msg = array(
+							'success' => false,
+							'message' => "Error!"
+					);
+				}
+			}
+			return @$msg;
+
+		}
+		function edit_data_barang($id_barang, $kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3){
+			$kode_barang = $this->real_escape_string($kode_barang);
+			$nama_barang = $this->real_escape_string($nama_barang);
+			$sql_check_kode = $this->query("SELECT kode_barang FROM barang WHERE kode_barang = '$kode_barang'");
+			$checked_kode = $sql_check_kode->num_rows;
+			if ($checked_kode > 1) {
+				$msg = array(
+							'success' => false,
+							'message' => "Kode barang sudah terdaftar!"
+					);
+			}else{
+					
+				$sql = "UPDATE barang SET kode_barang = '$kode_barang', nama_barang = '$nama_barang', stok = '$stok', harga_1 ='$harga_1',harga_2 = '$harga_2', harga_3 ='$harga_3' WHERE id_barang = $id_barang";
+				$query = $this->query($sql);
+				if ($query) {
+					$msg = array(
+							'success' => true,
+							'message' => "Barang berhasil diubah!"
+					);
+				}else{
+					$msg = array(
+							'success' => false,
+							'message' => "Error!"
+					);
+				}
+			}
+			return @$msg;
+
+		}
+		function delete_data_barang($id_barang){
+			$sql = "DELETE FROM barang WHERE id_barang = '$id_barang'";
+			$query  = $this->query($sql);
+				$msg = array(
+					'success' => true,
+					'message' => 'Berhasil menghapus barang!'
+				);
+			return @$msg;
+		}
+		function get_detail_barang($id_barang){
+			$sql = "SELECT * FROM barang WHERE id_barang = '$id_barang'";
+			$query  = $this->query($sql);
+			$res = $query->fetch_assoc();
+			return @$res;
+		}
 		function list_customer(){
 			$sql = "SELECT * FROM customer WHERE 1=1";
 			$query = $this->query($sql);
