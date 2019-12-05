@@ -129,7 +129,7 @@ require '../application/system.php';
           e.preventDefault();
           $.ajax({
             type : 'POST',
-            url : 'json/json_edit_barang.php',
+            url : 'json/json_edit.php',
             data : $(this).serialize(),
             dataType : 'json',
             success : function(data){

@@ -83,7 +83,7 @@
                         <form class="d-inline delete_customer">
                           <input type="hidden" name="delete_customer" value="1"> 
                           <input type="hidden" name="id" value="<?=$list['id_customer'];?>"> 
-                          <button type="submit" title="Hapus" class="btn btn-sm btn-danger"><i class="fa fa-user-minus"></i></button>
+                          <button type="submit" title="Hapus" class="btn btn-delete btn-sm btn-danger"><i class="fa fa-user-minus"></i></button>
                         </form>
                       </td>
                     </tr>
@@ -162,8 +162,66 @@
         <!-- /.modal-dialog -->
       </div>
 
+      <div class="modal fade" id="detailUser">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Detail Customer</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_edit_customer">
+                  <input type="hidden" name="edit_customer" value="1">
+                  <div class="form-group">
+                    <label>Order Pembelian Barang:</label>
+                    <input type="text" class="form-control" name="penjualan" value="Telah melakukan transaksi pembelian sebanyak 1 kali" disabled>
+                  </div>
+                   <div class="form-group">
+                    <label>Order Pemesanan:</label>
+                    <input type="text" class="form-control" name="penjualan" value="Telah melakukan transaksi pemesanan sebanyak 1 kali" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label>Nama:</label>
+                    <input type="text" class="form-control" name="fullname" placeholder="Nama Lengkap" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Phone:</label>
+                    <input type="text" class="form-control" name="phone" placeholder="Nomor HP Aktif">
+                  </div>
+                  <div class="form-group">
+                    <label>Instagram:</label>
+                    <input type="text" class="form-control" name="ig" placeholder="Username IG (tanpa @)">
+                  </div>
+                  <label>Status:</label>
+                  <div class="form-group">
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input" type="radio" id="customer_edit" value="customer" name="role" checked>
+                          <label for="customer_edit" class="custom-control-label">Customer</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input" type="radio" id="reseller_edit" value="reseller" name="role">
+                          <label for="reseller_edit" class="custom-control-label">Reseller</label>
+                        </div>
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                    <button type="reset" class="btn btn-danger">Reset</button>
+                    <button type="submit" class="btn btn-primary">Simpan <i class="fa fa-user-plus"></i></button>
+                  </div>
+                </form>
+
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
 <?php include 'theme/src_foot.php'; ?>
 <script>
+   
+
   $(function(){
     //Setup
     $.ajaxSetup({
@@ -186,6 +244,8 @@
           if (data.success) {
             toastr['success'](data.message);
             $('#addUser').modal('hide');
+            window.location.href="manage_pelanggan.php";
+
           }else{
             toastr['error'](data.message)
 
@@ -193,8 +253,32 @@
         }
       })
     });
+      $('.btn-delete').click(function(){
+      if (confirm("Apakah anda yakin?")) {
+        $('.delete_customer').submit(function(e){
+          e.preventDefault();
+          $.ajax({
+            type : 'POST',
+            url : 'application/event.php',
+            data : $('.delete_customer').serialize(),
+            dataType : 'json',
+            success : function(data){
+              if (data.success) {
+                toastr['success'](data.message);
+                window.location.href="manage_pelanggan.php";
+              }else{
+                toastr['error'](data.message);
+              }
+            }
+          })
+        })
+      }else{
+        $('.delete_customer').submit(function(e){
+          e.preventDefault();
+        })
+      }
+    })
     
-
 
   })
 </script>

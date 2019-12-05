@@ -119,5 +119,14 @@
 		$id_barang = $_POST['id'];
 		$delete_barang = $system->delete_data_barang($id_barang);
 		echo $system->convert_to_json($delete_barang);
+	}elseif (isset($_POST['add_pesanan'])) {
+	}elseif (isset($_POST['delete_customer'])) {
+		$id = $_POST['id'];
+		$delete = $system->delete_customer($id);
+		echo $system->convert_to_json($delete);
+	}elseif (isset($_POST['detail_customer'])) {
+		$id = $_POST['id'];
+		$detail = $system->detail_customer($id);
+		echo $system->convert_to_json($detail);
 	}
  ?>

@@ -6,6 +6,7 @@ require '../application/system.php';
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
                   <h3 class="card-title">Keranjang Belanja</h3>
+                  <?php echo time(); ?>
                   <!-- <a href="javascript:void(0);">Tambah</a> -->
                 </div>
                 <?php 

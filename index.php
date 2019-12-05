@@ -178,6 +178,7 @@
     $('#load-customer').load(loadUrl);
     $('#load-barang').load(load_barang);
     $('#load-cart').load(loadUrl1);
+    $('#hide-barang').hide();
 
     //Data Table
     $("#data_pelanggan").DataTable();

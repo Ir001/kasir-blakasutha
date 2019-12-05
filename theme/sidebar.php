@@ -61,6 +61,12 @@
               <li class="nav-item">
                 <a href="manage_pelanggan.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
+                  <p>Daftar Pemesanan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="manage_pelanggan.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
                   <p>Pelanggan</p>
                 </a>
               </li>
@@ -68,6 +74,12 @@
                 <a href="manage_barang.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Barang</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="manage_barang.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Harga Pemesanan</p>
                 </a>
               </li>
             </ul>

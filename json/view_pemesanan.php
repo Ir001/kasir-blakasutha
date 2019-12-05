@@ -2,7 +2,7 @@
 require '../application/system.php';
 ?>
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-6">
     <div class="card">
       <div class="card-header border-0">
         <div class="d-flex justify-content-between">
@@ -11,6 +11,9 @@ require '../application/system.php';
       </div>
       <div class="card-body">
         <form id="form_pemesanan" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="add_pesanan" value="1">
+          <input type="hidden" name="trx_code" value="<?=$system->generate_trx_code()?>">
+
           <div id="step1">
             <div class="form-group">
               <label>Jenis Pemesanan</label>
@@ -68,6 +71,10 @@ require '../application/system.php';
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="form-group">
+              <label>Keterangan</label>
+              <textarea class="form-control" name="keterangan" placeholder="Deskripsi"></textarea>
             </div>
           </div>
           <div id="step2">
@@ -130,7 +137,6 @@ require '../application/system.php';
               <label>Jumlah Pesanan</label>
               <input type="number" class="form-control" name="jumlah_pesanan" id="jumlah_pesanan" style="pointer-events:none" readonly></input>
             </div>
-            <button class="float-right btn btn-success">Buat Pesanan</button>
           </div>
         </form>
         <button class="float-left btn btn-info" id="btn-back">Kembali</button>
@@ -139,36 +145,19 @@ require '../application/system.php';
     </div>
     <!-- /.card-body -->
   </div>
-  
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-body">
-        <?php 
-        $customer = $system->get_info_customer();
-        ?><div class="float-right">
-          <form id="reset_user">
-            <input type="hidden" name="reset_user" value="1">
-            <button type="submit" class="btn btn-sm btn-danger">Reset User</button>
-          </form>
-        </div>
-        <h6>Detail Customer:</h6>
-        <hr>
-        <div style="line-height: 6px">
-          <p>Nama: <?=$customer['nama_lengkap'];?> <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span></p>
-          <p>Nomor Telepon: <?=$customer['phone'];?></p>
-        </div>
-        <hr>
-      </div>
-    </div>
-    <!-- /.card-body -->
+  <div class="col-md-6">
+    <div id="load-cart"></div>
   </div>
+
 </div>
 <script type="text/javascript">
+  var cart_page = "json/cart_pemesanan.php";
   var jenis_pemesanan = $('#jenis_pemesanan');
   var step1 = $('#step1');
   var step2 = $('#step2');
   $('#model_baju_div').hide();
   $('#btn-back').hide();
+  $('#load-cart').load(cart_page);
 
   step2.hide();
 
@@ -192,12 +181,16 @@ $('#btn-back').click(function(){
 })
 $('.uk').change(function(){
   hitung_jumlah_pesanan();
+  var jumlah = parseInt($(this).val());
+  add_cart(jumlah);
 });
 $('.uk').click(function(){
   $(this).select();
 });
 $('.uk').keyup(function(){
   hitung_jumlah_pesanan();
+  var jumlah = parseInt($(this).val());
+  add_cart(jumlah);
 });
 $('#jumlah_pesanan').val(0);
 function hitung_jumlah_pesanan(){
@@ -226,22 +219,13 @@ function hitung_jumlah_pesanan(){
   jumlah_pesanan.val(total_pesanan);
 }
 //
-$('#reset_user').submit(function(e){
-    e.preventDefault();
-    $.ajax({
-          type : 'POST',
-          url : 'application/event.php',
-          data : $('#reset_user').serialize(),
-          dataType : 'json',
-          success : function(data){
-            if (data.success) {
-                window.$('#load-customer-div').show();
-                window.$('#load-content').hide();
-                toastr['success'](data.message);
-            }else{
-                toastr['error'](data.message);
-            }
-          }
-        })
+function add_cart(jumlah){
+  $.ajax({
+    type : 'POST',
+    url : 'application/event.php',
+    data : jumlah,
+
   });
+}
+
 </script>

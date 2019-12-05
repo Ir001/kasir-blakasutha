@@ -43,7 +43,7 @@
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
-              <input type="checkbox" id="remember">
+              <input type="checkbox" checked id="remember">
               <label for="remember">
                 Ingatkan Saya
               </label>

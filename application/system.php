@@ -1,5 +1,6 @@
 <?php
 	date_default_timezone_set('Asia/Jakarta');
+	ob_start();
 	session_start();
 	require 'config.php';
 	class System extends mysqli{
@@ -8,7 +9,7 @@
 				if (mysqli_connect_error()) {
 					exit('Connect Error (' . mysqli_connect_errno() . ') ' . mysqli_connect_error());
 				}
-			
+			 
 			parent::set_charset('utf-8');
 		}
 		function convert_to_json($data = array()){
@@ -30,7 +31,7 @@
 				if ($info_user['password'] == $password) {
 					$msg = array(
 						'success' => true,
-						'message' => 'Harap tunggu',
+						'message' => 'Sedang menyiapkan. Harap tunggu',
 						'info_user' => $info_user,
 					);
 					$_SESSION['user'] = $info_user;
@@ -117,6 +118,41 @@
 			}
 			return @$msg;
 		}
+		function detail_customer($id){
+			$check_penjualan = "SELECT count(*) FROM penjualan WHERE id_customer = $id";
+			$query_penjualan = $this->query($check_penjualan);
+			$penjualan = $query_penjualan->fetch_assoc();
+			$check_pemesanan = "SELECT count(*) FROM pemesanan WHERE id_customer = $id";
+			$query_pemesanan = $this->query($check_penjualan);
+			$pemesanan = $query_pemesanan->fetch_assoc();
+			//
+			$sql = "SELECT * FROM customer WHERE id_customer = $id";
+			$query = $this->query($sql);
+			$data_customer = $query->fetch_assoc();
+			$data = array(
+				'penjualan' => $penjualan['count(*)'],
+				'pemesanan' => $pemesanan['count(*)'],
+				$data_customer,
+			);
+			return @$data;
+		}
+		function delete_customer($id){
+			$sql = "DELETE FROM customer WHERE id_customer = $id";
+			$query = $this->query($sql);
+			if ($query) {
+				$msg = array(
+					'success' => true,
+					'message' => 'Berhasil menghapus customer!'
+				);
+			}else{
+				$msg = array(
+					'success' => false,
+					'message' => 'Terjadi kesalahan!'
+				);
+			}
+			return $msg;
+		}
+
 		function add_data_barang($kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3){
 			$kode_barang = $this->real_escape_string($kode_barang);
 			$nama_barang = $this->real_escape_string($nama_barang);
@@ -247,7 +283,7 @@
 		}
 		function add_cart($id, $jumlah){
 			if (empty($_SESSION['cart'][$id])) {
-				$_SESSION['cart'][$id]=1;
+				$_SESSION['cart'][$id]=$jumlah;
 			}else{
 				$jumlah_aktif = $_SESSION['cart'][$id];
 				$_SESSION['cart'][$id]=$jumlah+$jumlah_aktif;
@@ -342,6 +378,34 @@
 				
 			}
 			return @$data;
+		}
+		function create_pesanan($data = array()){
+			$trx_code = $data['trx_code'];
+			$jenis_pemesanan = $data['jenis_pemesanan'];
+			$sablon_depan = $data['sablon_depan'];
+			$sablon_belakang = $data['sablon_belakang'];
+			$model_baju = $data['model_baju'];
+			$jenis_sablon = $data['jenis_sablon'];
+			$keterangan = $data['keterangan'];
+			//
+			$pendek_s = $data['pendek_s'];
+			$pendek_m = $data['pendek_m'];
+			$pendek_l = $data['pendek_l'];
+			$pendek_xl = $data['pendek_xl'];
+			$pendek_xxl = $data['pendek_xxl'];
+			$pendek_xxxl = $data['pendek_xxxl'];
+			//
+			$panjang_s = $data['panjang_s'];
+			$panjang_m = $data['panjang_m'];
+			$panjang_l = $data['panjang_l'];
+			$panjang_xl = $data['panjang_xl'];
+			$panjang_xxl = $data['panjang_xxl'];
+			$panjang_xxxl = $data['panjang_xxxl'];
+			//
+			$jumlah_pesanan = $data['jumlah_pesanan'];
+			$total = $data['total'];
+			
+
 		}
 	}
 	$system = new System();

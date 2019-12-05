@@ -29,7 +29,7 @@ require '../application/system.php';
                       <form class="add_to_cart">
                         <input type="hidden" name="add_barang" value="1"> 
                         <input type="hidden" name="id" value="<?=$list['id_barang'];?>"> 
-                        <input type="number" class="form-control" name="jumlah" value="1" min="0" max="<?=$list['stok'];?>">
+                        <input type="number" class="jmlh form-control" name="jumlah" value="1" min="0" max="<?=$list['stok'];?>">
                         <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-cart-plus"></i></button>
                       </form>
                     </td>
@@ -59,5 +59,8 @@ require '../application/system.php';
         }
       })
     })
+    $('.jmlh').click(function(){
+      $(this).select();
+    });
 </script>
 <?php endif ?>
