@@ -1,5 +1,6 @@
 <?php
 	date_default_timezone_set('Asia/Jakarta');
+	date("Y-m-d H:i:s"); 
 	ob_start();
 	session_start();
 	require 'config.php';
@@ -406,6 +407,90 @@
 			$total = $data['total'];
 			
 
+		}
+		function edit_setting($data = array()){
+			$nama_bisnis = $data['nama_bisnis'];
+			$alamat = $data['alamat'];
+			$phone = $data['phone'];
+			$email = $data['email'];
+			$instagram = $data['instagram'];
+			$ucapan = $data['ucapan'];
+			//
+			$sql = "UPDATE setting SET nama_bisnis = '$nama_bisnis', alamat ='$alamat', phone='$phone', email='$email', instagram='$instagram', ucapan='$ucapan', update_at=NOW() WHERE id=1";
+			$query = $this->query($sql);
+			if ($query) {
+				$msg = array(
+					'success' => true,
+					'message' => 'Berhasil mengubah pengaturan',
+				);
+			}else{
+				$msg = array(
+					'success' => false,
+					'message' => 'Terjadi kesalahan',
+				);
+			}
+			return $msg;
+		}
+		function edit_akun($data = array()){
+			$id_admin = $data['id_admin'];
+			$username = $data['username'];
+			$fullname = $data['fullname'];
+			//
+			$sql = "UPDATE admin SET username = '$username', fullname ='$fullname' WHERE id_admin=$id_admin";
+			$query = $this->query($sql);
+			if ($query) {
+				$msg = array(
+					'success' => true,
+					'message' => 'Berhasil mengubah data!',
+				);
+			}else{
+				$msg = array(
+					'success' => false,
+					'message' => 'Terjadi kesalahan',
+				);
+			}
+			return $msg;
+		}
+		function edit_password($data = array()){
+			$id_admin = $data['id_admin'];
+			$old_password = $data['old_password'];
+			$new_password = $data['new_password'];
+			$confirm_password = $data['confirm_password'];
+			//
+			$check_admin = $this->query("SELECT password FROM admin WHERE id_admin = $id_admin");
+			$data_admin = $check_admin->fetch_assoc();
+			$password_old = $data_admin['password'];
+			if ($old_password == $password_old) {
+				if ($new_password == $confirm_password) {
+					$sql = "UPDATE admin SET password = '$new_password' WHERE id_admin=$id_admin";
+					$query = $this->query($sql);
+					if ($query) {
+						$msg = array(
+							'success' => true,
+							'message' => 'Berhasil mengubah kata sandi!',
+						);
+					}else{
+						$msg = array(
+							'success' => false,
+							'message' => 'Terjadi kesalahan',
+						);
+					}
+				}else{
+					$msg = array(
+						'success' => false,
+						'message' => 'Konfirmasi tidak cocok!',
+					);
+				}
+			
+			}else{
+				$msg = array(
+					'success' => false,
+					'message' => 'Password lama tidak cocok!',
+				);
+			}
+			//
+			
+			return $msg;
 		}
 	}
 	$system = new System();
