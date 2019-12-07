@@ -10,11 +10,11 @@ require '../application/system.php';
         </div>
       </div>
       <div class="card-body">
-        <form id="form_pemesanan" method="post" enctype="multipart/form-data">
-          <input type="hidden" name="add_pesanan" value="1">
-          <input type="hidden" name="trx_code" value="<?=$system->generate_trx_code()?>">
+        <div id="step1">
+          <form id="form_pemesanan" method="post" action="application/event.php" enctype="multipart/form-data">
+            <input type="hidden" name="add_pesanan" value="1">
+            <input type="hidden" name="trx_code" id="trx_code">
 
-          <div id="step1">
             <div class="form-group">
               <label>Jenis Pemesanan</label>
               <select name="jenis_pemesanan" class="form-control" id="jenis_pemesanan">
@@ -30,12 +30,12 @@ require '../application/system.php';
             <div class="form-group">
               <label>Sablon Depan</label>
               <br>
-              <input type="file">
+              <input type="file" name="sablon_depan">
             </div>
             <div class="form-group" id="sablon_belakang_div">
               <label>Sablon Belakang</label>
               <br>
-              <input type="file">
+              <input type="file" name="sablon_belakang">
             </div>
             <div class="form-group" id="model_baju_div">
               <label>Model Baju</label>
@@ -52,22 +52,22 @@ require '../application/system.php';
               <div class="row">
                 <div class="col-2">
                   <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" value="poliflex" for="exampleCheck1">Poliflex</label>
+                    <input type="checkbox" name="jenis_sablon[]" value="poliflex" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Poliflex</label>
                   </div>
                   <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck2">
-                    <label class="form-check-label" value="plastisol" for="exampleCheck2">Plastisol</label>
+                    <input type="checkbox" name="jenis_sablon[]" value="plastisol" class="form-check-input" id="exampleCheck2">
+                    <label class="form-check-label" for="exampleCheck2">Plastisol</label>
                   </div>
                 </div>
                 <div class="col-10">
                   <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck3">
-                    <label class="form-check-label" value="rubber" for="exampleCheck3">Rubber</label>
+                    <input type="checkbox" name="jenis_sablon[]" value="rubber" class="form-check-input" id="exampleCheck3">
+                    <label class="form-check-label" for="exampleCheck3">Rubber</label>
                   </div>
                   <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck4">
-                    <label class="form-check-label" value="bordir" for="exampleCheck4">Bordir</label>
+                    <input type="checkbox" name="jenis_sablon[]" value="bordir" class="form-check-input" id="exampleCheck4">
+                    <label class="form-check-label" for="exampleCheck4">Bordir</label>
                   </div>
                 </div>
               </div>
@@ -76,71 +76,15 @@ require '../application/system.php';
               <label>Keterangan</label>
               <textarea class="form-control" name="keterangan" placeholder="Deskripsi"></textarea>
             </div>
-          </div>
-          <div id="step2">
-            <label>Ukuran</label>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Pendek S</label>
-                  <input type="number" name="pendek_s" id="pendek_s" class="uk form-control" min="0" value="0" placeholder="S" required>
-                </div>
-                <div class="form-group">
-                  <label>Pendek M</label>
-                  <input type="number" name="pendek_m" id="pendek_m" class="uk form-control" min="0" value="0"  placeholder="M" required>
-                </div>
-                <div class="form-group">
-                  <label>Pendek L</label>
-                  <input type="number" name="pendek_l" id="pendek_l" class="uk form-control" min="0" value="0"  placeholder="L" required>
-                </div>
-                <div class="form-group">
-                  <label>Pendek XL</label>
-                  <input type="number" name="pendek_xl" id="pendek_xl" class="uk form-control" min="0" value="0"  placeholder="XL" required>
-                </div>
-                <div class="form-group">
-                  <label>Pendek XXL</label>
-                  <input type="number" name="pendek_xxl" id="pendek_xxl" class="uk form-control" min="0" value="0"  placeholder="XXL" required>
-                </div>
-                <div class="form-group">
-                  <label>Pendek XXXL</label>
-                  <input type="number" name="pendek_xxxl" id="pendek_xxxl" class="uk form-control" min="0" value="0"  placeholder="XXXL" required>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Panjang S</label>
-                  <input type="number" name="panjang_s" id="panjang_s" class="uk form-control" min="0" value="0" placeholder="S" required>
-                </div>
-                <div class="form-group">
-                  <label>Panjang M</label>
-                  <input type="number" name="panjang_m" id="panjang_m" class="uk form-control" min="0" value="0" placeholder="M">
-                </div>
-                <div class="form-group">
-                  <label>Panjang L</label>
-                  <input type="number" name="panjang_l" id="panjang_l" class="uk form-control" min="0" value="0"placeholder="L" required>
-                </div>
-                <div class="form-group">
-                  <label>Panjang XL</label>
-                  <input type="number" name="panjang_xl" id="panjang_xl" class="uk form-control" min="0" value="0" placeholder="XL" required>
-                </div>
-                <div class="form-group">
-                  <label>Panjang XXL</label>
-                  <input type="number" name="panjang_xxl" id="panjang_xxl" class="uk form-control" min="0" value="0"  placeholder="XXL" required>
-                </div>
-                <div class="form-group">
-                  <label>Panjang XXXL</label>
-                  <input type="number" name="panjang_xxxl" id="panjang_xxxl" class="uk form-control" min="0" value="0" placeholder="XXXL" required>
-                </div>
-              </div>
-            </div>
             <div class="form-group">
-              <label>Jumlah Pesanan</label>
-              <input type="number" class="form-control" name="jumlah_pesanan" id="jumlah_pesanan" style="pointer-events:none" readonly></input>
+              <button type="submit" class="float-right btn-submit btn btn-success">Simpan</button>
             </div>
-          </div>
-        </form>
-        <button class="float-left btn btn-info" id="btn-back">Kembali</button>
-        <button class="float-right btn btn-info" id="btn-next">Berikutnya</button>
+          </form>
+        </div>
+        <div id="step2">
+          <label>Ukuran</label>
+          <div id="load-barang"></div>
+        </div>
       </div>
     </div>
     <!-- /.card-body -->
@@ -158,74 +102,59 @@ require '../application/system.php';
   $('#model_baju_div').hide();
   $('#btn-back').hide();
   $('#load-cart').load(cart_page);
+  $('#load-barang').load('json/barang_pesanan.php');
 
+  <?php if (isset($_SESSION['trx_code'])) { ?>
+  step1.hide();
+  step2.show();
+  <?php }else{ ?>
+  step1.show();
   step2.hide();
-
+  <?php } ?>
   jenis_pemesanan.change(function(){
     if (jenis_pemesanan.val() === 'kaos') {
       $('#model_baju_div').show();
     }
   })
-//
-$('#btn-next').click(function(){
-  step1.hide();
-  step2.show();
-  $('#btn-back').show();
-  $('#btn-next').hide();
-});
-$('#btn-back').click(function(){
-  step1.show();
-  step2.hide();
-  $('#btn-back').hide();
-  $('#btn-next').show();
-})
-$('.uk').change(function(){
-  hitung_jumlah_pesanan();
-  var jumlah = parseInt($(this).val());
-  add_cart(jumlah);
-});
-$('.uk').click(function(){
-  $(this).select();
-});
-$('.uk').keyup(function(){
-  hitung_jumlah_pesanan();
-  var jumlah = parseInt($(this).val());
-  add_cart(jumlah);
-});
-$('#jumlah_pesanan').val(0);
-function hitung_jumlah_pesanan(){
-  var panjang = 0;
-  var pendek = 0;
-  //
-  var panjang_s = parseInt($('#panjang_s').val());
-  var panjang_m = parseInt($('#panjang_m').val());
-  var panjang_l = parseInt($('#panjang_l').val());
-  var panjang_xl = parseInt($('#panjang_xl').val());
-  var panjang_xxl = parseInt($('#panjang_xxl').val());
-  var panjang_xxxl = parseInt($('#panjang_xxxl').val());
-  //
-  var pendek_s = parseInt($('#pendek_s').val());
-  var pendek_m = parseInt($('#pendek_m').val());
-  var pendek_l = parseInt($('#pendek_l').val());
-  var pendek_xl = parseInt($('#pendek_xl').val());
-  var pendek_xxl = parseInt($('#pendek_xxl').val());
-  var pendek_xxxl = parseInt($('#pendek_xxxl').val());
-  //
-  var jumlah_pesanan = $('#jumlah_pesanan');
-  //
-  panjang = panjang_s+panjang_m+panjang_l+panjang_xl+panjang_xxl+panjang_xxxl; 
-  pendek = pendek_s+pendek_m+pendek_l+pendek_xl+pendek_xxl+pendek_xxxl;
-  var total_pesanan = panjang+pendek;
-  jumlah_pesanan.val(total_pesanan);
-}
-//
-function add_cart(jumlah){
-  $.ajax({
-    type : 'POST',
-    url : 'application/event.php',
-    data : jumlah,
+/*
+Post an files
+*/
+$('#form_pemesanan').submit(function(e){
+  e.preventDefault();
+ 
+  var formData = new FormData(this);
 
+  $.ajax({
+    url: 'application/event.php',
+    type: 'POST',
+    data: formData,
+    dataType : 'json',
+    success: function (data) {
+      if (data.transaksi.success) {
+         step1.hide();
+         step2.show();
+        if (data.upload_depan.success) {
+            toastr['success'](data.upload_depan.message);
+        }else{
+            toastr['error'](data.upload_depan.message);
+        }
+        if (data.upload_belakang.success) {
+            toastr['success'](data.upload_depan.message);
+        }else{
+            toastr['error'](data.upload_depan.message);
+        }
+            toastr['success'](data.transaksi.message);
+      }else{
+            toastr['error'](data.transaksi.message);
+       }
+    },
+    cache: false,
+    contentType: false,
+    processData: false
   });
-}
+})
+
+var trx_code = '<?php echo $system->generate_trx_code(); ?>';
+$('#trx_code').val(trx_code);
 
 </script>

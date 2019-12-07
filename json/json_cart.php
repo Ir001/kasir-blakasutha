@@ -207,8 +207,11 @@ require '../application/system.php';
         if (data.success) {
           toastr['success'](data.message);
           setTimeout(function(){
+            window.location.href="index.php";
+          }, 1000);
+          setTimeout(function(){
             window.open('print.php?trx_code='+data.trx_code, '_blank');
-          }, 1200);
+          }, 800);
         }
       }
     })

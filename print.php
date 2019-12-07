@@ -1,10 +1,9 @@
 <?php 	
 	require 'application/system.php';
 	$trx_code = trim($_GET['trx_code']);
-	$data = $system->view_trx($trx_code);
-	$kembalian = $data['jumlah_bayar']-$data['total_harga']; 
-	$jumlah_bayar = $data['jumlah_bayar'];
-
+	$detail_trx = $system->detail_trx($trx_code);
+	$cust_id = $detail_trx['id_customer'];
+	$cust = $system->detail_customer($cust_id);
  ?>
  <!DOCTYPE html>
  <html lang="en">
@@ -19,9 +18,9 @@
   	<div class="info">
         <h2>Bukti Pembayaran</h2>
         <p style="font-size: 8px"> 
-            Nama : <?=$data['nama_lengkap'];?></br>
-            Kode Transaksi : <?=$data['trx_code'];?></br>
-            Tgl Transaksi : <?=$data['tgl_transaksi'];?></br>
+            Nama : <?=$cust[0]['nama_lengkap'];?></br>
+            Kode Transaksi : <?=$detail_trx['trx_code'];?></br>
+            Tgl Transaksi : <?=$detail_trx['tgl_transaksi'];?></br>
         </p>
       </div>
     
@@ -39,43 +38,35 @@
 							</tr>
 
 							<?php 
-	                            $cart = @$_SESSION['cart'];
-	                            if(!empty($_SESSION['cart'])){
-	                            foreach ($cart as $id => $jumlah) {
-	                              $data = $system->get_info_barang($id);
-	                              if($jumlah > 12){
-	                                 $harga = $data['harga_2'];
-	                                 $total = $harga*$jumlah;
-	                              }elseif ($jumlah > 24) {
-	                                 $harga = $data['harga_3'];
-	                                 $total = $harga*$jumlah;
-	                              }else{
-	                                 $harga = $data['harga_1'];
-	                                 $total = $harga*$jumlah;
-	                              }
+	                            $data = $system->view_trx($trx_code);
+	                            foreach ($data as $data) {
+	                            	$id_barang = $data['id_barang'];
+	                            	$id_customer = $data['id_customer'];
+	                            	$barang = $system->get_detail_barang($id_barang);
+	                            	$customer = $system->detail_customer($id_customer);
+	                            	$total = $data['jumlah']*$data['subharga'];
 	                           ?>
 	                        <tr class="service">
-	                          <td class="tableitem"><p class="itemtext"><?=$data['kode_barang'];?></p></td>
-	                          <td class="tableitem"><p class="itemtext"><?=$data['nama_barang'];?></p></td>
-	                          <td class="tableitem"><p class="itemtext"><?=$jumlah;?></p></td>
-	                          <td class="tableitem"><p class="itemtext"><?=number_format($harga,0,',','.');?></p></td>
+	                          <td class="tableitem"><p class="itemtext"><?=$barang['kode_barang'];?></p></td>
+	                          <td class="tableitem"><p class="itemtext"><?=$barang['nama_barang'];?></p></td>
+	                          <td class="tableitem"><p class="itemtext"><?=$data['jumlah'];?></p></td>
+	                          <td class="tableitem"><p class="itemtext"><?=number_format($data['subharga'],0,',','.');?></p></td>
 	                          <td class="tableitem"><p class="itemtext"><?=number_format($total,0,',','.');?></p></td>
 	                        </tr> 
-	                        <?php @$total_semua+=$total; ?>
-	                        <?php }} ?>  
+	                        <?php } ?>  
 							<tr class="tabletitle">
 								<td></td>
 								<td></td>
 								<td></td>
 								<td class="Rate"><h2>Total</h2></td>
-								<td class="payment"><h2>Rp.<?=number_format(@$total_semua,0,',','.');?></h2></td>
+								<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['total_harga'],0,',','.');?></h2></td>
 							</tr>
 							<tr class="tabletitle">
 								<td></td>
 								<td></td>
 								<td></td>
 								<td class="Rate"><h2>Jumlah Bayar</h2></td>
-								<td class="payment"><h2>Rp.<?=number_format(@$jumlah_bayar,0,',','.');?></h2></td>
+								<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['jumlah_bayar'],0,',','.');?></h2></td>
 							</tr>
 
 							<tr class="tabletitle">

@@ -9,7 +9,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?=$setting['nama_bisnis'];?> | Penjualan</title>
+  <title><?=$setting['nama_bisnis'];?> | Manage Barang</title>
 
   <?php include 'theme/src_head.php'; ?>
 </head>
@@ -29,12 +29,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Penjualan</h1>
+            <h1 class="m-0 text-dark">Manage Barang Pesanan</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-              <li class="breadcrumb-item active">Penjualan</li>
+              <li class="breadcrumb-item active">Manage Barang Pesanan</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -46,34 +46,18 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-12">
             <div class="card" id="hide-customer">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daftar Pelanggan</h3>
-                  <button id="btn_user_plus" class="btn btn-sm btn-success">Tambah</button>
-                </div>
-              </div>
-              <div class="card-body">
-                <div id="load-customer"></div>
-              </div>
-            </div>
-            <div class="card" id="hide-barang">
-              <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
                   <h3 class="card-title">Daftar Barang</h3>
-                  <!-- <button id="btn_user_plus" class="btn btn-sm btn-success">Tambah</button> -->
+                  <button id="btn_barang_plus" class="btn btn-sm btn-success">Tambah</button>
                 </div>
               </div>
-              <div class="card-body">
-               <div id="load-barang"></div>
+              <div class="card-body" id="show-barang">
+                
               </div>
             </div>
-            <!-- /.card-body -->
-          </div>
-          <!-- /.col-md-6 -->
-          <div class="col-md-6">
-            <div id="load-cart"></div>
           </div>
           <!-- /.col-md-6 -->
         </div>
@@ -96,45 +80,46 @@
 </div>
 
       <!-- /.modal -->
-      <div class="modal fade" id="addUser">
+      <div class="modal fade" id="modalBarang">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Tambah Customer</h4>
+              <h4 class="modal-title">Tambah Barang</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-                <form id="form_user_add">
-                  <input type="hidden" name="customer_add" value="1">
+                <form id="form_barang_add">
+                  <input type="hidden" name="add_data_barang" value="1">
                   <div class="form-group">
-                    <label>Nama:</label>
-                    <input type="text" class="form-control" name="fullname" placeholder="Nama Lengkap" required>
+                    <label>Kode Barang:</label>
+                    <input type="text" class="form-control" name="kode_barang" placeholder="Kode">
                   </div>
                   <div class="form-group">
-                    <label>Phone:</label>
-                    <input type="text" class="form-control" name="phone" placeholder="Nomor HP Aktif">
+                    <label>Nama Pesnana:</label>
+                    <input type="text" class="form-control" name="nama_barang" placeholder="Nama Barang" required>
                   </div>
                   <div class="form-group">
-                    <label>Instagram:</label>
-                    <input type="text" class="form-control" name="ig" placeholder="Username IG (tanpa @)">
+                    <label>Stok:</label>
+                    <input type="number" class="form-control" name="stok" placeholder="Stok" required>
                   </div>
-                  <label>Status:</label>
                   <div class="form-group">
-                        <div class="custom-control custom-radio">
-                          <input class="custom-control-input" type="radio" id="customer" value="customer" name="role" checked>
-                          <label for="customer" class="custom-control-label">Customer</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                          <input class="custom-control-input" type="radio" id="reseller" value="reseller" name="role">
-                          <label for="reseller" class="custom-control-label">Reseller</label>
-                        </div>
+                    <label>Harga Satuan:</label>
+                    <input type="number" class="form-control" name="harga_1" placeholder="Harga 1 lusin" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Harga 1 lusin:</label>
+                    <input type="number" class="form-control" name="harga_2" placeholder="Harga 1 lusin" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Harga 2 lusin:</label>
+                    <input type="number" class="form-control" name="harga_3" placeholder="Harga 2 lusin" required>
                   </div>
                   <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
                     <button type="reset" class="btn btn-danger">Reset</button>
-                    <button type="submit" class="btn btn-primary">Simpan <i class="fa fa-user-plus"></i></button>
+                    <button type="submit" class="btn btn-primary">Simpan </button>
                   </div>
                 </form>
 
@@ -143,54 +128,35 @@
         </div>
         <!-- /.modal-dialog -->
       </div>
+      <div id="modal-edit"></div>
 
 <?php include 'theme/src_foot.php'; ?>
 <script>
   $(function(){
-    <?php if (isset($_SESSION['id_customer'])) { ?>
-      $('#hide-barang').show();
-      $('#hide-customer').hide();
-    <?php }else{ ?>
-      $('#hide-barang').hide();
-      $('#hide-customer').show();
-    <?php } ?>
     //Setup
     $.ajaxSetup({
       cache:false
     });
-    var loadUrl = "json/json_customer.php";
-    var loadUrl1 = "json/json_cart.php";
-    var load_barang = "json/json_barang.php";
-    //
-    $('#load-customer').load(loadUrl);
-    $('#load-barang').load(load_barang);
-    $('#load-cart').load(loadUrl1);
-
     //Data Table
-    $("#data_pelanggan").DataTable();
-    //Event
-    
-    //Add User for show modal
-    $('#btn_user_plus').click(function(){
-      $('#addUser').modal('show');
+    $('#show-barang').load("json/show_barang_pesanan.php");
+    $('#btn_barang_plus').click(function(){
+      $('#modalBarang').modal('show');
     });
-    //End of add user
-    //Submit Add customer    
-    $('#form_user_add').submit(function(e){
+    //
+    $('#form_barang_add').submit(function(e){
       e.preventDefault();
       $.ajax({
         type : 'POST',
         url :'application/event.php',
-        data: $('#form_user_add').serialize(),
+        data: $('#form_barang_add').serialize(),
         dataType : 'json',
         success : function(data){
           if (data.success) {
-            $('#load-customer').load(loadUrl);
             toastr['success'](data.message);
-            $('#addUser').modal('hide');
+            $('#show-barang').load("json/show_barang_pesanan.php");
+            $('#modalBarang').modal('hide');
           }else{
-            toastr['error'](data.message)
-
+            toastr['error'](data.message);
           }
         }
       })
