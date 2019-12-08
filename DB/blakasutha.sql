@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 07, 2019 at 07:58 AM
--- Server version: 10.2.3-MariaDB-log
--- PHP Version: 7.1.1
+-- Waktu pembuatan: 08 Des 2019 pada 03.18
+-- Versi server: 5.7.24
+-- Versi PHP: 7.2.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Struktur dari tabel `admin`
 --
 
 CREATE TABLE `admin` (
@@ -37,7 +37,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `admin`
+-- Dumping data untuk tabel `admin`
 --
 
 INSERT INTO `admin` (`id_admin`, `username`, `fullname`, `password`, `role`) VALUES
@@ -47,7 +47,7 @@ INSERT INTO `admin` (`id_admin`, `username`, `fullname`, `password`, `role`) VAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `barang`
+-- Struktur dari tabel `barang`
 --
 
 CREATE TABLE `barang` (
@@ -62,25 +62,28 @@ CREATE TABLE `barang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `barang`
+-- Dumping data untuk tabel `barang`
 --
 
 INSERT INTO `barang` (`id_barang`, `kode_barang`, `nama_barang`, `stok`, `harga_1`, `harga_2`, `harga_3`, `updated_at`) VALUES
-(11, 'PLSPTH1', 'Kaos Polos Putih (XL)', 64, 75000, 70000, 68000, '2019-11-30'),
+(11, 'PLSPTH1', 'Kaos Polos Putih (XL)', 9, 75000, 70000, 68000, '2019-11-30'),
 (12, 'YP', 'Topi', 73, 30000, 26000, 25000, '2019-12-06'),
 (13, 'asd', '1212', 12, 1213, 12123, 1231, '2019-12-07'),
 (14, 'asdaf', '1134adxfa', 12313, 21313, 12313, 1231310, '2019-12-07'),
-(15, 'asdafasda', '1134adxfa', 12313, 21313, 12313, 1231310, '2019-12-07');
+(15, 'asdafasda', '1134adxfa', 12313, 21313, 12313, 1231310, '2019-12-07'),
+(16, 'BLG', 'Ngapak Balung Tok PENDEK L', 21, 85000, 85000, 85000, '2019-12-07'),
+(17, 'BLGPANJANG', 'Ngapak Balung Tok PANJANG L', 24, 90000, 90000, 90000, '2019-12-07');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `barang_pesanan`
+-- Struktur dari tabel `barang_pesanan`
 --
 
 CREATE TABLE `barang_pesanan` (
   `id_barang` int(11) NOT NULL,
   `nama_pesanan` varchar(255) DEFAULT NULL,
+  `ukuran` varchar(255) NOT NULL,
   `harga_1` float DEFAULT NULL,
   `harga_2` float DEFAULT NULL,
   `harga_3` float DEFAULT NULL,
@@ -88,27 +91,27 @@ CREATE TABLE `barang_pesanan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
 --
--- Dumping data for table `barang_pesanan`
+-- Dumping data untuk tabel `barang_pesanan`
 --
 
-INSERT INTO `barang_pesanan` (`id_barang`, `nama_pesanan`, `harga_1`, `harga_2`, `harga_3`, `updated_at`) VALUES
-(1, 'Panjang S', 75000, 70000, 68000, '2019-11-30'),
-(2, 'Panjang M', 75000, 70000, 68000, '2019-11-30'),
-(3, 'Panjang L', 75000, 70000, 68000, '2019-11-30'),
-(4, 'Panjang XL', 75000, 70000, 68000, '2019-11-30'),
-(5, 'Panjang XXL', 75000, 70000, 68000, '2019-11-30'),
-(6, 'Panjang XXXL', 75000, 70000, 68000, '2019-11-30'),
-(7, 'Pendek S', 75000, 70000, 68000, '2019-11-30'),
-(8, 'Pendek M', 75000, 70000, 68000, '2019-11-30'),
-(9, 'Pendek L', 75000, 70000, 68000, '2019-11-30'),
-(10, 'Pendek XL', 75000, 70000, 68000, '2019-11-30'),
-(11, 'Pendek XXL', 75000, 70000, 68000, '2019-11-30'),
-(12, 'Pendek XXXL', 75000, 70000, 68000, '2019-11-30');
+INSERT INTO `barang_pesanan` (`id_barang`, `nama_pesanan`, `ukuran`, `harga_1`, `harga_2`, `harga_3`, `updated_at`) VALUES
+(1, 'Panjang S', 'S', 75000, 70000, 68000, '2019-11-30'),
+(2, 'Panjang M', 'M', 75000, 70000, 68000, '2019-11-30'),
+(3, 'Panjang L', 'L', 75000, 70000, 68000, '2019-11-30'),
+(4, 'Panjang XL', 'XL', 75000, 70000, 68000, '2019-11-30'),
+(5, 'Panjang XXL', 'XXL', 75000, 70000, 68000, '2019-11-30'),
+(6, 'Panjang XXXL', 'XXXL', 75000, 70000, 68000, '2019-11-30'),
+(7, 'Pendek S', 'S', 75000, 70000, 68000, '2019-11-30'),
+(8, 'Pendek M', 'M', 75000, 70000, 68000, '2019-11-30'),
+(9, 'Pendek L', 'L', 75000, 70000, 68000, '2019-11-30'),
+(10, 'Pendek XL', 'XL', 75000, 70000, 68000, '2019-11-30'),
+(11, 'Pendek XXL', 'XXL', 75000, 70000, 68000, '2019-11-30'),
+(12, 'Pendek XXXL', 'XXXL', 75000, 70000, 68000, '2019-11-30');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer`
+-- Struktur dari tabel `customer`
 --
 
 CREATE TABLE `customer` (
@@ -121,7 +124,7 @@ CREATE TABLE `customer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `customer`
+-- Dumping data untuk tabel `customer`
 --
 
 INSERT INTO `customer` (`id_customer`, `nama_lengkap`, `phone`, `instagram`, `role`, `created_at`) VALUES
@@ -133,7 +136,7 @@ INSERT INTO `customer` (`id_customer`, `nama_lengkap`, `phone`, `instagram`, `ro
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pemesanan`
+-- Struktur dari tabel `pemesanan`
 --
 
 CREATE TABLE `pemesanan` (
@@ -149,7 +152,7 @@ CREATE TABLE `pemesanan` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `penjualan`
+-- Struktur dari tabel `penjualan`
 --
 
 CREATE TABLE `penjualan` (
@@ -162,10 +165,19 @@ CREATE TABLE `penjualan` (
   `tgl_penjualan` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `penjualan`
+--
+
+INSERT INTO `penjualan` (`id_penjualan`, `id_customer`, `id_barang`, `trx_code`, `subharga`, `jumlah`, `tgl_penjualan`) VALUES
+(1, 5, 11, 'Cnb0Dw0YVK', 70000, 50, '2019-12-07 15:35:22'),
+(2, 6, 16, 'qQqpmakZUr', 85000, 3, '2019-12-07 16:32:56'),
+(3, 6, 11, 'qQqpmakZUr', 75000, 5, '2019-12-07 16:32:56');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `setting`
+-- Struktur dari tabel `setting`
 --
 
 CREATE TABLE `setting` (
@@ -175,12 +187,12 @@ CREATE TABLE `setting` (
   `phone` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `instagram` varchar(255) DEFAULT NULL,
-  `ucapan` text DEFAULT NULL,
+  `ucapan` text,
   `update_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `setting`
+-- Dumping data untuk tabel `setting`
 --
 
 INSERT INTO `setting` (`id`, `nama_bisnis`, `alamat`, `phone`, `email`, `instagram`, `ucapan`, `update_at`) VALUES
@@ -189,7 +201,7 @@ INSERT INTO `setting` (`id`, `nama_bisnis`, `alamat`, `phone`, `email`, `instagr
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transaksi`
+-- Struktur dari tabel `transaksi`
 --
 
 CREATE TABLE `transaksi` (
@@ -200,10 +212,18 @@ CREATE TABLE `transaksi` (
   `tgl_transaksi` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `transaksi`
+--
+
+INSERT INTO `transaksi` (`id_trx`, `trx_code`, `total_harga`, `jumlah_bayar`, `tgl_transaksi`) VALUES
+(1, 'Cnb0Dw0YVK', 3500000, 5000000, '2019-12-07 15:35:22'),
+(2, 'qQqpmakZUr', 567000, 600000, '2019-12-07 16:32:56');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `transaksi_pemesanan`
+-- Struktur dari tabel `transaksi_pemesanan`
 --
 
 CREATE TABLE `transaksi_pemesanan` (
@@ -226,31 +246,31 @@ CREATE TABLE `transaksi_pemesanan` (
 --
 
 --
--- Indexes for table `admin`
+-- Indeks untuk tabel `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`);
 
 --
--- Indexes for table `barang`
+-- Indeks untuk tabel `barang`
 --
 ALTER TABLE `barang`
   ADD PRIMARY KEY (`id_barang`);
 
 --
--- Indexes for table `barang_pesanan`
+-- Indeks untuk tabel `barang_pesanan`
 --
 ALTER TABLE `barang_pesanan`
   ADD PRIMARY KEY (`id_barang`);
 
 --
--- Indexes for table `customer`
+-- Indeks untuk tabel `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id_customer`);
 
 --
--- Indexes for table `pemesanan`
+-- Indeks untuk tabel `pemesanan`
 --
 ALTER TABLE `pemesanan`
   ADD PRIMARY KEY (`id_pemesanan`),
@@ -258,7 +278,7 @@ ALTER TABLE `pemesanan`
   ADD KEY `Index 3` (`id_barang`);
 
 --
--- Indexes for table `penjualan`
+-- Indeks untuk tabel `penjualan`
 --
 ALTER TABLE `penjualan`
   ADD PRIMARY KEY (`id_penjualan`),
@@ -266,94 +286,94 @@ ALTER TABLE `penjualan`
   ADD KEY `FK_penjualan_barang` (`id_barang`);
 
 --
--- Indexes for table `setting`
+-- Indeks untuk tabel `setting`
 --
 ALTER TABLE `setting`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `transaksi`
+-- Indeks untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
   ADD PRIMARY KEY (`id_trx`);
 
 --
--- Indexes for table `transaksi_pemesanan`
+-- Indeks untuk tabel `transaksi_pemesanan`
 --
 ALTER TABLE `transaksi_pemesanan`
   ADD PRIMARY KEY (`id_tp`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `barang`
+-- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `barang_pesanan`
+-- AUTO_INCREMENT untuk tabel `barang_pesanan`
 --
 ALTER TABLE `barang_pesanan`
   MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `customer`
+-- AUTO_INCREMENT untuk tabel `customer`
 --
 ALTER TABLE `customer`
   MODIFY `id_customer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `pemesanan`
+-- AUTO_INCREMENT untuk tabel `pemesanan`
 --
 ALTER TABLE `pemesanan`
   MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `penjualan`
+-- AUTO_INCREMENT untuk tabel `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `setting`
+-- AUTO_INCREMENT untuk tabel `setting`
 --
 ALTER TABLE `setting`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `transaksi`
+-- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_trx` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_trx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `transaksi_pemesanan`
+-- AUTO_INCREMENT untuk tabel `transaksi_pemesanan`
 --
 ALTER TABLE `transaksi_pemesanan`
   MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `pemesanan`
+-- Ketidakleluasaan untuk tabel `pemesanan`
 --
 ALTER TABLE `pemesanan`
   ADD CONSTRAINT `FK_pemesanan_barang_pesanan` FOREIGN KEY (`id_barang`) REFERENCES `barang_pesanan` (`id_barang`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `pemesanan_ibfk_1` FOREIGN KEY (`id_customer`) REFERENCES `customer` (`id_customer`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `penjualan`
+-- Ketidakleluasaan untuk tabel `penjualan`
 --
 ALTER TABLE `penjualan`
   ADD CONSTRAINT `FK_penjualan_barang` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE CASCADE ON UPDATE CASCADE,

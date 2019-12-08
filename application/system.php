@@ -365,7 +365,7 @@ class System extends mysqli{
 	}
 	function detail_trx($trx_code){
 		$trx_code = trim($this->real_escape_string($trx_code));
-		$sql = "SELECT transaksi.trx_code,total_harga, jumlah_bayar, tgl_transaksi,id_customer  FROM transaksi INNER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code WHERE transaksi.trx_code = '$trx_code' GROUP BY id_customer";
+		$sql = "SELECT transaksi.trx_code,total_harga, jumlah_bayar, tgl_transaksi,id_customer  FROM transaksi INNER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code WHERE transaksi.trx_code = '$trx_code'";
 		$query = $this->query($sql);
 		$res = $query->fetch_assoc();
 		return $res;
@@ -400,7 +400,7 @@ class System extends mysqli{
 	}
 	function list_trx_penjualan(){
 			// $sql = "SELECT * FROM transaksi LEFT OUTER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code";
-		$sql = "SELECT * FROM transaksi INNER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code GROUP BY transaksi.trx_code ORDER BY tgl_transaksi DESC";
+		$sql = "SELECT * FROM transaksi INNER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code ORDER BY tgl_transaksi DESC";
 		$query = $this->query($sql);
 		$i = 0;
 		while ($res = $query->fetch_assoc()) {
@@ -538,7 +538,8 @@ class System extends mysqli{
 			while ($res = $query->fetch_assoc()) {
 				$data[$i] = array(
 					'id_barang' => $res['id_barang'],
-					'nama_pesanan' => $res['nama_pesanan'],
+          'nama_pesanan' => $res['nama_pesanan'],
+          'ukuran' => $res['ukuran'],
 					'harga_1' => $res['harga_1'],
 					'harga_2' => $res['harga_2'],
 					'harga_3' => $res['harga_3'],

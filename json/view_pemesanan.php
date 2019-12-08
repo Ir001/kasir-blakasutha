@@ -1,8 +1,7 @@
 <?php 
 require '../application/system.php';
 ?>
-<div class="row">
-  <div class="col-md-6">
+<!-- <div class="row"> -->
     <div class="card">
       <div class="card-header border-0">
         <div class="d-flex justify-content-between">
@@ -48,6 +47,10 @@ require '../application/system.php';
               </select>
             </div>
             <div class="form-group">
+              <label for="">Perkiraan Selesai</label>
+              <input type="date" class="form-control">
+            </div>
+            <div class="form-group">
               <label>Jenis Sablon</label>
               <div class="row">
                 <div class="col-2">
@@ -88,12 +91,7 @@ require '../application/system.php';
       </div>
     </div>
     <!-- /.card-body -->
-  </div>
-  <div class="col-md-6">
-    <div id="load-cart"></div>
-  </div>
-
-</div>
+<!-- </div> -->
 <script type="text/javascript">
   var cart_page = "json/cart_pemesanan.php";
   var jenis_pemesanan = $('#jenis_pemesanan');

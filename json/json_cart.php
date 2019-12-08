@@ -6,7 +6,6 @@ require '../application/system.php';
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
                   <h3 class="card-title">Keranjang Belanja</h3>
-                  <?php echo time(); ?>
                   <!-- <a href="javascript:void(0);">Tambah</a> -->
                 </div>
                 <?php 
@@ -20,7 +19,7 @@ require '../application/system.php';
                   <h6>Detail Customer:</h6>
                   <hr>
                   <div style="line-height: 6px">
-                    <p>Nama: <?=$customer['nama_lengkap'];?> <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span></p>
+                    <p>Nama: <h2><?=$customer['nama_lengkap'];?><span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span></h2></p>
                     <p>Instagram: <?=$customer['instagram'];?></p>
                     <p>Nomor Telepon: <?=$customer['phone'];?></p>
                   </div>
@@ -48,18 +47,39 @@ require '../application/system.php';
                         <tbody>
                           <?php 
                             $cart = @$_SESSION['cart'];
+                            $id_customer = @$_SESSION['id_customer'];
+                            $customer = $system->get_info_customer($id_customer);
                             if(!empty($_SESSION['cart'])){
                             foreach ($cart as $id => $jumlah) {
                               $data = $system->get_info_barang($id);
                               if($jumlah > 12){
-                                 $harga = $data['harga_2'];
-                                 $total = $harga*$jumlah;
+                                if($customer['role'] == "reseller"){
+                                  $harga = $data['harga_2']-$data['harga_2']*10/100;
+                                  $total = $harga*$jumlah;
+
+                                }else{
+                                   $harga = $data['harga_2'];
+                                   $total = $harga*$jumlah;
+                                }
+
                               }elseif ($jumlah > 24) {
-                                 $harga = $data['harga_3'];
-                                 $total = $harga*$jumlah;
+                                if($customer['role'] == "reseller"){
+                                  $harga = $data['harga_3']-$data['harga_3']*10/100;
+                                  $total = $harga*$jumlah;
+
+                                }else{
+                                   $harga = $data['harga_3'];
+                                   $total = $harga*$jumlah;
+                                }
                               }else{
-                                 $harga = $data['harga_1'];
-                                 $total = $harga*$jumlah;
+                                if($customer['role'] == "reseller"){
+                                  $harga = $data['harga_1']-$data['harga_1']*10/100;
+                                  $total = $harga*$jumlah;
+
+                                }else{
+                                   $harga = $data['harga_1'];
+                                   $total = $harga*$jumlah;
+                                }
                               }
                            ?>
                         <tr>

@@ -7,6 +7,7 @@ require '../application/system.php';
     <thead>
       <tr>
         <th>Nama</th>
+        <th>Ukuran</th>
         <th>Harga Satuan</th>
         <th>Harga 1 Lusin</th>
         <th>Harga 2 Lusin</th>
@@ -22,6 +23,7 @@ require '../application/system.php';
       ?>
       <tr>
         <td><?=$list['nama_pesanan'];?></span></td>
+        <td><?=$list['ukuran'];?></span></td>
         <td><?=number_format($list['harga_1'],0,',','.');?></td>
         <td><?=number_format($list['harga_2'],0,',','.');?></td>
         <td><?=number_format($list['harga_3'],0,',','.');?></td>
@@ -41,7 +43,7 @@ require '../application/system.php';
   var loadUrl1 = "json/cart_pemesanan.php";
 
   $('#data_barang').DataTable({
-    "lengthMenu": [[3, 10, 50, -1], [3, 10, 50, "All"]],
+    "lengthMenu": [[16, 10, 50, -1], [16, 10, 50, "All"]],
     "fnDrawCallback": function( oSettings ) {
 
             // Write any code (also ajax code that you want to execute)

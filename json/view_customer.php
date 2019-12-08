@@ -24,7 +24,7 @@ require '../application/system.php';
 				<form class="set_user">
 					<input type="hidden" name="set_user" value="1"> 
 					<input type="hidden" name="id" value="<?=$list['id_customer'];?>"> 
-					<button type="submit" class="btn btn-sm btn-success"><i class="fa fa-user-plus"></i></button>
+					<button type="submit" class="btn btn-lg btn-success"><i class="fa fa-user-plus"></i></button>
 				</form>
 			</td>
 		</tr>

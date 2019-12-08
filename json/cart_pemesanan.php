@@ -14,7 +14,7 @@ require '../application/system.php';
     <h6>Detail Customer:</h6>
     <hr>
     <div style="line-height: 6px">
-      <p>Nama: <?=$customer['nama_lengkap'];?> <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span></p>
+      <p>Nama: <h2><?=$customer['nama_lengkap'];?> <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span></h2></p>
       <p>Nomor Telepon: <?=$customer['phone'];?></p>
     </div>
     <hr>
@@ -39,18 +39,35 @@ require '../application/system.php';
     <tbody>
      <?php 
      $cart = @$_SESSION['cart_pemesanan'];
+     $id_customer = @$_SESSION['id_customer'];
+     $customer = $system->get_info_customer($id_customer);
      if(!empty($_SESSION['cart_pemesanan'])){
       foreach ($cart as $id => $jumlah) {
         $data = $system->detail_barang_pesanan($id);
         if($jumlah > 12){
-         $harga = $data['harga_2'];
-         $total = $harga*$jumlah;
+          if($customer['role'] == "reseller"){
+            $harga = $data['harga_2']-10000;
+            $total = $harga*$jumlah;
+          }else{
+             $harga = $data['harga_2'];
+             $total = $harga*$jumlah;
+          }
        }elseif ($jumlah > 24) {
-         $harga = $data['harga_3'];
-         $total = $harga*$jumlah;
+        if($customer['role'] == "reseller"){
+          $harga = $data['harga_3']-10000;
+          $total = $harga*$jumlah;
+        }else{
+           $harga = $data['harga_3'];
+           $total = $harga*$jumlah;
+        }
        }else{
-         $harga = $data['harga_1'];
-         $total = $harga*$jumlah;
+        if($customer['role'] == "reseller"){
+            $harga = $data['harga_1']-10000;
+            $total = $harga*$jumlah;
+          }else{
+            $harga = $data['harga_1'];
+            $total = $harga*$jumlah;
+          }
        }
        ?>
        <tr>
@@ -131,6 +148,7 @@ require '../application/system.php';
         if (data.success) {
           window.$('#load-customer-div').show();
           window.$('#load-content').hide();
+          window.$('#load-cart').load("json/cart_pemesanan.php");
           toastr['success'](data.message);
         }else{
           toastr['error'](data.message);

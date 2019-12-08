@@ -46,9 +46,9 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-12" id="load-content">
+          <div class="col-lg-6" id="load-content">
           </div>
-          <div class="col-lg-12" id="load-customer-div">
+          <div class="col-lg-6" id="load-customer-div">
             <div class="card">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
@@ -63,6 +63,9 @@
             <!-- /.card-body -->
           </div>
           <!-- /.col-md-6 -->
+          <div class="col-lg-6">
+            <div id="load-cart"></div>
+          </div>
         </div>
         <!-- /.row -->
       </div>
@@ -141,6 +144,7 @@
     var loadUrl = "json/view_customer.php";
     //
     $('#load-customer').load(loadUrl);
+    $('#load-cart').load("json/cart_pemesanan.php");
 
     //Data Table
     $("#data_pelanggan").DataTable();
