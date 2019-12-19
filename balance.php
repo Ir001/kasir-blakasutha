@@ -3,15 +3,13 @@ require 'application/system.php';
 if (!$logged) {
   header("location:login.php");
 }
-if (isset($_GET['type'])) {
-  $type = trim($_GET['type']);
-   $pemasukan = $system->total_pemasukan($type);
-   $penjualan = $pemasukan['penjualan'];
-   $pemesanan = $pemasukan['pemesanan'];
-   $total = $pemasukan['total'];
-   //
-   $statistik_penjualan = $system->statistik_penjualan();
-}
+$type = @$_GET['type'] ? trim($_GET['type']) : 'all';
+$pemasukan = $system->total_pemasukan($type);
+$penjualan = $pemasukan['penjualan'];
+$pemesanan = $pemasukan['pemesanan'];
+$total = $pemasukan['total'];
+//
+$statistik_penjualan = $system->statistik_penjualan();
 
 ?>
 <!DOCTYPE html>
@@ -62,16 +60,16 @@ if (isset($_GET['type'])) {
                   <label>Periode</label>
                   <select class="form-control" name="type" id="type">
                     <option value="all" <?php if (isset($_GET['type']) && $_GET['type'] == "all"): ?>
-                      selected
+                    selected
                     <?php endif ?>>Semua</option>
                     <option value="week" <?php if (isset($_GET['type']) && $_GET['type'] == "week"): ?>
-                      selected
+                    selected
                     <?php endif ?>>1 Minggu Terakhir</option>
                     <option value="month" <?php if (isset($_GET['type']) && $_GET['type'] == "month"): ?>
-                      selected
+                    selected
                     <?php endif ?>>1 Bulan Terakhir</option>
                     <option value="year" <?php if (isset($_GET['type']) && $_GET['type'] == "year"): ?>
-                      selected
+                    selected
                     <?php endif ?>>1 Tahun Terakhir</option>
                   </select>
                 </div>
@@ -91,31 +89,31 @@ if (isset($_GET['type'])) {
                     <!-- /.info-box-content -->
                   </div>
                 </div>
-                <div class="col-md-4">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-money-bill-alt"></i></span>
-                    <div class="info-box-content">
-                      <div class="float-right"><a href="#"><small>Buat Pengeluaran</small></a></div>
-                      <span class="info-box-text">Total Pengeluaran</span>
-                      <span class="info-box-number">
-                        Rp. 2.800.290
-                      </span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="info-box">
-                    <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-balance-scale"></i></span>
-                    <div class="info-box-content">
-                      <span class="info-box-text">Balance</span>
-                      <span class="info-box-number">
-                        Rp. 2.800.290
-                      </span>
-                    </div>
-                    <!-- /.info-box-content -->
-                  </div>
-                </div>
+               <!--  <div class="col-md-4">
+                 <div class="info-box">
+                   <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-money-bill-alt"></i></span>
+                   <div class="info-box-content">
+                     <div class="float-right"><a href="#"><small>Buat Pengeluaran</small></a></div>
+                     <span class="info-box-text">Total Pengeluaran</span>
+                     <span class="info-box-number">
+                       Rp. 2.800.290
+                     </span>
+                   </div>
+                   /.info-box-content
+                 </div>
+               </div>
+               <div class="col-md-4">
+                 <div class="info-box">
+                   <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-balance-scale"></i></span>
+                   <div class="info-box-content">
+                     <span class="info-box-text">Balance</span>
+                     <span class="info-box-number">
+                       Rp. 2.800.290
+                     </span>
+                   </div>
+                   /.info-box-content
+                 </div>
+               </div> -->
               </div>
             </div>
             <!-- /.col-md-6 -->
@@ -130,30 +128,14 @@ if (isset($_GET['type'])) {
                 <div class="card-body">
                   <div class="d-flex">
                     <p class="d-flex flex-column">
-                      <span class="text-bold text-lg">2</span>
+                      <span class="text-bold text-lg" id="terjual">2</span>
                       <span>Produk Terjual</span>
-                    </p>
-                    <p class="ml-auto d-flex flex-column text-right">
-                      <span class="text-success">
-                        <i class="fas fa-arrow-up"></i> 12.5%
-                      </span>
-                      <span class="text-muted">Since last week</span>
                     </p>
                   </div>
                   <!-- /.d-flex -->
 
                   <div class="position-relative mb-4">
                     <canvas id="chart-penjualan" height="200"></canvas>
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-end">
-                    <span class="mr-2">
-                      <i class="fas fa-square text-primary"></i> This Week
-                    </span>
-
-                    <span>
-                      <i class="fas fa-square text-gray"></i> Last Week
-                    </span>
                   </div>
                 </div>
               </div>
@@ -164,39 +146,25 @@ if (isset($_GET['type'])) {
                 <div class="card-header border-0">
                   <div class="d-flex justify-content-between">
                     <h3 class="card-title">Laporan Pemesanan</h3>
-                    <a href="javascript:void(0);">View Report</a>
+                    <a href="javascript:void(0);">Lihat Laporan</a>
                   </div>
                 </div>
                 <div class="card-body">
                   <div class="d-flex">
                     <p class="d-flex flex-column">
-                      <span class="text-bold text-lg">820</span>
-                      <span>Visitors Over Time</span>
-                    </p>
-                    <p class="ml-auto d-flex flex-column text-right">
-                      <span class="text-success">
-                        <i class="fas fa-arrow-up"></i> 12.5%
-                      </span>
-                      <span class="text-muted">Since last week</span>
+                      <span class="text-bold text-lg">2</span>
+                      <span>Terpesan</span>
                     </p>
                   </div>
                   <!-- /.d-flex -->
 
                   <div class="position-relative mb-4">
-                    <canvas id="visitors-chart" height="200"></canvas>
-                  </div>
-
-                  <div class="d-flex flex-row justify-content-end">
-                    <span class="mr-2">
-                      <i class="fas fa-square text-primary"></i> This Week
-                    </span>
-
-                    <span>
-                      <i class="fas fa-square text-gray"></i> Last Week
-                    </span>
+                    <canvas id="chart-penjualan" height="200"></canvas>
                   </div>
                 </div>
               </div>
+              <!-- /.card -->
+            </div>
               <!-- /.card -->
             </div>
           </div>
@@ -229,10 +197,10 @@ if (isset($_GET['type'])) {
         data: [
         
         <?php 
-          for ($i=1; $i <= 12 ; $i++) { 
-            echo $statistik_penjualan[$i].",";
-          }
-         ?>
+        for ($i=1; $i <= 12 ; $i++) { 
+          echo $statistik_penjualan[$i].",";
+        }
+        ?>
 
         ],
         backgroundColor: [
