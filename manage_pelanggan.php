@@ -260,7 +260,7 @@
           $.ajax({
             type : 'POST',
             url : 'application/event.php',
-            data : $('.delete_customer').serialize(),
+            data : $(this).serialize(),
             dataType : 'json',
             success : function(data){
               if (data.success) {

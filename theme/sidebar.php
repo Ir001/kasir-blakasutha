@@ -1,6 +1,6 @@
  <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="index3.html" class="brand-link">
+  <a href="index.php" class="brand-link">
     <img src="dist/img/AdminLTELogo.png" alt="<?=$setting['nama_bisnis'];?>" class="brand-image img-circle elevation-3"
     style="opacity: .8">
     <span class="brand-text font-weight-light"><?=$setting['nama_bisnis'];?></span>
@@ -26,8 +26,8 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
-           <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
+           <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-shopping-cart"></i>
               <p>
                 Dashboard
@@ -47,6 +47,12 @@
                   <p>Pemesanan</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="pelunasan.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pelunasan</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item has-treeview">
@@ -59,7 +65,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="manage_pelanggan.php" class="nav-link">
+                <a href="manage_pemesanan.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Daftar Pemesanan</p>
                 </a>
@@ -84,13 +90,40 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item">
+           <li class="nav-item has-treeview">
             <a href="laporan.php" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Laporan
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="balance.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Balance</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="laporan_penjualan.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Penjualan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="laporan_pemesanan.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pemesanan</p>
+                </a>
+              </li>
+              <!-- <li class="nav-item">
+                <a href="manage_barang.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Buat Pengeluaran</p>
+                </a>
+              </li> -->
+            </ul>
           </li>
           <li class="nav-header">Konfigurasi</li>
           <li class="nav-item">

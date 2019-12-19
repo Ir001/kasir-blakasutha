@@ -75,9 +75,30 @@ if (isset($_POST['user_login'])) {
 	$total = $_POST['total'];
 	$trx_code = $_POST['trx_code'];
 	$transaksi = $system->trx($trx_code, $total, $jumlah_bayar);
-	if ($transaksi) {
+	$customer = $system->get_info_customer($id_customer);
+	if ($transaksi) {  
 		foreach ($_SESSION['cart'] as $id_barang => $jumlah) {
-			$penjualan = $system->penjualan($id_customer, $id_barang, $trx_code, $jumlah);
+			$data = $system->get_info_barang($id_barang);
+			if($jumlah > 12){
+				if($customer['role'] == "reseller"){
+					$harga = $data['harga_2']-$data['harga_2']*10/100;
+				}else{
+					$harga = $data['harga_2'];
+				}
+			}elseif ($jumlah > 24) {
+				if($customer['role'] == "reseller"){
+					$harga = $data['harga_3']-$data['harga_3']*10/100;
+				}else{
+					$harga = $data['harga_3'];
+				}
+			}else{
+				if($customer['role'] == "reseller"){
+					$harga = $data['harga_1']-$data['harga_3']*10/100;
+				}else{
+					$harga = $data['harga_1'];
+				}
+			}
+			$penjualan = $system->penjualan($id_customer, $id_barang, $trx_code, $harga, $jumlah);
 			if ($penjualan) {
 				$msg = array(
 					'success' => true,
@@ -111,11 +132,13 @@ if (isset($_POST['user_login'])) {
 	$total_harga = $_POST['total_harga'];
 	$jumlah_pesanan = $_POST['jumlah_pesanan'];
 	$trx_code = $_POST['trx_code'];
+	$kurang = $_POST['kekurangan'];
 	$data = array (
 		'trx_code' => $trx_code,
 		'total_harga' => $total_harga,
 		'jumlah_bayar' => $jumlah_bayar,
 		'jumlah_pesanan' => $jumlah_pesanan,
+		'kurang' => $kurang,
 	);
 	$transaksi = $system->update_buat_pesanan($data);
 	if ($transaksi) {
@@ -144,10 +167,13 @@ if (isset($_POST['user_login'])) {
 			'trx_code' => null,
 		);
 	}
-	unset($_SESSION['cart']);
-	unset($_SESSION['id_customer']);
 	echo $system->convert_to_json($msg);
-
+	if ($msg['success'] == true) {
+		unset($_SESSION['cart_pemesanan']);
+		unset($_SESSION['id_customer']);
+		unset($_SESSION['trx_code']);
+	}
+	
 }elseif(isset($_POST['add_data_barang'])){
 	$kode_barang = $_POST['kode_barang'];
 	$nama_barang = $_POST['nama_barang'];
@@ -156,6 +182,14 @@ if (isset($_POST['user_login'])) {
 	$harga_2 = $_POST['harga_2'];
 	$harga_3 = $_POST['harga_3'];
 	$add_data_barang = $system->add_data_barang($kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3);
+	echo $system->convert_to_json($add_data_barang);
+}elseif(isset($_POST['add_data_barang_pesanan'])){
+	$nama_pesanan = $_POST['nama_pesanan'];
+	$ukuran = $_POST['ukuran'];
+	$harga_1 = $_POST['harga_1'];
+	$harga_2 = $_POST['harga_2'];
+	$harga_3 = $_POST['harga_3'];
+	$add_data_barang = $system->add_data_barang_pesanan($nama_pesanan, $ukuran, $harga_1, $harga_2, $harga_3);
 	echo $system->convert_to_json($add_data_barang);
 }elseif(isset($_POST['edit_data_barang'])){
 	$id_barang = $_POST['id_barang'];
@@ -171,6 +205,10 @@ if (isset($_POST['user_login'])) {
 	$id_barang = $_POST['id'];
 	$delete_barang = $system->delete_data_barang($id_barang);
 	echo $system->convert_to_json($delete_barang);
+}elseif(isset($_POST['delete_barang_pesanan'])){
+	$id_barang = $_POST['id'];
+	$delete_barang = $system->delete_data_barang_pesanan($id_barang);
+	echo $system->convert_to_json($delete_barang);
 }elseif (isset($_POST['add_pesanan'])) {
 	$trx_code = $_POST['trx_code'];
 	$_SESSION['trx_code'] = $trx_code;
@@ -178,36 +216,23 @@ if (isset($_POST['user_login'])) {
 	$model_baju = @$_POST['model_baju'];
 	$jenis_sablon = implode(",", @$_POST['jenis_sablon']);
 	$keterangan = @$_POST['keterangan'];
+	$perkiraan_selesai = @$_POST['perkiraan_selesai'];
 		//Memanggil fungsi
 	include 'upload_files.php';
 		//Sablon Depan
-	$sablon_depan = @$_FILES['sablon_depan'];
-	$data_sablon_depan = array(
-		'nama_file' => $sablon_depan['name'], 
-		'ukuran_file' => $sablon_depan['size'], 
-		'tipe_file' => $sablon_depan['type'], 
-		'tmp_file' => $sablon_depan['tmp_name'], 
-		'lokasi' => "image/sablon_depan", 
+	$file_desain = @$_FILES['file_desain'];
+	$data_file_desain = array(
+		'nama_file' => $file_desain['name'], 
+		'ukuran_file' => $file_desain['size'], 
+		'tipe_file' => $file_desain['type'], 
+		'tmp_file' => $file_desain['tmp_name'], 
+		'lokasi' => "image", 
 		'trx_code' => $trx_code, 
-		'type' => "depan", 
-	);
-		//Sablon Belakang
-	$sablon_belakang = @$_FILES['sablon_belakang'];
-	$data_sablon_belakang = array(
-		'nama_file' => $sablon_belakang['name'], 
-		'ukuran_file' => $sablon_belakang['size'], 
-		'tipe_file' => $sablon_belakang['type'], 
-		'tmp_file' => $sablon_belakang['tmp_name'], 
-		'lokasi' => "image/sablon_belakang", 
-		'trx_code' => $trx_code, 
-		'type' => "belakang", 
 	);
 		//Proses Upload
-	$upload_depan = upload_image($data_sablon_depan);		
-	$upload_belakang = upload_image($data_sablon_belakang);
+	$upload_file_desain = upload_image($data_file_desain);		
 		//Selesai upload
-	$image_depan = @$upload_depan['image'];
-	$image_belakang = @$upload_belakang['image'];
+	$image_file_desain = @$upload_file_desain['image'];
 		//
 	$data = array(
 		'trx_code' => $trx_code,
@@ -215,14 +240,13 @@ if (isset($_POST['user_login'])) {
 		'jenis_pemesanan' => $jenis_pemesanan,
 		'jenis_sablon' => $jenis_sablon,
 		'keterangan' => $keterangan,
-		'sablon_depan' => $image_depan,
-		'sablon_belakang' => $image_belakang,
+		'file_desain' => $image_file_desain,
+		'perkiraan_selesai' => $perkiraan_selesai,
 		'status' => 'diproses',
 	);
 	$transaksi = $system->add_transaksi_pemesanan($data);
 	$msg = array(
-		'upload_depan' => $upload_depan,
-		'upload_belakang' => $upload_belakang,
+		'upload' => $upload_file_desain,
 		'transaksi' => $transaksi,
 	); 
 	echo $system->convert_to_json($msg);

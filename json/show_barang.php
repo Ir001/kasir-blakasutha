@@ -95,7 +95,7 @@ require '../application/system.php';
           $.ajax({
             type : 'POST',
             url : 'application/event.php',
-            data : $('.form-delete').serialize(),
+            data : $(this).serialize(),
             dataType : 'json',
             success : function(data){
               if (data.success) {

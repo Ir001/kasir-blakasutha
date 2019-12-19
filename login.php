@@ -15,7 +15,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b><?=$setting['nama_bisnis'];?></b></a>
+    <a href="index.php"><b><?=$setting['nama_bisnis'];?></b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">

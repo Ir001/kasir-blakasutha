@@ -5,12 +5,11 @@ function upload_image($data = array()){
   $tipe_file = $data['tipe_file'];
   $tmp_file = $data['tmp_file'];
   $trx_code = $data['trx_code'];
-  $type = $data['type'];
 
-  $path = "../".$data['lokasi']."/".$trx_code."_".$type.".jpg";
+  $path = "../".$data['lokasi']."/".$trx_code.".jpg";
 
   if($tipe_file == "image/jpeg" || $tipe_file == "image/png"){ 
-    if($ukuran_file <= 2500000){ 
+    if($ukuran_file <= 1000000){ 
       if(move_uploaded_file($tmp_file, $path)){ 
         $msg = array(
           'success' => true,
@@ -29,14 +28,14 @@ function upload_image($data = array()){
     }else{
       $msg = array(
         'success' => false,
-        'message' => 'Ukuran file harus kurang dari 2MB!',
+        'message' => 'Ukuran file terlalu besar!',
         'image' => $path,
       ); 
     }
   }else{
     $msg = array(
       'success' => false,
-      'message' => 'Tipe file tidak diijinkan!',
+      'message' => 'File upload tidak berfungsi!',
       'image' => $path,
 
     ); 

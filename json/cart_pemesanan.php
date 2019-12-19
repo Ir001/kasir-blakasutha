@@ -5,7 +5,8 @@ require '../application/system.php';
   <div class="card-body">
     <?php 
     $customer = $system->get_info_customer();
-    ?><div class="float-right">
+    ?>
+    <div class="float-right">
       <form id="reset_user">
         <input type="hidden" name="reset_user" value="1">
         <button type="submit" class="btn btn-sm btn-danger">Reset User</button>
@@ -49,45 +50,45 @@ require '../application/system.php';
             $harga = $data['harga_2']-10000;
             $total = $harga*$jumlah;
           }else{
-             $harga = $data['harga_2'];
-             $total = $harga*$jumlah;
-          }
+           $harga = $data['harga_2'];
+           $total = $harga*$jumlah;
+         }
        }elseif ($jumlah > 24) {
         if($customer['role'] == "reseller"){
           $harga = $data['harga_3']-10000;
           $total = $harga*$jumlah;
         }else{
-           $harga = $data['harga_3'];
-           $total = $harga*$jumlah;
-        }
-       }else{
-        if($customer['role'] == "reseller"){
-            $harga = $data['harga_1']-10000;
-            $total = $harga*$jumlah;
-          }else{
-            $harga = $data['harga_1'];
-            $total = $harga*$jumlah;
-          }
+         $harga = $data['harga_3'];
+         $total = $harga*$jumlah;
        }
-       ?>
-       <tr>
-        <td><?=$data['nama_pesanan'];?></td>
-        <td><?=number_format($jumlah,0,',','.');?></td>
-        <td><?=$harga;?></td>
-        <td><?=$total;?></td>
-        <td>
-          <button class="btn btn-sm btn-success" title="Edit"><i class="fa fa-pen"></i></button>
-          <form class="delete_cart">
-            <input type="hidden" name="delete_cart" value="1">
-            <input type="hidden" name="id" value="<?=$id;?>">
-            <button type="submit" class="delete_btn btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
-          </form>
-        </td>
-      </tr> 
-      <?php @$total_semua+=$total; ?>
-      <?php @$jumlah_semua+=$jumlah; ?>
-    <?php }} ?>              
-  </tbody>
+     }else{
+      if($customer['role'] == "reseller"){
+        $harga = $data['harga_1']-10000;
+        $total = $harga*$jumlah;
+      }else{
+        $harga = $data['harga_1'];
+        $total = $harga*$jumlah;
+      }
+    }
+    ?>
+    <tr>
+      <td><?=$data['nama_pesanan'];?></td>
+      <td><?=number_format($jumlah,0,',','.');?></td>
+      <td><?=$harga;?></td>
+      <td><?=$total;?></td>
+      <td>
+        <button class="btn btn-sm btn-success" title="Edit"><i class="fa fa-pen"></i></button>
+        <form class="delete_cart">
+          <input type="hidden" name="delete_cart" value="1">
+          <input type="hidden" name="id" value="<?=$id;?>">
+          <button type="submit" class="delete_btn btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
+        </form>
+      </td>
+    </tr> 
+    <?php @$total_semua+=$total; ?>
+    <?php @$jumlah_semua+=$jumlah; ?>
+  <?php }} ?>              
+</tbody>
 </table>
 <form id="form_bayar">
   <input type="hidden" name="form_bayar_pesanan" value="1">
@@ -107,6 +108,7 @@ require '../application/system.php';
   </div>
   <div class="form-group">
     <label>Jumlah Bayar</label>
+    <input type="hidden" name="kekurangan" id="kekuranan_check"></input>
     <input type="number" class="form-control" name="total_bayar" id="total_bayar" min="0"></input>
     <label id="check_cash"></label>
     <input type="number" class="form-control" name="kembalian" id="kembalian" min="0" style="pointer-events:none" readonly></input>
@@ -119,7 +121,6 @@ require '../application/system.php';
 </form>
 
 </div>
-<!-- /.card-body -->
 </div>
 <script type="text/javascript">
   var total_harga = parseInt($('#total_harga').val());
@@ -132,11 +133,15 @@ require '../application/system.php';
     var kembalian = jumlah_bayar-total;
     if (kembalian < 0) {
       $('#check_cash').html('Kekurangan');
+      $('#kekuranan_check').val(true);
     }else{
       $('#check_cash').html('Kembalian');
+      $('#kekuranan_check').val(false);
     }
     $('#kembalian').val(kembalian);
   });
+  //Kekurangan Check
+
   $('#reset_user').submit(function(e){
     e.preventDefault();
     $.ajax({
@@ -145,9 +150,10 @@ require '../application/system.php';
       data : $('#reset_user').serialize(),
       dataType : 'json',
       success : function(data){
+        alert(data.message);
         if (data.success) {
-          window.$('#load-customer-div').show();
-          window.$('#load-content').hide();
+          window.$('#show-customer').show();
+          window.$('#show-content').hide();
           window.$('#load-cart').load("json/cart_pemesanan.php");
           toastr['success'](data.message);
         }else{

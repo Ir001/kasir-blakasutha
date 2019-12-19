@@ -43,36 +43,37 @@ require '../application/system.php';
   var loadUrl1 = "json/cart_pemesanan.php";
 
   $('#data_barang').DataTable({
+    "pagination" : false,
     "lengthMenu": [[16, 10, 50, -1], [16, 10, 50, "All"]],
     "fnDrawCallback": function( oSettings ) {
-
             // Write any code (also ajax code that you want to execute)
             // that you want to be executed after 
             // the table has been redrawn
-            $('.add_to_cart').submit(function(e){
-              e.preventDefault();
-              $.ajax({
-                type : 'POST',
-                url : 'application/event.php',
-                data : $(this).serialize(),
-                dataType : 'json',
-                success : function (data){
-                  if (data.success) {
-                    toastr['success'](data.message);
-                    window.$('#load-cart').load(loadUrl1);
-                  }else{
-                    toastr['error'](data.message);
-
-                  }
-                }
-              })
-            })             
+            
 
           }
         });
- 
+  
   $('.jmlh').click(function(){
     $(this).select();
   });
+  $('.add_to_cart').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+      type : 'POST',
+      url : 'application/event.php',
+      data : $(this).serialize(),
+      dataType : 'json',
+      success : function (data){
+        if (data.success) {
+          toastr['success'](data.message);
+          window.$('#load-cart').load(loadUrl1);
+        }else{
+          toastr['error'](data.message);
+
+        }
+      }
+    })
+  }) 
 </script>
 <?php endif ?>

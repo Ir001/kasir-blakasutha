@@ -31,7 +31,7 @@ $data = $system->list_trx_penjualan();
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">Laporan Transaksi</h1>
+              <h1 class="m-0 text-dark">Laporan Pemesanan</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
@@ -68,7 +68,6 @@ $data = $system->list_trx_penjualan();
                       </tr>
                     </thead>
                     <tbody>
-                      <?php if (!$data['row'] == 0): ?>
                        <?php
                        $no = 1; 
                        foreach ($data as $data):
@@ -86,15 +85,6 @@ $data = $system->list_trx_penjualan();
                         </tr>
                         <?php $no++; ?>
                       <?php endforeach; ?> 
-                      <?php else: ?>
-                        <tr>
-                          <td>Tidak ada data</td>
-                          <td>Tidak ada data</td>
-                          <td>Tidak ada data</td>
-                          <td>Tidak ada data</td>
-                          <td>Tidak ada data</td>
-                        </tr>
-                      <?php endif ?>
 
                       
                     </tbody>

@@ -4,6 +4,8 @@
 	$detail_trx = $system->detail_trx($trx_code);
 	$cust_id = $detail_trx['id_customer'];
 	$cust = $system->detail_customer($cust_id);
+	$kembalian = $detail_trx['jumlah_bayar']-$detail_trx['total_harga'];
+
  ?>
  <!DOCTYPE html>
  <html lang="en">
@@ -45,6 +47,7 @@
 	                            	$barang = $system->get_detail_barang($id_barang);
 	                            	$customer = $system->detail_customer($id_customer);
 	                            	$total = $data['jumlah']*$data['subharga'];
+
 	                           ?>
 	                        <tr class="service">
 	                          <td class="tableitem"><p class="itemtext"><?=$barang['kode_barang'];?></p></td>

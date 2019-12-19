@@ -1,4 +1,5 @@
 <?php
+// error_reporting(0);
 date_default_timezone_set('Asia/Jakarta');
 date("Y-m-d H:i:s"); 
 ob_start();
@@ -13,12 +14,24 @@ class System extends mysqli{
 
 		parent::set_charset('utf-8');
 	}
+	// Funcion Tools
 	function convert_to_json($data = array()){
 		return json_encode($data);
 	}
+
 	function convert_to_object($data = array()){
 		return json_decode($data, true);
 	}
+	function get_setting(){
+		$sql = "SELECT * FROM setting WHERE 1=1";
+		$query = $this->query($sql);
+			//
+		$info_setting = $query->fetch_assoc();
+		return @$info_setting;
+	}
+
+	/*Form Login*/
+
 	function login_user($username, $password){
 		$msg = array();
 		$username = $this->real_escape_string($username);
@@ -66,13 +79,10 @@ class System extends mysqli{
 		session_destroy();
 		return 1;
 	}
-	function get_setting(){
-		$sql = "SELECT * FROM setting WHERE 1=1";
-		$query = $this->query($sql);
-			//
-		$info_setting = $query->fetch_assoc();
-		return @$info_setting;
-	}
+
+	/*Form Setting*/
+
+
 	function get_admin(){
 		$id = @$_SESSION['user']['id_admin'];
 		$sql = "SELECT * FROM admin WHERE id_admin = $id";
@@ -83,6 +93,19 @@ class System extends mysqli{
 		}
 		return @$res;
 	}
+	function generate_trx_code($length = 10) {
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$charactersLength = strlen($characters);
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, $charactersLength - 1)];
+		}
+		return $randomString;
+	}
+
+	/*Form Penjualan*/
+
+
 	function customer_add($fullname, $phone, $ig, $role){
 		$msg = null;
 		$fullname = $this->real_escape_string($fullname);
@@ -120,19 +143,21 @@ class System extends mysqli{
 		return @$msg;
 	}
 	function detail_customer($id){
-		$check_penjualan = "SELECT count(*) FROM penjualan WHERE id_customer = $id";
+		$check_penjualan = "SELECT count(*) FROM penjualan WHERE id_customer =  '$id'";
 		$query_penjualan = $this->query($check_penjualan);
+		$row_penjualan = $query_penjualan->num_rows;
 		$penjualan = $query_penjualan->fetch_assoc();
-		$check_pemesanan = "SELECT count(*) FROM pemesanan WHERE id_customer = $id";
+		$check_pemesanan = "SELECT count(*) FROM pemesanan WHERE id_customer = '$id'";
 		$query_pemesanan = $this->query($check_penjualan);
 		$pemesanan = $query_pemesanan->fetch_assoc();
+		$row_pemesanan = $query_pemesanan->num_rows;
 			//
-		$sql = "SELECT * FROM customer WHERE id_customer = $id";
+		$sql = "SELECT * FROM customer WHERE id_customer = '$id'";
 		$query = $this->query($sql);
 		$data_customer = $query->fetch_assoc();
 		$data = array(
-			'penjualan' => $penjualan['count(*)'],
-			'pemesanan' => $pemesanan['count(*)'],
+			'penjualan' => $row_pemesanan,
+			'pemesanan' => $row_pemesanan,
 			$data_customer,
 		);
 		return @$data;
@@ -154,6 +179,32 @@ class System extends mysqli{
 		return $msg;
 	}
 
+	/*Form Management Barang*/
+	function list_barang(){
+		$sql = "SELECT * FROM barang WHERE 1=1";
+		$query = $this->query($sql);
+		$i = 0;
+		while ($res = $query->fetch_assoc()) {
+			$data[$i] = array(
+				'id_barang' => $res['id_barang'],
+				'kode_barang' => $res['kode_barang'],
+				'nama_barang' => $res['nama_barang'],
+				'stok' => $res['stok'],
+				'harga_1' => $res['harga_1'],
+				'harga_2' => $res['harga_2'],
+				'harga_3' => $res['harga_3'],
+				'updated_at' => $res['updated_at'],
+			);
+			$i++;
+		}
+		return @$data;
+	}
+	function get_info_barang($id){
+		$sql = "SELECT * FROM barang WHERE id_barang = '$id'";
+		$query = $this->query($sql);
+		$res = $query->fetch_assoc();
+		return @$res;
+	}
 	function add_data_barang($kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3){
 		$kode_barang = $this->real_escape_string($kode_barang);
 		$nama_barang = $this->real_escape_string($nama_barang);
@@ -227,6 +278,8 @@ class System extends mysqli{
 		$res = $query->fetch_assoc();
 		return @$res;
 	}
+
+	/*From Management Pelanggan*/
 	function list_customer(){
 		$sql = "SELECT * FROM customer WHERE 1=1";
 		$query = $this->query($sql);
@@ -257,76 +310,10 @@ class System extends mysqli{
 
 
 	}
-	function list_barang(){
-		$sql = "SELECT * FROM barang WHERE 1=1";
-		$query = $this->query($sql);
-		$i = 0;
-		while ($res = $query->fetch_assoc()) {
-			$data[$i] = array(
-				'id_barang' => $res['id_barang'],
-				'kode_barang' => $res['kode_barang'],
-				'nama_barang' => $res['nama_barang'],
-				'stok' => $res['stok'],
-				'harga_1' => $res['harga_1'],
-				'harga_2' => $res['harga_2'],
-				'harga_3' => $res['harga_3'],
-				'updated_at' => $res['updated_at'],
-			);
-			$i++;
-		}
-		return @$data;
-	}
 	
-	function get_info_barang($id){
-		$sql = "SELECT * FROM barang WHERE id_barang = '$id'";
-		$query = $this->query($sql);
-		$res = $query->fetch_assoc();
-		return @$res;
-	}
-	function add_cart($id, $jumlah){
-		if (empty($_SESSION['cart'][$id])) {
-			$_SESSION['cart'][$id]=$jumlah;
-		}else{
-			$jumlah_aktif = $_SESSION['cart'][$id];
-			$_SESSION['cart'][$id]=$jumlah+$jumlah_aktif;
-		}
-		return 1;
-	}
-	function add_cart_pemesanan($id, $jumlah){
-		if (empty($_SESSION['cart_pemesanan'][$id])) {
-			$_SESSION['cart_pemesanan'][$id]=$jumlah;
-		}else{
-			$jumlah_aktif = $_SESSION['cart_pemesanan'][$id];
-			$_SESSION['cart_pemesanan'][$id]=$jumlah+$jumlah_aktif;
-		}
-		return 1;
-	}
-	function remove_cart($id){
-		unset($_SESSION['cart'][$id]);
-		return 1;
-	}
-	function generate_trx_code($length = 10) {
-		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$charactersLength = strlen($characters);
-		$randomString = '';
-		for ($i = 0; $i < $length; $i++) {
-			$randomString .= $characters[rand(0, $charactersLength - 1)];
-		}
-		return $randomString;
-	}
-	function penjualan($id_customer, $id_barang, $trx_code, $jumlah){
-		$barang = $this->get_info_barang($id_barang);
-		if($jumlah > 12){
-			$harga = $barang['harga_2'];
-			$total = $harga*$jumlah;
-		}elseif ($jumlah > 24) {
-			$harga = $barang['harga_3'];
-			$total = $harga*$jumlah;
-		}else{
-			$harga = $barang['harga_1'];
-			$total = $harga*$jumlah;
-		}
-		$sql = "INSERT INTO penjualan (id_customer, id_barang, trx_code, subharga , jumlah, tgl_penjualan) VALUES ($id_customer, $id_barang, '$trx_code', '$harga' , '$jumlah', NOW())";
+	/*Penjualan*/
+	function penjualan($id_customer, $id_barang,  $trx_code, $subharga , $jumlah){
+		$sql = "INSERT INTO penjualan (id_customer, id_barang, trx_code, subharga , jumlah, tgl_penjualan) VALUES ($id_customer, $id_barang, '$trx_code', '$subharga' , '$jumlah', NOW())";
 		$query = $this->query($sql);
 		if($query){
 			$sql_update = "UPDATE barang SET stok = stok-$jumlah WHERE id_barang = $id_barang";
@@ -390,6 +377,126 @@ class System extends mysqli{
 					'jumlah_bayar' => $res['jumlah_bayar'],
 				);
 				$i++;
+			}
+		}
+		return @$data;
+	}
+	function list_trx_penjualan(){
+			// $sql = "SELECT * FROM transaksi LEFT OUTER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code GROUP BY transaksi.trx_code";
+		$sql = "SELECT * FROM transaksi INNER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code GROUP BY transaksi.trx_code ORDER BY tgl_transaksi DESC";
+		$query = $this->query($sql);
+		$row = $query->num_rows;
+		$i = 0;
+		while ($res = $query->fetch_assoc()) {
+			$data[$i] = array(
+				'id_trx' => $res['id_trx'],
+				'id_customer' => $res['id_customer'],
+				'trx_code' => $res['trx_code'],
+				'total_harga' => $res['total_harga'],
+				'jumlah_bayar' => $res['jumlah_bayar'],
+				'tgl_transaksi' => $res['tgl_transaksi'],
+			);
+			$i++;
+		}
+		return @$data;
+	}
+	/* Keranjang Penjualan*/
+	function add_cart($id, $jumlah){
+		if (empty($_SESSION['cart'][$id])) {
+			$_SESSION['cart'][$id]=$jumlah;
+		}else{
+			$jumlah_aktif = $_SESSION['cart'][$id];
+			$_SESSION['cart'][$id]=$jumlah+$jumlah_aktif;
+		}
+		return 1;
+	}
+	function remove_cart($id){
+		unset($_SESSION['cart'][$id]);
+		return 1;
+	}
+
+	/*Pemesanan*/
+	function list_trx_pemesanan(){
+		$sql = "SELECT * FROM transaksi_pemesanan INNER JOIN pemesanan ON transaksi_pemesanan.trx_code = pemesanan.trx_code WHERE status != 'lunas' GROUP BY pemesanan.trx_code";
+		$query = $this->query($sql);
+		$row = $query->num_rows;
+		$i = 0;
+		while ($res = $query->fetch_assoc()) {
+			$data[$i] = array(
+				'id_tp' => $res['id_tp'],
+				'trx_code' => $res['trx_code'],
+				'id_customer' => $res['id_customer'],
+				'jenis_pemesanan' => $res['jenis_pemesanan'],
+				'jenis_sablon' => $res['jenis_sablon'],
+				'jumlah_pesanan' => $res['jumlah_pesanan'],
+				'total_harga' => $res['total_harga'],
+				'jumlah_bayar' => $res['jumlah_bayar'],
+				'status' => $res['status'],
+				'deskripsi' => $res['deskripsi'],
+				'file_desain' => $res['file_desain'],
+				'model_baju' => $res['model_baju'],
+				'perkiraan_selesai' => $res['perkiraan_selesai'],
+			);
+			$i++;
+		}
+		return @$data;
+	}
+	function add_data_barang_pesanan($nama_pesanan, $ukuran, $harga_1, $harga_2, $harga_3){
+		$nama_pesanan = $this->real_escape_string($nama_pesanan);
+			//
+		$sql = "INSERT INTO barang_pesanan ( nama_pesanan, ukuran, harga_1, harga_2, harga_3, updated_at) VALUES ('$nama_pesanan', '$ukuran', '$harga_1', '$harga_2', '$harga_3', NOW())";
+		$query = $this->query($sql);
+		if ($query) {
+			$msg = array(
+				'success' => true,
+				'message' => "Barang berhasil ditambahkan!"
+			);
+		}else{
+			$msg = array(
+				'success' => false,
+				'message' => "Error!"
+			);
+		}
+		
+		return @$msg;
+
+	}
+	function delete_data_barang_pesanan($id_barang){
+		$sql = "DELETE FROM barang_pesanan WHERE id_barang = '$id_barang'";
+		$query  = $this->query($sql);
+		$msg = array(
+			'success' => true,
+			'message' => 'Berhasil menghapus barang!'
+		);
+		return @$msg;
+	}
+	function detail_trx_pemesanan($trx_code){
+		$trx_code = trim($this->real_escape_string($trx_code));
+		$sql = "SELECT * FROM transaksi_pemesanan INNER JOIN pemesanan ON transaksi_pemesanan.trx_code = pemesanan.trx_code WHERE transaksi_pemesanan.trx_code = '$trx_code' GROUP BY transaksi_pemesanan.trx_code";
+		$query = $this->query($sql);
+		$res = $query->fetch_assoc();
+		return $res;
+
+	}
+	function view_trx_pemesanan($trx_code){
+		$trx_code = trim($this->real_escape_string($trx_code));
+		$sql = "SELECT * FROM transaksi_pemesanan LEFT OUTER JOIN pemesanan ON transaksi_pemesanan.trx_code = pemesanan.trx_code WHERE pemesanan.trx_code = '$trx_code'";
+		$query = $this->query($sql);
+		if ($query) {
+				// $res = $query->fetch_assoc();
+			$i=0;
+			while ($res = $query->fetch_assoc()) {
+				$data[$i] = array(
+					'id_customer' => $res['id_customer'],
+					'id_barang' => $res['id_barang'],
+					'jumlah' => $res['jumlah'],
+					'subharga' => $res['subharga'],
+					'trx_code' => $res['trx_code'],
+					'tgl_transaksi' => $res['tgl_transaksi'],
+					'total_harga' => $res['total_harga'],
+					'jumlah_bayar' => $res['jumlah_bayar'],
+				);
+				$i++;
 
 			}
 
@@ -398,51 +505,125 @@ class System extends mysqli{
 		}
 		return @$data;
 	}
-	function list_trx_penjualan(){
-			// $sql = "SELECT * FROM transaksi LEFT OUTER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code";
-		$sql = "SELECT * FROM transaksi INNER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code ORDER BY tgl_transaksi DESC";
+	function list_barang_pesanan(){
+		$sql = "SELECT * FROM barang_pesanan WHERE 1=1";
 		$query = $this->query($sql);
 		$i = 0;
 		while ($res = $query->fetch_assoc()) {
 			$data[$i] = array(
-				'id_trx' => $res['id_trx'],
-				'id_customer' => $res['id_customer'],
-				'trx_code' => $res['trx_code'],
-				'total_harga' => $res['total_harga'],
-				'tgl_transaksi' => $res['tgl_transaksi'],
+				'id_barang' => $res['id_barang'],
+				'nama_pesanan' => $res['nama_pesanan'],
+				'ukuran' => $res['ukuran'],
+				'harga_1' => $res['harga_1'],
+				'harga_2' => $res['harga_2'],
+				'harga_3' => $res['harga_3'],
+				'updated_at' => $res['updated_at'],
 			);
 			$i++;
 		}
 		return @$data;
 	}
-	function create_pesanan($data = array()){
+	function detail_barang_pesanan($id_barang){
+		$sql = "SELECT * FROM barang_pesanan WHERE id_barang = '$id_barang'";
+		$query  = $this->query($sql);
+		$res = $query->fetch_assoc();
+		return @$res;
+	}
+	function add_transaksi_pemesanan($data=array()){
 		$trx_code = $data['trx_code'];
 		$jenis_pemesanan = $data['jenis_pemesanan'];
-		$sablon_depan = $data['sablon_depan'];
-		$sablon_belakang = $data['sablon_belakang'];
 		$model_baju = $data['model_baju'];
 		$jenis_sablon = $data['jenis_sablon'];
 		$keterangan = $data['keterangan'];
-			//
-		$pendek_s = $data['pendek_s'];
-		$pendek_m = $data['pendek_m'];
-		$pendek_l = $data['pendek_l'];
-		$pendek_xl = $data['pendek_xl'];
-		$pendek_xxl = $data['pendek_xxl'];
-		$pendek_xxxl = $data['pendek_xxxl'];
-			//
-		$panjang_s = $data['panjang_s'];
-		$panjang_m = $data['panjang_m'];
-		$panjang_l = $data['panjang_l'];
-		$panjang_xl = $data['panjang_xl'];
-		$panjang_xxl = $data['panjang_xxl'];
-		$panjang_xxxl = $data['panjang_xxxl'];
-			//
-		$jumlah_pesanan = $data['jumlah_pesanan'];
-		$total = $data['total'];
-
+		$perkiraan_selesai = $data['perkiraan_selesai'];
+		$file_desain = @$data['file_desain'] ? $data['file_desain'] : "";
+		//
+		$check = $this->query("SELECT trx_code FROM transaksi_pemesanan WHERE trx_code = '$trx_code'");
+		$jumlah_trx_code = $check->num_rows;
+		if ($jumlah_trx_code >= 1) {
+			$msg = array(
+				'success' => true,
+				'message' => 'Trx code telah terdaftar, harap refresh halaman',
+			);
+		}else{
+			$sql = "INSERT INTO transaksi_pemesanan (trx_code, jenis_pemesanan, model_baju, jenis_sablon, file_desain , deskripsi, perkiraan_selesai, status) VALUES ('$trx_code','$jenis_pemesanan','$model_baju','$jenis_sablon','$file_desain', '$keterangan', '$perkiraan_selesai', 'diproses')";
+			$query = $this->query($sql);
+			if ($query) {
+				$msg = array(
+					'success' => true,
+					'message' => 'Transaksi berhasil dilakukan! Isi Form selanjutnya',
+				);
+			}else{
+				$msg = array(
+					'success' => false,
+					'message' => 'Terjadi kesalahan',
+				);
+			}
+		}
+		return @$msg;
 
 	}
+	function update_buat_pesanan($data=array()){
+		$total_harga = $data['total_harga'];
+		$jumlah_bayar = $data['jumlah_bayar'];
+		$jumlah_pesanan = $data['jumlah_pesanan'];
+		$trx_code = $data['trx_code'];
+		$kurang = $data['kurang'];
+			//
+		$sql = "UPDATE transaksi_pemesanan SET total_harga = '$total_harga', jumlah_bayar ='$jumlah_bayar', jumlah_pesanan='$jumlah_pesanan', kurang = '$kurang', tgl_transaksi = NOW() WHERE trx_code = '$trx_code'";
+		$query = $this->query($sql);
+		if ($query) {
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+	function pemesanan($id_customer, $id_barang, $trx_code, $jumlah){
+		$barang = $this->detail_barang_pesanan($id_barang);
+		if($jumlah > 12){
+			$harga = $barang['harga_2'];
+			$total = $harga*$jumlah;
+		}elseif ($jumlah > 24) {
+			$harga = $barang['harga_3'];
+			$total = $harga*$jumlah;
+		}else{
+			$harga = $barang['harga_1'];
+			$total = $harga*$jumlah;
+		}
+		$sql = "INSERT INTO pemesanan (id_customer, id_barang, trx_code, subharga , jumlah, tanggal_order) VALUES ($id_customer, $id_barang, '$trx_code', '$harga' , '$jumlah', NOW())";
+		$query = $this->query($sql);
+		if($query){
+			return 1;
+		}else{
+			return 0;
+		}
+
+	}
+	function delete_trx_pemesanan($trx_code){
+		$delete = $this->query("DELETE FROM transaksi_pemesanan WHERE trx_code = '$trx_code'");
+		if ($delete) {
+			return 1;
+		}else{
+			return 0;
+		}
+	}
+
+	/*Keranjang Pemesanan*/
+	function add_cart_pemesanan($id, $jumlah){
+		if (empty($_SESSION['cart_pemesanan'][$id])) {
+			$_SESSION['cart_pemesanan'][$id]=$jumlah;
+		}else{
+			$jumlah_aktif = $_SESSION['cart_pemesanan'][$id];
+			$_SESSION['cart_pemesanan'][$id]=$jumlah+$jumlah_aktif;
+		}
+		return 1;
+	}
+	
+	
+	
+	
+	
+	/*Form Setting*/
 	function edit_setting($data = array()){
 		$nama_bisnis = $data['nama_bisnis'];
 		$alamat = $data['alamat'];
@@ -528,113 +709,179 @@ class System extends mysqli{
 		return $msg;
 	}
 	/*
-		Pemesanan Form
+		Pelunasan Form
 
 	*/
-		function list_barang_pesanan(){
-			$sql = "SELECT * FROM barang_pesanan WHERE 1=1";
+		function show_pelunasan(){
+			$sql = "SELECT transaksi_pemesanan.trx_code, id_customer, jenis_pemesanan, file_desain, jumlah_pesanan, total_harga, jumlah_bayar, tgl_transaksi, status, perkiraan_selesai FROM transaksi_pemesanan LEFT JOIN pemesanan ON transaksi_pemesanan.trx_code = pemesanan.trx_code WHERE status != 'lunas' AND kurang = 'true' GROUP BY transaksi_pemesanan.trx_code ";
 			$query = $this->query($sql);
-			$i = 0;
-			while ($res = $query->fetch_assoc()) {
-				$data[$i] = array(
-					'id_barang' => $res['id_barang'],
-          'nama_pesanan' => $res['nama_pesanan'],
-          'ukuran' => $res['ukuran'],
-					'harga_1' => $res['harga_1'],
-					'harga_2' => $res['harga_2'],
-					'harga_3' => $res['harga_3'],
-					'updated_at' => $res['updated_at'],
-				);
-				$i++;
+			if ($query) {
+				$i=0;
+				while ($res = $query->fetch_assoc()) {
+					$data[$i] = array(
+						'id_customer' => $res['id_customer'],
+						'trx_code' => $res['trx_code'],
+						'jenis_pemesanan' => $res['jenis_pemesanan'],
+						'file_desain' => $res['file_desain'],
+						'jumlah_pesanan' => $res['jumlah_pesanan'],
+						'total_harga' => $res['total_harga'],
+						'jumlah_bayar' => $res['jumlah_bayar'],
+						'tgl_transaksi' => $res['tgl_transaksi'],
+						'status' => $res['status'],
+						'perkiraan_selesai' => $res['perkiraan_selesai'],
+					);
+					$i++;
+				}
 			}
 			return @$data;
 		}
-		function detail_barang_pesanan($id_barang){
-			$sql = "SELECT * FROM barang_pesanan WHERE id_barang = '$id_barang'";
-			$query  = $this->query($sql);
+		function get_detail_pelunasan($trx_code){
+			$sql = "SELECT nama_lengkap, tp.trx_code, total_harga, jumlah_bayar FROM transaksi_pemesanan tp JOIN pemesanan pm ON tp.trx_code = pm.trx_code JOIN customer cs ON pm.id_customer = cs.id_customer WHERE tp.trx_code = '$trx_code' GROUP BY tp.trx_code ";
+			$query = $this->query($sql);
 			$res = $query->fetch_assoc();
 			return @$res;
 		}
-		function add_transaksi_pemesanan($data=array()){
+		function create_pelunasan($data=array()){
 			$trx_code = $data['trx_code'];
-			$jenis_pemesanan = $data['jenis_pemesanan'];
-			$model_baju = $data['model_baju'];
-			$jenis_sablon = $data['jenis_sablon'];
-			$sablon_depan = @$data['sablon_depan'] ? $data['sablon_depan'] : "";
-			$sablon_belakang = @$data['sablon_belakang'] ? $data['sablon_belakang'] : "";
-		//
-			$check = $this->query("SELECT trx_code FROM transaksi_pemesanan WHERE trx_code = '$trx_code'");
-			$jumlah_trx_code = $check->num_rows;
-			if ($jumlah_trx_code >= 1) {
-				$msg = array(
-					'success' => true,
-					'message' => 'Trx code telah terdaftar, harap refresh halaman',
-				);
-			}else{
-				$sql = "INSERT INTO transaksi_pemesanan (trx_code, jenis_pemesanan, model_baju, jenis_sablon, sablon_depan, sablon_belakang, status) VALUES ('$trx_code','$jenis_pemesanan','$model_baju','$jenis_sablon','$sablon_depan','$sablon_belakang','diproses')";
-				$query = $this->query($sql);
-				if ($query) {
-					$msg = array(
-						'success' => true,
-						'message' => 'Transaksi berhasil dilakukan! Isi Form selanjutnya',
-					);
-				}else{
-					$msg = array(
-						'success' => false,
-						'message' => 'Terjadi kesalahan',
-					);
-				}
-			}
-			return @$msg;
-
-		}
-		function update_buat_pesanan($data=array()){
-			$total_harga = $data['total_harga'];
+			$dp = $data['dp'];
 			$jumlah_bayar = $data['jumlah_bayar'];
-			$jumlah_pesanan = $data['jumlah_pesanan'];
-			$trx_code = $data['trx_code'];
 			//
-			$sql = "UPDATE transaksi_pemesanan SET total_harga = '$total_harga', jumlah_bayar ='$jumlah_bayar', jumlah_pesanan='$jumlah_pesanan', tgl_transaksi = NOW() WHERE trx_code = '$trx_code'";
+			$sql = "INSERT INTO pelunasan (trx_code, dp, pelunasan, tgl_pelunasan) VALUES('$trx_code', $dp, $jumlah_bayar, NOW())";
 			$query = $this->query($sql);
 			if ($query) {
-				return 1;
+				$msg = array(
+					'success' => true,
+					'message' => 'Berhasil melakukan pelunasan!',
+				);
 			}else{
-				return 0;
+				$msg = array(
+					'success' => false,
+					'message' => 'Terjadi kesalahan!',
+				);
 			}
+			return @msg;
 		}
-		function pemesanan($id_customer, $id_barang, $trx_code, $jumlah){
-			$barang = $this->detail_barang_pesanan($id_barang);
-			if($jumlah > 12){
-				$harga = $barang['harga_2'];
-				$total = $harga*$jumlah;
-			}elseif ($jumlah > 24) {
-				$harga = $barang['harga_3'];
-				$total = $harga*$jumlah;
-			}else{
-				$harga = $barang['harga_1'];
-				$total = $harga*$jumlah;
-			}
-			$sql = "INSERT INTO pemesanan (id_customer, id_barang, trx_code, subharga , jumlah, tanggal_order) VALUES ($id_customer, $id_barang, '$trx_code', '$harga' , '$jumlah', NOW())";
+		function update_for_pelunasan($trx_code){
+			$sql = "UPDATE transaksi_pemesanan SET kurang = 'false', status = 'lunas' WHERE trx_code = '$trx_code'";
 			$query = $this->query($sql);
-			if($query){
-				return 1;
+			if ($query) {
+				$msg = array(
+					'success' => true,
+					'message' => 'Berhasil melakukan pelunasan!',
+				);
 			}else{
-				return 0;
+				$msg = array(
+					'success' => false,
+					'message' => 'Terjadi kesalahan!',
+				);
+			}
+			return $msg;
+		}
+		function info_pelunasan($trx_code){
+			$sql = "SELECT * FROM pelunasan WHERE trx_code = '$trx_code'";
+			$query = $this->query($sql);
+			$res = $query->fetch_assoc();
+			return $res;
+		}
+
+
+
+
+
+
+
+		/*
+			Check Balance
+
+		*/
+			function pemasukan_penjualan($type="all", $length=1){
+				$date_now = date('Y-m-d h:m:s');
+				if ($type == "all") {
+					$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi";
+				}else{
+					if ($type == "year") {
+						$date_minus = date('Y-m-d', strtotime('-1 year', strtotime($date_now)));
+						$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+					}elseif ($type == "month") {
+						$date_minus = date('Y-m-d', strtotime('-1 month', strtotime($date_now)));
+						$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+
+					}elseif ($type == "week") {
+						$date_minus = date('Y-m-d', strtotime('-1 week', strtotime($date_now)));
+						$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+
+					}elseif ($type == "day") {
+						$date_minus = date('Y-m-d', strtotime('-1 day', strtotime($date_now)));
+						$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+					}else{
+						$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi";
+					}
+					
+				}
+				$query = $this->query($sql);
+				$res = $query->fetch_assoc();
+				return $res['pemasukan'];
+			}
+			function pemasukan_pemesanan($type="all", $length=1){
+				$date_now = date('Y-m-d h:m:s');
+				if ($type == "all") {
+					$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi_pemesanan";
+				}else{
+					if ($type == "year") {
+						$date_minus = date('Y-m-d', strtotime('-1 year', strtotime($date_now)));
+						$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi_pemesanan WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+					}elseif ($type == "month") {
+						$date_minus = date('Y-m-d', strtotime('-1 month', strtotime($date_now)));
+						$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi_pemesanan WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+
+					}elseif ($type == "week") {
+						$date_minus = date('Y-m-d', strtotime('-1 week', strtotime($date_now)));
+						$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi_pemesanan WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+
+					}elseif ($type == "day") {
+						$date_minus = date('Y-m-d', strtotime('-1 day', strtotime($date_now)));
+						$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi_pemesanan WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+					}else{
+						$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi_pemesanan";
+					}
+					
+				}
+				$query = $this->query($sql);
+				$res = $query->fetch_assoc();
+				return $res['pemasukan'];
+			}
+			function total_pemasukan($type="all", $length=1){
+				$pemasukan_penjualan = $this->pemasukan_penjualan($type,$length);
+				$pemasukan_pemesanan = $this->pemasukan_pemesanan($type,$length);
+				$total_pemasukan = $pemasukan_penjualan+$pemasukan_pemesanan;
+				$data = array(
+					'penjualan' => $pemasukan_penjualan,
+					'pemesanan' => $pemasukan_pemesanan,
+					'total' => $total_pemasukan,
+				);
+				return $data;
+			}
+			// Statistik
+			function per_month_penjualan($month){
+				$year = date('Y');
+				$sql = "SELECT count(*) as terjual FROM transaksi WHERE MONTH(tgl_transaksi) = $month AND YEAR(tgl_transaksi) = $year";
+				$query = $this->query($sql);
+				$result = $query->fetch_assoc();
+				return @$result['terjual'];
+			}
+			function statistik_penjualan(){
+				for ($i=1; $i <=12 ; $i++) { 
+					$data[$i] = $this->per_month_penjualan($i);
+				}
+				return $data;
 			}
 
-		}
-		function delete_trx_pemesanan($trx_code){
-			$delete = $this->query("DELETE FROM transaksi_pemesanan WHERE trx_code = '$trx_code'");
-			if ($delete) {
-				return 1;
-			}else{
-				return 0;
-			}
-		}
 
-	}
-	$system = new System();
-	$setting = $system->get_setting();
-	$logged = $system->check_logged();
-	$admin = $system->get_admin();
-	?>
+
+
+		}
+		$system = new System();
+		$setting = $system->get_setting();
+		$logged = $system->check_logged();
+		$admin = $system->get_admin();
+		?>

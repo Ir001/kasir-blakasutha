@@ -91,14 +91,15 @@
             </div>
             <div class="modal-body">
                 <form id="form_barang_add">
-                  <input type="hidden" name="add_data_barang" value="1">
+                  <input type="hidden" name="add_data_barang_pesanan" value="1">
                   <div class="form-group">
-                    <label>Kode Barang:</label>
-                    <input type="text" class="form-control" name="kode_barang" placeholder="Kode">
+                  <div class="form-group">
+                    <label>Nama Pesanan:</label>
+                    <input type="text" class="form-control" name="nama_pesanan" placeholder="Nama Barang" required>
                   </div>
                   <div class="form-group">
-                    <label>Nama Pesnana:</label>
-                    <input type="text" class="form-control" name="nama_barang" placeholder="Nama Barang" required>
+                    <label>Ukuran:</label>
+                    <input type="text" class="form-control" name="ukuran" placeholder="Nama Barang" required>
                   </div>
                   <div class="form-group">
                     <label>Stok:</label>

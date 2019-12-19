@@ -46,24 +46,13 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-6" id="load-content">
+          <div class="col-md-6" id="show-content">
+              <div id="load-pemesanan"></div>
           </div>
-          <div class="col-lg-6" id="load-customer-div">
-            <div class="card">
-              <div class="card-header border-0">
-                <div class="d-flex justify-content-between">
-                  <h3 class="card-title">Daftar Pelanggan</h3>
-                  <button id="btn_user_plus" class="btn btn-sm btn-success">Tambah</button>
-                </div>
-              </div>
-              <div class="card-body">
-                <div id="load-customer"></div>
-              </div>
-            </div>
-            <!-- /.card-body -->
+          <div class="col-md-6" id="show-customer">
+              <div id="load-customer"></div>
           </div>
-          <!-- /.col-md-6 -->
-          <div class="col-lg-6">
+          <div class="col-md-6" id="show-cart">
             <div id="load-cart"></div>
           </div>
         </div>
@@ -141,10 +130,23 @@
     $.ajaxSetup({
       cache:false
     });
-    var loadUrl = "json/view_customer.php";
+    var url_cart = "json/cart_pemesanan.php";
+    var url_customer = "json/view_customer.php";
+    var url_content = "json/view_pemesanan.php";
     //
-    $('#load-customer').load(loadUrl);
-    $('#load-cart').load("json/cart_pemesanan.php");
+    $('#load-cart').load(url_cart);
+    $('#load-customer').load(url_customer);
+    $('#load-pemesanan').load(url_content);
+    //
+    <?php if (isset($_SESSION['id_customer'])) { ?>
+      $('#show-content').show();
+      $('#show-customer').hide();
+    <?php }else{ ?>
+      $('#show-customer').show();
+      $('#show-content').hide();
+    <?php } ?>
+    $('#show-cart').show();
+    //
 
     //Data Table
     $("#data_pelanggan").DataTable();
@@ -174,11 +176,6 @@
         }
       })
     });
-    <?php if (isset($_SESSION['id_customer'])): ?>
-      $('#load-content').load('json/view_pemesanan.php');
-      $('#load-customer-div').hide();
-
-    <?php endif; ?>
 
   })
 </script>

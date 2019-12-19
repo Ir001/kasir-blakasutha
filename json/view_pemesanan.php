@@ -27,14 +27,9 @@ require '../application/system.php';
               </select>
             </div>
             <div class="form-group">
-              <label>Sablon Depan</label>
+              <label>File Desain</label>
               <br>
-              <input type="file" name="sablon_depan">
-            </div>
-            <div class="form-group" id="sablon_belakang_div">
-              <label>Sablon Belakang</label>
-              <br>
-              <input type="file" name="sablon_belakang">
+              <input type="file" name="file_desain">
             </div>
             <div class="form-group" id="model_baju_div">
               <label>Model Baju</label>
@@ -48,7 +43,7 @@ require '../application/system.php';
             </div>
             <div class="form-group">
               <label for="">Perkiraan Selesai</label>
-              <input type="date" class="form-control">
+              <input type="date" name="perkiraan_selesai" class="form-control">
             </div>
             <div class="form-group">
               <label>Jenis Sablon</label>
@@ -90,66 +85,58 @@ require '../application/system.php';
         </div>
       </div>
     </div>
-    <!-- /.card-body -->
-<!-- </div> -->
-<script type="text/javascript">
-  var cart_page = "json/cart_pemesanan.php";
-  var jenis_pemesanan = $('#jenis_pemesanan');
-  var step1 = $('#step1');
-  var step2 = $('#step2');
-  $('#model_baju_div').hide();
-  $('#btn-back').hide();
-  $('#load-cart').load(cart_page);
-  $('#load-barang').load('json/barang_pesanan.php');
+  <!-- /.card-body -->
+  <!-- </div> -->
+  <script type="text/javascript">
+    var jenis_pemesanan = $('#jenis_pemesanan');
+    var step1 = $('#step1');
+    var step2 = $('#step2');
+    $('#load-barang').load('json/barang_pesanan.php');
+    $('#model_baju_div').hide();
 
-  <?php if (isset($_SESSION['trx_code'])) { ?>
-  step1.hide();
-  step2.show();
-  <?php }else{ ?>
-  step1.show();
-  step2.hide();
-  <?php } ?>
-  jenis_pemesanan.change(function(){
-    if (jenis_pemesanan.val() === 'kaos') {
-      $('#model_baju_div').show();
-    }
-  })
+    <?php if (isset($_SESSION['trx_code'])) { ?>
+      step1.hide();
+      step2.show();
+    <?php }else{ ?>
+      step1.show();
+      step2.hide();
+    <?php } ?>
+    jenis_pemesanan.change(function(){
+      if (jenis_pemesanan.val() === 'kaos') {
+        $('#model_baju_div').show();
+      }
+    })
 /*
 Post an files
 */
 $('#form_pemesanan').submit(function(e){
   e.preventDefault();
- 
+
   var formData = new FormData(this);
 
   $.ajax({
     url: 'application/event.php',
     type: 'POST',
     data: formData,
-    dataType : 'json',
+    dataType: 'json',
     success: function (data) {
       if (data.transaksi.success) {
-         step1.hide();
-         step2.show();
-        if (data.upload_depan.success) {
-            toastr['success'](data.upload_depan.message);
+       step1.hide();
+       step2.show();
+       toastr['success'](data.transaksi.message);
+        if (data.upload.success) {
+          toastr['success'](data.upload.message);
         }else{
-            toastr['error'](data.upload_depan.message);
+          toastr['error'](data.upload.message);
         }
-        if (data.upload_belakang.success) {
-            toastr['success'](data.upload_depan.message);
-        }else{
-            toastr['error'](data.upload_depan.message);
-        }
-            toastr['success'](data.transaksi.message);
       }else{
-            toastr['error'](data.transaksi.message);
-       }
-    },
-    cache: false,
-    contentType: false,
-    processData: false
-  });
+        toastr['error'](data.transaksi.message);
+      }
+  },
+  cache: false,
+  contentType: false,
+  processData: false
+});
 })
 
 var trx_code = '<?php echo $system->generate_trx_code(); ?>';

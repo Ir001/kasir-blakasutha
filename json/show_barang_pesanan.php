@@ -28,7 +28,7 @@ require '../application/system.php';
           <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</button>
         </form>
         <form class="form-delete">
-          <input type="hidden" name="delete_barang" value="1">
+          <input type="hidden" name="delete_barang_pesanan" value="1">
           <input type="hidden" name="id" value="<?=$list['id_barang'];?>">
           <button type="submit" class="btn btn-delete btn-danger btn-sm"><i class="fa fa-remove"></i> Hapus</button>
         </form>
@@ -37,6 +37,7 @@ require '../application/system.php';
   <?php } ?>
 </tbody>
 </table>
+<!-- Modal Edit Barang -->
 <div class="modal fade" id="edit_modal">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -85,6 +86,7 @@ require '../application/system.php';
         </div>
         <!-- /.modal-dialog -->
 </div>
+<!-- End of Modal -->
 <script type="text/javascript">
     $('#data_barang').DataTable();
     $('.btn-delete').click(function(){
@@ -94,7 +96,7 @@ require '../application/system.php';
           $.ajax({
             type : 'POST',
             url : 'application/event.php',
-            data : $('.form-delete').serialize(),
+            data : $(this).serialize(),
             dataType : 'json',
             success : function(data){
               if (data.success) {
@@ -112,58 +114,4 @@ require '../application/system.php';
         })
       }
     })
-    //
-
-    //
-    //edit
-    //
-    var id_barang = $('#id_barang');
-    var nama_barang = $('#nama_barang');
-    var kode_barang = $('#kode_barang');
-    var stok = $('#stok');
-    var harga_1 = $('#harga_1');
-    var harga_2 = $('#harga_2');
-    var harga_3 = $('#harga_3');
-    $('.btn-edit').submit(function(e){
-          e.preventDefault();
-          $.ajax({
-            type : 'POST',
-            url : 'json/json_edit.php',
-            data : $(this).serialize(),
-            dataType : 'json',
-            success : function(data){
-              id_barang.val(data.id_barang);
-              kode_barang.val(data.kode_barang);
-              nama_barang.val(data.nama_barang);
-              stok.val(data.stok);
-              harga_1.val(data.harga_1);
-              harga_2.val(data.harga_2);
-              harga_3.val(data.harga_3);
-              $('#edit_modal').modal('show');
-            }
-          })
-     })
-
-    // after edit
-    //
-    //
-    $('#form_barang_edit').submit(function(e){
-      e.preventDefault();
-      $('#edit_modal').modal('hide');
-
-      $.ajax({
-        type : 'POST',
-        url :'application/event.php',
-        data: $('#form_barang_edit').serialize(),
-        dataType : 'json',
-        success : function(data){
-          if (data.success) {
-            toastr['success'](data.message);
-            window.$('#show-barang').load("json/show_barang.php");
-          }else{
-            toastr['error'](data.message);
-          }
-        }
-      })
-    });
 </script>
