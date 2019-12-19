@@ -97,7 +97,8 @@ if (!$logged) {
                               |
                               <form class="edit_pemesanan">
                                 <input type="hidden" name="edit_pemesanan" value="1"> 
-                                <input type="hidden" name="trx_code" value="<?=$list['trx_code'];?>"> 
+                                <input type="hidden" name="trx_code" class="trx_code_edit" value="<?=$list['trx_code'];?>"> 
+                                <input type="hidden" name="status" class="status_edit" value="<?=$list['status'];?>"> 
                                 <button type="submit" title="Edit" class="btn btn-sm btn-warning">Edit</button>
                               </form>
                             </td>
@@ -123,12 +124,42 @@ if (!$logged) {
       <?php include 'theme/footer.php'; ?>
     </div>
     <?php include 'theme/src_foot.php'; ?>
- 
+
     <div id="response"></div>
-      <script>
+    <div class="modal fade" id="editModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Pesanan</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="editForm">
+              <input type="hidden" name="edit_status" value="1">
+              <input type="hidden" name="trx_code" id="editTrx">
+              <div class="form-group">
+                <label for="">Status</label>
+                <select name="status" id="editStatus" class="form-control">
+                  <option value="diproses">Diproses</option>
+                  <option value="selesai">Selesai</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="float-right btn btn-success">Simpan</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+    </div>
+    <script>
 
 
-        $(function(){
+      $(function(){
     //Setup
     $.ajaxSetup({
       cache:false
@@ -151,7 +182,40 @@ if (!$logged) {
           },800);
         }
       })
-    })  
+    }) 
+    $('.edit_pemesanan').submit(function(e){
+      e.preventDefault();
+      //Getter
+      var trx_code = $(this).find('.trx_code_edit').val();
+      var status = $(this).find('.status_edit').val();
+      //Setter
+      $('#editTrx').val(trx_code);
+      $('#editStatus').val(status);
+      //
+      $('#editModal').modal('show');
+
+    });
+    $('#editForm').submit(function(e){
+      e.preventDefault();
+      $.ajax({
+        type : 'POST',
+        url : 'application/event_pemesanan.php',
+        data : $(this).serialize(),
+        dataType : 'json',
+        success : function(data){
+          if (data.success) {
+            toastr['success'](data.message);
+            $('#editModal').modal('hide');
+            $('#editTrx').val('');
+            $('#editStatus').val('');
+            setTimeout(function(){window.location.replace('manage_pemesanan.php')},500);
+          }else{
+            toastr['error'](data.message);
+          }
+        }
+      })
+
+    })
 
   })
 </script>

@@ -146,38 +146,39 @@ require '../application/system.php';
         </button>
       </div>
       <div class="modal-body"> 
-          <form id="editForm">
-            <div class="form-group">
-              <label for="">Kode</label>
-              <input type="hidden" name="edit_cart" value="1">
-              <input type="hidden" name="id" id="idForm" class="form-control">
-              <input type="text" id="kodeForm" class="form-control" disabled="">
-            </div>
-             <div class="form-group">
-              <label for="">Nama Barang</label>
-              <input type="text" id="namaForm" class="form-control" disabled="">
-            </div>
-            <div class="form-group">
-              <label for="">Quantity</label>
-              <input type="number" name="jumlah" id="quantityForm" class="form-control" min="0" required="">
-            </div>
-             <div class="form-group">
-              <button type="submit" class="float-right btn btn-success">Ubah</button>
-            </div>
-          </form>              
+        <form id="editForm">
+          <div class="form-group">
+            <label for="">Kode</label>
+            <input type="hidden" name="edit_cart" value="1">
+            <input type="hidden" name="id" id="idForm" class="form-control">
+            <input type="text" id="kodeForm" class="form-control" disabled="">
+          </div>
+          <div class="form-group">
+            <label for="">Nama Barang</label>
+            <input type="text" id="namaForm" class="form-control" disabled="">
+          </div>
+          <div class="form-group">
+            <label for="">Quantity</label>
+            <input type="number" name="jumlah" id="quantityForm" class="form-control" min="0" required="">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="float-right btn btn-success">Ubah</button>
+          </div>
+        </form>              
 
       </div>
       <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
   </div>
-  <script>
-    $('#jumlah_bayar').keyup(function(){
-      var total = parseInt($('#total').val());
-      var jumlah_bayar = parseInt($('#jumlah_bayar').val());
-      var kembalian = jumlah_bayar-total;
-      $('#kembalian').val(kembalian);
-    });
+</div>
+<script>
+  $('#jumlah_bayar').keyup(function(){
+    var total = parseInt($('#total').val());
+    var jumlah_bayar = parseInt($('#jumlah_bayar').val());
+    var kembalian = jumlah_bayar-total;
+    $('#kembalian').val(kembalian);
+  });
   //
   if ($('#total').val() === "") {
     $('#btnBayar').attr("disabled", true)
@@ -305,13 +306,13 @@ require '../application/system.php';
         dataType : 'json',
         success : function (data){
           if (data.success) {
-             window.$('#load-cart').load("json/json_cart.php");
-             toastr['success'](data.message);
-          }else{
-             toastr['error'](data.message);
+           window.$('#load-cart').load("json/json_cart.php");
+           toastr['success'](data.message);
+         }else{
+           toastr['error'](data.message);
 
-          }
-        }
-      })
+         }
+       }
+     })
     })
   </script>

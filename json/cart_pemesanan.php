@@ -77,7 +77,13 @@ require '../application/system.php';
       <td><?=$harga;?></td>
       <td><?=$total;?></td>
       <td>
-        <button class="btn btn-sm btn-success" title="Edit"><i class="fa fa-pen"></i></button>
+        <form class="edit_cart">
+          <input type="hidden" name="edit_cart" value="1">
+          <input type="hidden" name="id" class="id" value="<?=$id;?>">
+          <input type="hidden" name="nama_pesanan" class="nama_pesanan" value="<?=$data['nama_pesanan'];?>">
+          <input type="hidden" name="jumlah" class="jumlah" value="<?=$jumlah;?>">
+          <button type="submit" class="btn btn-sm btn-success" title="Edit"><i class="fa fa-pen"></i></button>
+        </form>
         <form class="delete_cart">
           <input type="hidden" name="delete_cart" value="1">
           <input type="hidden" name="id" value="<?=$id;?>">
@@ -121,6 +127,38 @@ require '../application/system.php';
 </form>
 
 </div>
+</div>
+<div class="modal fade" id="modalEdit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Keranjang</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body"> 
+        <form id="editForm">
+            <input type="hidden" name="edit_cart" value="1">
+            <input type="hidden" name="id" id="idForm">
+          <div class="form-group">
+            <label for="">Nama Barang</label>
+            <input type="text" id="namaForm" class="form-control" disabled="">
+          </div>
+          <div class="form-group">
+            <label for="">Quantity</label>
+            <input type="number" name="jumlah" id="quantityForm" class="form-control" min="0" required="">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="float-right btn btn-success">Ubah</button>
+          </div>
+        </form>              
+
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
 </div>
 <script type="text/javascript">
   var total_harga = parseInt($('#total_harga').val());
@@ -216,11 +254,6 @@ require '../application/system.php';
     })
   })
 
-
-
-
-
-
   ///
 
   $('.btn-cancel').click(function(){
@@ -245,6 +278,72 @@ require '../application/system.php';
 
     }else{
      $('#batalkan').submit(function(e){
+      e.preventDefault();
+    });
+   }
+ });
+
+
+
+  // Edit
+  $('.edit_cart').submit(function(e){
+    e.preventDefault();
+    var idForm = $('#idForm');
+    var namaForm = $('#namaForm');
+    var quantityForm = $('#quantityForm');
+    /*                                  */
+    var id = $(this).find('.id').val();
+    var nama_pesanan = $(this).find('.nama_pesanan').val();
+    var jumlah = $(this).find('.jumlah').val();
+    //
+    idForm.val(id);
+    namaForm.val(nama_pesanan);
+    quantityForm.val(jumlah);
+
+    $('#modalEdit').modal('show');
+
+  });
+  $('#editForm').submit(function(e){
+      e.preventDefault();
+      $('#modalEdit').modal('hide');
+      $.ajax({
+        type : 'POST',
+        url : 'application/event_pemesanan.php',
+        data : $(this).serialize(),
+        dataType : 'json',
+        success : function (data){
+          if (data.success) {
+           window.$('#load-cart').load("json/cart_pemesanan.php");
+           toastr['success'](data.message);
+         }else{
+           toastr['error'](data.message);
+
+         }
+       }
+     })
+    })
+  $('.delete_btn').click(function(){
+    if (confirm('Apakah anda yakin?')) {
+      $('.delete_cart').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+          type : 'POST',
+          url : 'application/event_pemesanan.php',
+          data : $(this).serialize(),
+          dataType : 'json',
+          success : function(data){
+            if (data.success) {
+              window.$('#load-cart').load('json/cart_pemesanan.php');
+              toastr['success'](data.message);
+            }else{
+              toastr['error'](data.message);
+            }
+          }
+        })
+      });
+
+    }else{
+     $('.delete_cart').submit(function(e){
       e.preventDefault();
     });
    }

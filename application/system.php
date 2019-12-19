@@ -415,7 +415,23 @@ class System extends mysqli{
 		return 1;
 	}
 
-	/*Pemesanan*/
+	/*Pemesanan Form*/
+	function edit_status_pemesanan($status, $trx_code){
+		$sql = "UPDATE transaksi_pemesanan SET status='$status' WHERE trx_code = '$trx_code'";
+		$query = $this->query($sql);
+		if ($query) {
+			$msg = array(
+				'success' => true,
+				'message' => 'Berhasil update status pemesanan!',
+			);
+		}else{
+			$msg = array(
+				'success' => true,
+				'message' => 'Berhasil update status pemesanan!',
+			);
+		}
+		return $msg;
+	}
 	function list_trx_pemesanan(){
 		$sql = "SELECT * FROM transaksi_pemesanan INNER JOIN pemesanan ON transaksi_pemesanan.trx_code = pemesanan.trx_code WHERE status != 'lunas' GROUP BY pemesanan.trx_code";
 		$query = $this->query($sql);

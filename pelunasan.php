@@ -219,7 +219,6 @@ $data = $system->show_pelunasan();
             data : $(this).serialize(),
             dataType : 'json',
             success : function(data){
-              alert(data);
               if (data.success) {
                 toastr['success'](data.message);
                 setTimeout(function(){window.open('print_pemesanan.php?trx_code='+data.trx_code+'&status=pelunasan', '_blank')},500);
