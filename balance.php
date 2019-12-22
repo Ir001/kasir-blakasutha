@@ -7,9 +7,12 @@ $type = @$_GET['type'] ? trim($_GET['type']) : 'all';
 $pemasukan = $system->total_pemasukan($type);
 $penjualan = $pemasukan['penjualan'];
 $pemesanan = $pemasukan['pemesanan'];
+$jmlh_penjualan = $pemasukan['jumlah_penjualan'];
+$jmlh_pemesanan = $pemasukan['jumlah_pemesanan'];
 $total = $pemasukan['total'];
 //
 $statistik_penjualan = $system->statistik_penjualan();
+$statistik_pemesanan = $system->statistik_pemesanan();
 
 ?>
 <!DOCTYPE html>
@@ -77,6 +80,30 @@ $statistik_penjualan = $system->statistik_penjualan();
             </div>
             <div class="col-lg-12">
               <div class="row">
+              	<div class="col-md-4">
+                  <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1"><i class="fa fa-tshirt"></i></i></span>
+                    <div class="info-box-content">
+                      <span class="info-box-text">Pemasukan Penjualan</span>
+                      <span class="info-box-number">
+                        Rp. <?=number_format($penjualan,0,',','.');?>
+                      </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="info-box">
+                    <span class="info-box-icon bg-primary elevation-1"><i class="fa fa-tshirt"></i></i></span>
+                    <div class="info-box-content">
+                      <span class="info-box-text">Pemasukan Pemesanan</span>
+                      <span class="info-box-number">
+                        Rp. <?=number_format($pemesanan,0,',','.');?>
+                      </span>
+                    </div>
+                    <!-- /.info-box-content -->
+                  </div>
+                </div>
                 <div class="col-md-4">
                   <div class="info-box">
                     <span class="info-box-icon bg-success elevation-1"><i class="fas fa-money-bill-alt"></i></i></span>
@@ -122,13 +149,13 @@ $statistik_penjualan = $system->statistik_penjualan();
                 <div class="card-header border-0">
                   <div class="d-flex justify-content-between">
                     <h3 class="card-title">Laporan Penjualan</h3>
-                    <a href="javascript:void(0);">Lihat Laporan</a>
+                    <a href="laporan_penjualan.php">Lihat Laporan</a>
                   </div>
                 </div>
                 <div class="card-body">
                   <div class="d-flex">
                     <p class="d-flex flex-column">
-                      <span class="text-bold text-lg" id="terjual">2</span>
+                      <span class="text-bold text-lg" id="terjual"><?=$jmlh_penjualan;?></span>
                       <span>Produk Terjual</span>
                     </p>
                   </div>
@@ -152,14 +179,14 @@ $statistik_penjualan = $system->statistik_penjualan();
                 <div class="card-body">
                   <div class="d-flex">
                     <p class="d-flex flex-column">
-                      <span class="text-bold text-lg">2</span>
+                      <span class="text-bold text-lg"><?=$jmlh_pemesanan;?></span>
                       <span>Terpesan</span>
                     </p>
                   </div>
                   <!-- /.d-flex -->
 
                   <div class="position-relative mb-4">
-                    <canvas id="chart-penjualan" height="200"></canvas>
+                    <canvas id="chart-pemesanan" height="200"></canvas>
                   </div>
                 </div>
               </div>
@@ -199,6 +226,48 @@ $statistik_penjualan = $system->statistik_penjualan();
         <?php 
         for ($i=1; $i <= 12 ; $i++) { 
           echo $statistik_penjualan[$i].",";
+        }
+        ?>
+
+        ],
+        backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    };
+    var myLineChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+
+    });
+
+
+    // Chart Pemesanan
+
+     var ctx = $('#chart-pemesanan');
+    var data = {
+      labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', ' November', 'Desember'],
+      datasets: [{
+        label: 'Terpesan',
+        data: [
+        
+        <?php 
+        for ($i=1; $i <= 12 ; $i++) { 
+          echo $statistik_pemesanan[$i].",";
         }
         ?>
 

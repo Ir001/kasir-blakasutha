@@ -78,7 +78,7 @@ $penjualan = $system->list_trx_penjualan();
                          ?>
                         
                       <tr>
-                        <td><?php echo $customer[0]['nama_lengkap']; ?><span class="badge badge-info"><?php echo $customer[0]['role']; ?></span></td>
+                        <td><?php echo $customer['nama_lengkap']; ?><span class="badge badge-info"><?php echo $customer['role']; ?></span></td>
                         <td>
                           <ul>
                             <?php foreach ($barang_penjualan as $barang): ?>

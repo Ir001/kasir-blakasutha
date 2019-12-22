@@ -143,24 +143,45 @@ class System extends mysqli{
 		return @$msg;
 	}
 	function detail_customer($id){
-		$check_penjualan = "SELECT count(*) FROM penjualan WHERE id_customer =  '$id'";
-		$query_penjualan = $this->query($check_penjualan);
-		$row_penjualan = $query_penjualan->num_rows;
-		$penjualan = $query_penjualan->fetch_assoc();
-		$check_pemesanan = "SELECT count(*) FROM pemesanan WHERE id_customer = '$id'";
-		$query_pemesanan = $this->query($check_penjualan);
-		$pemesanan = $query_pemesanan->fetch_assoc();
-		$row_pemesanan = $query_pemesanan->num_rows;
-			//
+		$penjualan = $this->user_trx($id, 'penjualan');
+		$pemesanan = $this->user_trx($id, 'pemesanan');
 		$sql = "SELECT * FROM customer WHERE id_customer = '$id'";
 		$query = $this->query($sql);
 		$data_customer = $query->fetch_assoc();
 		$data = array(
-			'penjualan' => $row_pemesanan,
-			'pemesanan' => $row_pemesanan,
-			$data_customer,
+			'penjualan' => $penjualan,
+			'pemesanan' => $pemesanan,
+			'id_customer' => $data_customer['id_customer'],
+			'nama_lengkap' => $data_customer['nama_lengkap'],
+			'phone' => $data_customer['phone'],
+			'instagram' => $data_customer['instagram'],
+			'role' => $data_customer['role'],
+			'created_at' => $data_customer['created_at'],
 		);
 		return @$data;
+	}
+	function update_customer($data=array()){
+		$id = $data['id_user'];
+		$nama_lengkap = $data['nama_lengkap'];
+		$phone = $data['phone'];
+		$instagram = $data['instagram'];
+		$role = $data['role'];
+		$sql = "UPDATE customer SET nama_lengkap = '$nama_lengkap', phone = '$phone', instagram = '$instagram', role = '$role' WHERE id_customer = '$id'";
+		$query = $this->query($sql);
+		if ($query) {
+			$msg = array(
+				'success' => true,
+				'message' => 'Berhasil mengubah data customer!',
+			);
+		}else{
+			$msg = array(
+				'success' => false,
+				'message' => 'Gagal saat mengubah data customer!',
+			);
+		}
+		return $msg;
+		
+
 	}
 	function delete_customer($id){
 		$sql = "DELETE FROM customer WHERE id_customer = $id";
@@ -811,7 +832,7 @@ class System extends mysqli{
 
 		*/
 			function pemasukan_penjualan($type="all", $length=1){
-				$date_now = date('Y-m-d h:m:s');
+				$date_now = date('Y-m-d', strtotime('+1 day', strtotime(date('Y-m-d'))));
 				if ($type == "all") {
 					$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi";
 				}else{
@@ -839,7 +860,7 @@ class System extends mysqli{
 				return $res['pemasukan'];
 			}
 			function pemasukan_pemesanan($type="all", $length=1){
-				$date_now = date('Y-m-d h:m:s');
+				$date_now = date('Y-m-d', strtotime('+1 day', strtotime(date('Y-m-d'))));
 				if ($type == "all") {
 					$sql = "SELECT sum(total_harga) as pemasukan FROM transaksi_pemesanan";
 				}else{
@@ -866,30 +887,117 @@ class System extends mysqli{
 				$res = $query->fetch_assoc();
 				return $res['pemasukan'];
 			}
+			function jumlah_penjualan($type="all"){
+				$date_now = date('Y-m-d', strtotime('+1 day', strtotime(date('Y-m-d'))));
+				if ($type == "all") {
+					$sql = "SELECT count(*) as terjual FROM transaksi";
+				}else{
+					if ($type == "year") {
+						$date_minus = date('Y-m-d', strtotime('-1 year', strtotime($date_now)));
+						$sql = "SELECT count(*) as terjual FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+					}elseif ($type == "month") {
+						$date_minus = date('Y-m-d', strtotime('-1 month', strtotime($date_now)));
+						$sql = "SELECT count(*) as terjual FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+
+					}elseif ($type == "week") {
+						$date_minus = date('Y-m-d', strtotime('-1 week', strtotime($date_now)));
+						$sql = "SELECT count(*) as terjual FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+
+					}elseif ($type == "day") {
+						$date_minus = date('Y-m-d', strtotime('-1 day', strtotime($date_now)));
+						$sql = "SELECT count(*) as terjual FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+					}else{
+						$sql = "SELECT count(*) as terjual FROM transaksi";
+					}
+					
+				}
+				$query = $this->query($sql);
+				$res = $query->fetch_assoc();
+				return $res['terjual'];
+			}
+			function jumlah_pemesanan($type="all"){
+				$date_now = date('Y-m-d', strtotime('+1 day', strtotime(date('Y-m-d'))));
+				if ($type == "all") {
+					$sql = "SELECT count(*) as terpesan FROM transaksi_pemesanan";
+				}else{
+					if ($type == "year") {
+						$date_minus = date('Y-m-d', strtotime('-1 year', strtotime($date_now)));
+						$sql = "SELECT count(*) as terpesan FROM transaksi_pemesanan WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+					}elseif ($type == "month") {
+						$date_minus = date('Y-m-d', strtotime('-1 month', strtotime($date_now)));
+						$sql = "SELECT count(*) as terpesan FROM transaksi_pemesanan WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+
+					}elseif ($type == "week") {
+						$date_minus = date('Y-m-d', strtotime('-1 week', strtotime($date_now)));
+						$sql = "SELECT count(*) as terpesan FROM transaksi_pemesanan WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+
+					}elseif ($type == "day") {
+						$date_minus = date('Y-m-d', strtotime('-1 day', strtotime($date_now)));
+						$sql = "SELECT count(*) as terpesan FROM transaksi_pemesanan WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+					}else{
+						$sql = "SELECT count(*) as terpesan FROM transaksi_pemesanan";
+					}
+				}
+				$query = $this->query($sql);
+				$res = $query->fetch_assoc();
+				return $res['terpesan'];
+			}
 			function total_pemasukan($type="all", $length=1){
+				$jumlah_penjualan = $this->jumlah_penjualan($type);
+				$jumlah_pemesanan = $this->jumlah_pemesanan($type);
 				$pemasukan_penjualan = $this->pemasukan_penjualan($type,$length);
 				$pemasukan_pemesanan = $this->pemasukan_pemesanan($type,$length);
 				$total_pemasukan = $pemasukan_penjualan+$pemasukan_pemesanan;
 				$data = array(
 					'penjualan' => $pemasukan_penjualan,
 					'pemesanan' => $pemasukan_pemesanan,
+					'jumlah_penjualan' => $jumlah_penjualan,
+					'jumlah_pemesanan' => $jumlah_pemesanan,
 					'total' => $total_pemasukan,
 				);
 				return $data;
 			}
 			// Statistik
-			function per_month_penjualan($month){
+			function per_month_penjualan($month, $type="penjualan"){
 				$year = date('Y');
-				$sql = "SELECT count(*) as terjual FROM transaksi WHERE MONTH(tgl_transaksi) = $month AND YEAR(tgl_transaksi) = $year";
+				if ($type == 'penjualan') {
+					$sql = "SELECT count(*) as terjual FROM transaksi WHERE MONTH(tgl_transaksi) = $month AND YEAR(tgl_transaksi) = $year";
+				}elseif($type == "pemesanan"){
+					$sql = "SELECT count(*) as terjual FROM transaksi_pemesanan WHERE MONTH(tgl_transaksi) = $month AND YEAR(tgl_transaksi) = $year";
+				}
 				$query = $this->query($sql);
 				$result = $query->fetch_assoc();
 				return @$result['terjual'];
 			}
 			function statistik_penjualan(){
 				for ($i=1; $i <=12 ; $i++) { 
-					$data[$i] = $this->per_month_penjualan($i);
+					$data[$i] = $this->per_month_penjualan($i, 'penjualan');
 				}
 				return $data;
+			}
+			function statistik_pemesanan(){
+				for ($i=1; $i <=12 ; $i++) { 
+					$data[$i] = $this->per_month_penjualan($i, 'pemesanan');
+				}
+				return $data;
+			}
+
+
+			/*Info Transaksi User*/
+			function user_trx($id_customer, $type){
+				if ($type == "penjualan") {
+					$sql = "SELECT id_customer FROM transaksi trx LEFT OUTER JOIN penjualan pj ON trx.trx_code = pj.trx_code WHERE pj.id_customer = '$id_customer'";
+					$query = $this->query($sql);
+					$row = $query->num_rows;
+				}elseif($type == "pemesanan"){
+					$sql = "SELECT id_customer FROM transaksi_pemesanan trx LEFT OUTER JOIN pemesanan pm ON trx.trx_code = pm.trx_code WHERE pm.id_customer = '$id_customer'";
+					$query = $this->query($sql);
+					$row = $query->num_rows;
+				}else{
+					$row = 0;
+				}
+				return $row;
+
 			}
 
 

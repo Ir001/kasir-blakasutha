@@ -75,7 +75,7 @@ $data = $system->list_trx_penjualan();
                         ?>
                         <tr>
                           <td><?=$no;?></span></td>
-                          <td><?=$customer[0]['nama_lengkap'];?></td>
+                          <td><?=$customer['nama_lengkap'];?></td>
                           <td>Rp. <?=number_format($data['total_harga'],0,',','.');?></td>
                           <td><?=$data['tgl_transaksi'];?></td>
                           <td>

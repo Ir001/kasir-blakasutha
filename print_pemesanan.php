@@ -32,7 +32,7 @@ if (isset($_GET['status']) && $_GET['status'] == "pelunasan") {
 			<?php endif ?>
 			<p style="font-size: 8px"> 
 				Kode Transaksi : <?=$detail_trx['trx_code'];?></br>
-				Nama : <?=ucwords($cust[0]['nama_lengkap']);?></br>
+				Nama : <?=ucwords($cust['nama_lengkap']);?></br>
 				Jenis Pesanan : <?=ucwords($detail_trx['jenis_pemesanan']);?></br>
 				Tgl Transaksi : <?=$detail_trx['tgl_transaksi'];?></br>
 				Perkiraan Selesai : <?=$detail_trx['perkiraan_selesai'];?></br>

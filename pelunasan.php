@@ -76,7 +76,7 @@ $data = $system->show_pelunasan();
                         $customer = $system->detail_customer($data['id_customer']);
                         ?>
                         <tr>
-                          <td><?=ucwords($customer[0]['nama_lengkap']);?></td>
+                          <td><?=ucwords($customer['nama_lengkap']);?></td>
                           <td><?=ucwords($data['jenis_pemesanan']);?></td>
                           <td><a href="<?=ltrim($data['file_desain'], "\.\.\/");?>" target="_blank"><img src="<?=ltrim($data['file_desain'], "\.\.\/");?>" class="img img-thumbnail" style="max-height: 100px" alt="<?=$data['jenis_pemesanan']?>"></a></td>
                           <td><?=$data['jumlah_pesanan']?></td>

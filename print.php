@@ -20,7 +20,7 @@
   	<div class="info">
         <h2>Bukti Pembayaran</h2>
         <p style="font-size: 8px"> 
-            Nama : <?=$cust[0]['nama_lengkap'];?></br>
+            Nama : <?=$cust['nama_lengkap'];?></br>
             Kode Transaksi : <?=$detail_trx['trx_code'];?></br>
             Tgl Transaksi : <?=$detail_trx['tgl_transaksi'];?></br>
         </p>
