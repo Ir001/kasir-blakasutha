@@ -4,6 +4,8 @@ if (!$logged) {
   header("location:login.php");
 }
 $penjualan = $system->list_trx_penjualan();
+$menu = "laporan";
+$menuItem = "penjualan_l";
 ?>
 <!DOCTYPE html>
 <html>

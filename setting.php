@@ -3,6 +3,7 @@
   if (!$logged) {
     header("location:login.php");
   }
+  $menu = "setting";
  ?>
 <!DOCTYPE html>
 <html>

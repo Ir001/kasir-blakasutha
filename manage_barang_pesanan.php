@@ -3,6 +3,8 @@
   if (!$logged) {
     header("location:login.php");
   }
+  $menu = "management";
+  $menuItem = "barang_pemesanan";
  ?>
 <!DOCTYPE html>
 <html>

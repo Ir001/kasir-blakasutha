@@ -3,6 +3,8 @@ require 'application/system.php';
 if (!$logged) {
   header("location:login.php");
 }
+$menu = "laporan";
+$menuItem = "balance";
 $type = @$_GET['type'] ? trim($_GET['type']) : 'all';
 $pemasukan = $system->total_pemasukan($type);
 $penjualan = $pemasukan['penjualan'];

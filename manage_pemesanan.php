@@ -3,6 +3,8 @@ require 'application/system.php';
 if (!$logged) {
   header("location:login.php");
 }
+$menu = "management";
+$menuItem = "pemesanan_m";
 ?>
 <!DOCTYPE html>
 <html>

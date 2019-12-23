@@ -3,7 +3,10 @@ require 'application/system.php';
 if (!$logged) {
   header("location:login.php");
 }
+$menu = "dashboard";
+$menuItem = "pelunasan";
 $data = $system->show_pelunasan();
+
 ?>
 <!DOCTYPE html>
 <html>

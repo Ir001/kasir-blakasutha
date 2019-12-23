@@ -26,8 +26,12 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
-           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+           <li class="nav-item has-treeview <?php if ($menu == "dashboard"): ?>
+             menu-open
+           <?php endif ?>">
+            <a href="#" class="nav-link <?php if ($menu == "dashboard"): ?>
+             active
+           <?php endif ?>">
               <i class="nav-icon fas fa-shopping-cart"></i>
               <p>
                 Dashboard
@@ -36,27 +40,37 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="index.php" class="nav-link">
+                <a href="index.php" class="nav-link <?php if ($menu == "dashboard" && $menuItem == "penjualan"): ?>
+                 active 
+                <?php endif ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Penjualan</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pemesanan.php" class="nav-link">
+                <a href="pemesanan.php" class="nav-link <?php if ($menu == "dashboard" && $menuItem == "pemesanan"): ?>
+                 active 
+                <?php endif ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pemesanan</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pelunasan.php" class="nav-link">
+                <a href="pelunasan.php" class="nav-link <?php if ($menu == "dashboard" && $menuItem == "pelunasan"): ?>
+                  active
+                <?php endif ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pelunasan</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+          <li class="nav-item has-treeview <?php if ($menu == "management"): ?>
+            menu-open
+          <?php endif ?>">
+            <a href="#" class="nav-link <?php if ($menu == "management"): ?>
+             active
+           <?php endif ?>">
               <i class="nav-icon fas fa-tasks"></i>
               <p>
                 Management
@@ -65,33 +79,45 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="manage_pemesanan.php" class="nav-link">
+                <a href="manage_pemesanan.php" class="nav-link <?php if ($menu == "management" && $menuItem == "pemesanan_m"): ?>
+                  active
+                <?php endif ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Daftar Pemesanan</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="manage_pelanggan.php" class="nav-link">
+                <a href="manage_pelanggan.php" class="nav-link <?php if ($menu == "management" && $menuItem == "pelanggan"): ?>
+                  active
+                <?php endif ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pelanggan</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="manage_barang.php" class="nav-link">
+                <a href="manage_barang.php" class="nav-link <?php if ($menu == "management" && $menuItem == "barang"): ?>
+                  active
+                <?php endif ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Barang</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="manage_barang_pesanan.php" class="nav-link">
+                <a href="manage_barang_pesanan.php" class="nav-link <?php if ($menu == "management" && $menuItem == "barang_pemesanan"): ?>
+                  active
+                <?php endif ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Harga Pemesanan</p>
                 </a>
               </li>
             </ul>
           </li>
-           <li class="nav-item has-treeview">
-            <a href="laporan.php" class="nav-link">
+           <li class="nav-item has-treeview <?php if ($menu == "laporan"): ?>
+             menu-open
+           <?php endif ?>">
+            <a href="laporan.php" class="nav-link <?php if ($menu == "laporan"): ?>
+             active
+           <?php endif ?>">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Laporan
@@ -100,19 +126,25 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="balance.php" class="nav-link">
+                <a href="balance.php" class="nav-link <?php if ($menu == "laporan" && $menuItem == "balance"): ?>
+                  active
+                <?php endif ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Balance</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="laporan_penjualan.php" class="nav-link">
+                <a href="laporan_penjualan.php" class="nav-link <?php if ($menu == "laporan" && $menuItem == "penjualan_l"): ?>
+                  active
+                <?php endif ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Penjualan</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="laporan_pemesanan.php" class="nav-link">
+                <a href="laporan_pemesanan.php" class="nav-link <?php if ($menu == "laporan" && $menuItem == "pemesanan_l"): ?>
+                  active
+                <?php endif ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pemesanan</p>
                 </a>
@@ -127,7 +159,9 @@
           </li>
           <li class="nav-header">Konfigurasi</li>
           <li class="nav-item">
-            <a href="setting.php" class="nav-link">
+            <a href="setting.php" class="nav-link <?php if ($menu == "setting"): ?>
+              active
+            <?php endif ?>">
               <i class="nav-icon fas fa-tools"></i>
               <p>
                 Pengaturan
