@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 19, 2019 at 05:57 AM
+-- Generation Time: Dec 23, 2019 at 04:29 AM
 -- Server version: 10.2.3-MariaDB-log
 -- PHP Version: 7.1.1
 
@@ -66,9 +66,9 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id_barang`, `kode_barang`, `nama_barang`, `stok`, `harga_1`, `harga_2`, `harga_3`, `updated_at`) VALUES
-(18, 'POLOSL', 'Kaos Putih Polos (L)', 1, 75000, 73000, 70000, '2019-12-11'),
-(19, 'POLOSXL', 'Kaos Putih Polos (XL)', 9, 75000, 73000, 70000, '2019-12-11'),
-(20, 'POLOSPJGL', 'Kaos Putih Polos Panjang (XL)', 1, 80000, 78000, 76000, '2019-12-11');
+(18, 'POLOSL', 'Kaos Putih Polos (L)', 4, 75000, 73000, 70000, '2019-12-11'),
+(19, 'POLOSXL', 'Kaos Putih Polos (XL)', 82, 75000, 73000, 70000, '2019-12-11'),
+(20, 'POLOSPJGL', 'Kaos Putih Polos Panjang (XL)', 64, 80000, 78000, 76000, '2019-12-11');
 
 -- --------------------------------------------------------
 
@@ -125,8 +125,8 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`id_customer`, `nama_lengkap`, `phone`, `instagram`, `role`, `created_at`) VALUES
 (9, 'Irwan Antonio', '082243440959', '@hjkwz', 'reseller', '2019-12-13'),
-(10, 'Antonio', '085727298470', '@anthonio', 'customer', '2019-12-13'),
-(12, 'Blaka', '111', '@blakablaka', 'reseller', '2019-12-13');
+(12, 'Blakasutha', '085727298470', '@blakablaka', 'customer', '2019-12-13'),
+(13, 'Jaka', '0912341521', '@jaka123', 'customer', '2019-12-22');
 
 -- --------------------------------------------------------
 
@@ -163,9 +163,7 @@ CREATE TABLE `pemesanan` (
 --
 
 INSERT INTO `pemesanan` (`id_pemesanan`, `id_customer`, `id_barang`, `trx_code`, `subharga`, `jumlah`, `tanggal_order`) VALUES
-(1, 10, 4, 'UzA6X0des1', 75000, 5, '2019-12-19 12:47:52'),
-(2, 10, 10, 'UzA6X0des1', 75000, 3, '2019-12-19 12:47:52'),
-(3, 12, 9, 'fvN51guGc2', 75000, 1, '2019-12-19 12:49:01');
+(4, 9, 10, 'fC6Lv9kcjx', 75000, 12, '2019-12-21 12:34:51');
 
 -- --------------------------------------------------------
 
@@ -204,7 +202,16 @@ INSERT INTO `penjualan` (`id_penjualan`, `id_customer`, `id_barang`, `trx_code`,
 (1, 12, 20, 'TG0TXMMAcn', 72400, 6, '2019-12-19 12:46:04'),
 (2, 12, 19, 'TG0TXMMAcn', 68000, 10, '2019-12-19 12:46:04'),
 (3, 9, 18, 'CaVuFHd3oj', 68000, 10, '2019-12-19 12:46:43'),
-(4, 9, 19, 'CaVuFHd3oj', 68000, 5, '2019-12-19 12:46:44');
+(4, 9, 19, 'CaVuFHd3oj', 68000, 5, '2019-12-19 12:46:44'),
+(5, 12, 20, 'qbtOpBI8XC', 80000, 1, '2019-12-21 12:17:47'),
+(6, 12, 18, 'UxIn41og2u', 75000, 5, '2019-12-21 12:33:35'),
+(7, 12, 20, 'UxIn41og2u', 80000, 2, '2019-12-21 12:33:36'),
+(8, 9, 18, '7pibiL4sYx', 68000, 1, '2019-12-21 17:21:14'),
+(9, 9, 19, '7pibiL4sYx', 68000, 2, '2019-12-21 17:21:14'),
+(10, 13, 20, 'ZYeyfTmptQ', 80000, 1, '2019-11-22 09:36:23'),
+(11, 12, 20, 'Nwv8NNr7DG', 80000, 1, '2019-10-23 09:48:11'),
+(12, 12, 19, 'Nwv8NNr7DG', 75000, 6, '2019-10-23 09:48:12'),
+(13, 13, 20, 'kpB8BKNnYI', 80000, 1, '2019-12-23 10:02:58');
 
 -- --------------------------------------------------------
 
@@ -249,8 +256,12 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`id_trx`, `trx_code`, `total_harga`, `jumlah_bayar`, `tgl_transaksi`) VALUES
-(1, 'TG0TXMMAcn', 1107000, 1110000, '2019-12-19 12:46:04'),
-(2, 'CaVuFHd3oj', 1012500, 1013000, '2019-12-19 12:46:43');
+(4, 'UxIn41og2u', 535000, 540000, '2019-12-21 12:33:35'),
+(5, '7pibiL4sYx', 202500, 202500, '2019-12-21 17:21:14'),
+(6, 'ZYeyfTmptQ', 80000, 80000, '2019-11-22 09:36:22'),
+(7, 'Nwv8NNr7DG', 530000, 530000, '2019-10-23 09:48:10'),
+(8, 'kpB8BKNnYI', 80000, 80000, '2019-12-23 10:02:58'),
+(9, 'kpB8BKNnYI', 80000, 80000, '2019-12-23 10:02:59');
 
 -- --------------------------------------------------------
 
@@ -280,8 +291,7 @@ CREATE TABLE `transaksi_pemesanan` (
 --
 
 INSERT INTO `transaksi_pemesanan` (`id_tp`, `trx_code`, `jenis_pemesanan`, `model_baju`, `jenis_sablon`, `file_desain`, `deskripsi`, `jumlah_pesanan`, `total_harga`, `jumlah_bayar`, `kurang`, `status`, `perkiraan_selesai`, `tgl_transaksi`) VALUES
-(6, 'UzA6X0des1', 'kaos', 'u-neck', 'plastisol', '../image/UzA6X0des1.jpg', 'Sablon belakang saja', 8, 600000, 300000, 'true', 'diproses', '2019-12-31', '2019-12-19 12:47:52'),
-(7, 'fvN51guGc2', 'kaos', 'u-neck', 'poliflex', '../image/fvN51guGc2.jpg', 'Kaos sablon depan saja', 1, 65000, 33000, 'true', 'diproses', '2019-12-31', '2019-12-19 12:49:01');
+(8, 'fC6Lv9kcjx', 'kaos', 'kerah', 'plastisol', '../image/fC6Lv9kcjx.jpg', 'Miring Food, belakang kaos', 12, 780000, 400000, 'true', 'selesai', '2020-01-04', '2019-12-21 12:34:51');
 
 --
 -- Indexes for dumped tables
@@ -385,7 +395,7 @@ ALTER TABLE `barang_pesanan`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id_customer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_customer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `pelunasan`
@@ -397,7 +407,7 @@ ALTER TABLE `pelunasan`
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `pengeluaran`
@@ -409,7 +419,7 @@ ALTER TABLE `pengeluaran`
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `setting`
@@ -421,13 +431,13 @@ ALTER TABLE `setting`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_trx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_trx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `transaksi_pemesanan`
 --
 ALTER TABLE `transaksi_pemesanan`
-  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables

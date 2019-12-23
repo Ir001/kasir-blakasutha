@@ -890,24 +890,24 @@ class System extends mysqli{
 			function jumlah_penjualan($type="all"){
 				$date_now = date('Y-m-d', strtotime('+1 day', strtotime(date('Y-m-d'))));
 				if ($type == "all") {
-					$sql = "SELECT count(*) as terjual FROM transaksi";
+					$sql = "SELECT count(*) as terjual FROM penjualan";
 				}else{
 					if ($type == "year") {
 						$date_minus = date('Y-m-d', strtotime('-1 year', strtotime($date_now)));
-						$sql = "SELECT count(*) as terjual FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+						$sql = "SELECT count(*) as terjual FROM penjualan WHERE tgl_penjualan >= '$date_minus' AND tgl_penjualan <= '$date_now'";
 					}elseif ($type == "month") {
 						$date_minus = date('Y-m-d', strtotime('-1 month', strtotime($date_now)));
-						$sql = "SELECT count(*) as terjual FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+						$sql = "SELECT count(*) as terjual FROM penjualan WHERE tgl_penjualan >= '$date_minus' AND tgl_penjualan <= '$date_now'";
 
 					}elseif ($type == "week") {
 						$date_minus = date('Y-m-d', strtotime('-1 week', strtotime($date_now)));
-						$sql = "SELECT count(*) as terjual FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+						$sql = "SELECT count(*) as terjual FROM penjualan WHERE tgl_penjualan >= '$date_minus' AND tgl_penjualan <= '$date_now'";
 
 					}elseif ($type == "day") {
 						$date_minus = date('Y-m-d', strtotime('-1 day', strtotime($date_now)));
-						$sql = "SELECT count(*) as terjual FROM transaksi WHERE tgl_transaksi >= '$date_minus' AND tgl_transaksi <= '$date_now'";
+						$sql = "SELECT count(*) as terjual FROM penjualan WHERE tgl_penjualan >= '$date_minus' AND tgl_penjualan <= '$date_now'";
 					}else{
-						$sql = "SELECT count(*) as terjual FROM transaksi";
+						$sql = "SELECT count(*) as terjual FROM penjualan";
 					}
 					
 				}

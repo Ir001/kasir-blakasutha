@@ -76,7 +76,7 @@ if (!$logged) {
                         $customer = $system->detail_customer($id);
                         ?>
                         <tr>
-                          <td><?=$customer[0]['nama_lengkap'];?> <span class="badge badge-sm badge-info"><?=ucwords($customer[0]['role']);?></span></td>
+                          <td><?=$customer['nama_lengkap'];?> <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span></td>
                           <td><?=ucwords($list['jenis_pemesanan']);?></td>
                           <td><?=$list['jenis_sablon'];?></td>
                           <td><img src="<?=ltrim($list['file_desain'], "\.\.\.\/");?>" class="img img-thumbnail" style="max-width: 100px" alt="<?=$list['jenis_pemesanan'];?>"></td>

@@ -193,7 +193,6 @@ $statistik_pemesanan = $system->statistik_pemesanan();
               <!-- /.card -->
             </div>
               <!-- /.card -->
-            </div>
           </div>
           <!-- /.row -->
         </div>

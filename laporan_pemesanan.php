@@ -11,7 +11,7 @@ $data = $system->list_trx_penjualan();
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?=$setting['nama_bisnis'];?> | Laporan</title>
+  <title><?=$setting['nama_bisnis'];?> | Laporan Pemesanan</title>
 
   <?php include 'theme/src_head.php'; ?>
 </head>
@@ -79,7 +79,7 @@ $data = $system->list_trx_penjualan();
                           <td>Rp. <?=number_format($data['total_harga'],0,',','.');?></td>
                           <td><?=$data['tgl_transaksi'];?></td>
                           <td>
-                            <button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Detail</button>
+                            <!-- <button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Detail</button> -->
                             <button trx_code="<?=$data['trx_code'];?>" class="btn-cetak btn btn-primary btn-sm"><i class="fa fa-print"></i> Cetak</button>
                           </td>
                         </tr>
