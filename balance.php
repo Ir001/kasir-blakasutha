@@ -3,6 +3,9 @@ require 'application/system.php';
 if (!$logged) {
   header("location:login.php");
 }
+if (!$isAdmin) {
+  exit('Akses tidak diijinkan');
+}
 $menu = "laporan";
 $menuItem = "balance";
 $type = @$_GET['type'] ? trim($_GET['type']) : 'all';

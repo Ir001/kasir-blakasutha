@@ -1,5 +1,6 @@
 <?php 
-require 'system.php';
+// require 'system.php';
+require_once (dirname(__FILE__)."/system.php");
 if (isset($_POST['user_login'])) {
 	$username = $_POST['username'];
 	$password = $_POST['password'];
@@ -183,14 +184,6 @@ if (isset($_POST['user_login'])) {
 	$harga_3 = $_POST['harga_3'];
 	$add_data_barang = $system->add_data_barang($kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3);
 	echo $system->convert_to_json($add_data_barang);
-}elseif(isset($_POST['add_data_barang_pesanan'])){
-	$nama_pesanan = $_POST['nama_pesanan'];
-	$ukuran = $_POST['ukuran'];
-	$harga_1 = $_POST['harga_1'];
-	$harga_2 = $_POST['harga_2'];
-	$harga_3 = $_POST['harga_3'];
-	$add_data_barang = $system->add_data_barang_pesanan($nama_pesanan, $ukuran, $harga_1, $harga_2, $harga_3);
-	echo $system->convert_to_json($add_data_barang);
 }elseif(isset($_POST['edit_data_barang'])){
 	$id_barang = $_POST['id_barang'];
 	$kode_barang = $_POST['kode_barang'];
@@ -205,51 +198,6 @@ if (isset($_POST['user_login'])) {
 	$id_barang = $_POST['id'];
 	$delete_barang = $system->delete_data_barang($id_barang);
 	echo $system->convert_to_json($delete_barang);
-}elseif(isset($_POST['delete_barang_pesanan'])){
-	$id_barang = $_POST['id'];
-	$delete_barang = $system->delete_data_barang_pesanan($id_barang);
-	echo $system->convert_to_json($delete_barang);
-}elseif (isset($_POST['add_pesanan'])) {
-	$trx_code = $_POST['trx_code'];
-	$_SESSION['trx_code'] = $trx_code;
-	$jenis_pemesanan = @$_POST['jenis_pemesanan'];
-	$model_baju = @$_POST['model_baju'];
-	$jenis_sablon = implode(",", @$_POST['jenis_sablon']);
-	$keterangan = @$_POST['keterangan'];
-	$perkiraan_selesai = @$_POST['perkiraan_selesai'];
-		//Memanggil fungsi
-	include 'upload_files.php';
-		//Sablon Depan
-	$file_desain = @$_FILES['file_desain'];
-	$data_file_desain = array(
-		'nama_file' => $file_desain['name'], 
-		'ukuran_file' => $file_desain['size'], 
-		'tipe_file' => $file_desain['type'], 
-		'tmp_file' => $file_desain['tmp_name'], 
-		'lokasi' => "image", 
-		'trx_code' => $trx_code, 
-	);
-		//Proses Upload
-	$upload_file_desain = upload_image($data_file_desain);		
-		//Selesai upload
-	$image_file_desain = @$upload_file_desain['image'];
-		//
-	$data = array(
-		'trx_code' => $trx_code,
-		'model_baju' => $model_baju,
-		'jenis_pemesanan' => $jenis_pemesanan,
-		'jenis_sablon' => $jenis_sablon,
-		'keterangan' => $keterangan,
-		'file_desain' => $image_file_desain,
-		'perkiraan_selesai' => $perkiraan_selesai,
-		'status' => 'diproses',
-	);
-	$transaksi = $system->add_transaksi_pemesanan($data);
-	$msg = array(
-		'upload' => $upload_file_desain,
-		'transaksi' => $transaksi,
-	); 
-	echo $system->convert_to_json($msg);
 }elseif(isset($_POST['add_barang_pesanan'])){
 	$id = $_POST['id'];
 	$jumlah = $_POST['jumlah'];
@@ -269,23 +217,5 @@ if (isset($_POST['user_login'])) {
 	$id = $_POST['id'];
 	$detail = $system->detail_customer($id);
 	echo $system->convert_to_json($detail);
-}elseif (isset($_POST['batalkan_pesanan'])) {
-	$trx_code = $_SESSION['trx_code'];
-	$delete = $system->delete_trx_pemesanan($trx_code);
-	if ($delete) {
-		unset($_SESSION['id_customer']);
-		unset($_SESSION['cart_pemesanan']);
-		unset($_SESSION['trx_code']);
-		$msg = array(
-			'success' => true,
-			'message' => 'Berhasil mereset!'
-		);
-	}else{
-		$msg = array(
-			'success' => false,
-			'message' => 'Gagal!'
-		);
-	}
-	echo $system->convert_to_json($msg);
 }
 ?>

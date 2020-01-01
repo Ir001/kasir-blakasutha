@@ -3,6 +3,9 @@ require 'application/system.php';
 if (!$logged) {
   header("location:login.php");
 }
+if (!$isAdmin) {
+  exit('Akses tidak diijinkan');
+}
 $penjualan = $system->list_trx_penjualan();
 $menu = "laporan";
 $menuItem = "penjualan_l";

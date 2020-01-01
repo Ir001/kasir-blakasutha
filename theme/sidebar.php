@@ -65,6 +65,7 @@
               </li>
             </ul>
           </li>
+          <?php if ($isAdmin): ?>
           <li class="nav-item has-treeview <?php if ($menu == "management"): ?>
             menu-open
           <?php endif ?>">
@@ -149,6 +150,7 @@
                   <p>Pemesanan</p>
                 </a>
               </li>
+
               <!-- <li class="nav-item">
                 <a href="manage_barang.php" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -156,7 +158,10 @@
                 </a>
               </li> -->
             </ul>
+
           </li>
+          <?php endif ?>
+          
           <li class="nav-header">Konfigurasi</li>
           <li class="nav-item">
             <a href="setting.php" class="nav-link <?php if ($menu == "setting"): ?>

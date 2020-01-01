@@ -3,6 +3,9 @@
   if (!$logged) {
     header("location:login.php");
   }
+  if (!$isAdmin) {
+    exit('Akses tidak diijinkan');
+  }
   $menu = "management";
   $menuItem = "barang";
  ?>

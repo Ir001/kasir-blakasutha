@@ -19,7 +19,13 @@ require '../application/system.php';
       <h6>Detail Customer:</h6>
       <hr>
       <div style="line-height: 6px">
-        <p>Nama: <h2><?=$customer['nama_lengkap'];?><span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span></h2></p>
+        <p>Nama: <h2><?=$customer['nama_lengkap'];?>
+          <?php if ($customer['role'] == "customer"): ?>
+            <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span>
+          <?php else: ?>
+            <span class="badge badge-sm badge-warning text-white"><?=ucwords($customer['role']);?></span>
+          <?php endif ?>
+        </h2></p>
         <p>Instagram: <?=$customer['instagram'];?></p>
         <p>Nomor Telepon: <?=$customer['phone'];?></p>
       </div>

@@ -15,7 +15,14 @@ require '../application/system.php';
     <h6>Detail Customer:</h6>
     <hr>
     <div style="line-height: 6px">
-      <p>Nama: <h2><?=$customer['nama_lengkap'];?> <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span></h2></p>
+      <p>Nama: <h2><?=$customer['nama_lengkap'];?>
+      <?php if ($customer['role'] == "customer"): ?>
+        <span class="badge badge-lg badge-info"><?=ucwords($customer['role']);?></span>
+        <?php else: ?>
+          <span class="badge badge-lg badge-warning text-white"><?=ucwords($customer['role']);?></span>
+        <?php endif ?>
+
+      </h2></p>
       <p>Nomor Telepon: <?=$customer['phone'];?></p>
     </div>
     <hr>
@@ -72,7 +79,7 @@ require '../application/system.php';
     }
     ?>
     <tr>
-      <td><?=$data['nama_pesanan'];?></td>
+      <td><?=$data['length']." (".$data['ukuran'].")";?></td>
       <td><?=number_format($jumlah,0,',','.');?></td>
       <td><?=$harga;?></td>
       <td><?=$total;?></td>
@@ -80,7 +87,7 @@ require '../application/system.php';
         <form class="edit_cart">
           <input type="hidden" name="edit_cart" value="1">
           <input type="hidden" name="id" class="id" value="<?=$id;?>">
-          <input type="hidden" name="nama_pesanan" class="nama_pesanan" value="<?=$data['nama_pesanan'];?>">
+          <input type="hidden" name="nama_pesanan" class="nama_pesanan" value="<?=$data['length']." (".$data['ukuran'].")";?>">
           <input type="hidden" name="jumlah" class="jumlah" value="<?=$jumlah;?>">
           <button type="submit" class="btn btn-sm btn-success" title="Edit"><i class="fa fa-pen"></i></button>
         </form>
@@ -139,8 +146,8 @@ require '../application/system.php';
       </div>
       <div class="modal-body"> 
         <form id="editForm">
-            <input type="hidden" name="edit_cart" value="1">
-            <input type="hidden" name="id" id="idForm">
+          <input type="hidden" name="edit_cart" value="1">
+          <input type="hidden" name="id" id="idForm">
           <div class="form-group">
             <label for="">Nama Barang</label>
             <input type="text" id="namaForm" class="form-control" disabled="">
@@ -237,7 +244,7 @@ require '../application/system.php';
     e.preventDefault();
     $.ajax({
       type: 'POST',
-      url : 'application/event.php',
+      url : 'application/event_pemesanan.php',
       data : $('#form_bayar').serialize(),
       dataType : 'json',
       success : function(data){
@@ -262,7 +269,7 @@ require '../application/system.php';
         e.preventDefault();
         $.ajax({
           type : 'POST',
-          url : 'application/event.php',
+          url : 'application/event_pemesanan.php',
           data : $('#batalkan').serialize(),
           dataType : 'json',
           success : function(data){
@@ -304,24 +311,24 @@ require '../application/system.php';
 
   });
   $('#editForm').submit(function(e){
-      e.preventDefault();
-      $('#modalEdit').modal('hide');
-      $.ajax({
-        type : 'POST',
-        url : 'application/event_pemesanan.php',
-        data : $(this).serialize(),
-        dataType : 'json',
-        success : function (data){
-          if (data.success) {
-           window.$('#load-cart').load("json/cart_pemesanan.php");
-           toastr['success'](data.message);
-         }else{
-           toastr['error'](data.message);
+    e.preventDefault();
+    $('#modalEdit').modal('hide');
+    $.ajax({
+      type : 'POST',
+      url : 'application/event_pemesanan.php',
+      data : $(this).serialize(),
+      dataType : 'json',
+      success : function (data){
+        if (data.success) {
+         window.$('#load-cart').load("json/cart_pemesanan.php");
+         toastr['success'](data.message);
+       }else{
+         toastr['error'](data.message);
 
-         }
        }
-     })
-    })
+     }
+   })
+  })
   $('.delete_btn').click(function(){
     if (confirm('Apakah anda yakin?')) {
       $('.delete_cart').submit(function(e){

@@ -3,6 +3,10 @@ require 'application/system.php';
 if (!$logged) {
   header("location:login.php");
 }
+/**/
+if (!$isAdmin) {
+  exit('Akses tidak diijinkan');
+}
 $menu = "management";
 $menuItem = "pemesanan_m";
 ?>
@@ -11,7 +15,7 @@ $menuItem = "pemesanan_m";
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?=$setting['nama_bisnis'];?> | Manage Barang</title>
+  <title><?=$setting['nama_bisnis'];?> | Manage Pemesanan</title>
 
   <?php include 'theme/src_head.php'; ?>
 </head>
@@ -63,6 +67,7 @@ $menuItem = "pemesanan_m";
                         <th>Customer</th>
                         <th>Jenis</th>
                         <th>Sablon</th>
+                        <th>Model Baju</th>
                         <th>File Desain</th>
                         <th>Deskripsi</th>
                         <th>Status</th>
@@ -78,10 +83,17 @@ $menuItem = "pemesanan_m";
                         $customer = $system->detail_customer($id);
                         ?>
                         <tr>
-                          <td><?=$customer['nama_lengkap'];?> <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span></td>
+                          <td><?=$customer['nama_lengkap'];?> 
+                          <?php if ($customer['role'] == "customer"): ?>
+                          <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span>
+                          <?php else: ?>
+                          <span class="badge badge-sm badge-warning text-white"><?=ucwords($customer['role']);?></span>
+                          <?php endif ?>
+                          </td>
                           <td><?=ucwords($list['jenis_pemesanan']);?></td>
-                          <td><?=$list['jenis_sablon'];?></td>
-                          <td><img src="<?=ltrim($list['file_desain'], "\.\.\.\/");?>" class="img img-thumbnail" style="max-width: 100px" alt="<?=$list['jenis_pemesanan'];?>"></td>
+                          <td><?=ucwords($list['jenis_sablon']);?></td>
+                          <td><?=@$list['model_baju'] ? ucwords($list['model_baju']) : "-";?></td>
+                          <td><a target="_blank" href="<?=ltrim($list['file_desain'], "\.\.\.\/");?>" class="btn btn-sm btn-info"><i class="fa fa-download"></i> Download</a></td>
                           <td><?=$list['deskripsi'];?></td>
                           <td>
                             <?php if ($list['status'] == "diproses"): ?>
@@ -101,7 +113,7 @@ $menuItem = "pemesanan_m";
                                 <input type="hidden" name="edit_pemesanan" value="1"> 
                                 <input type="hidden" name="trx_code" class="trx_code_edit" value="<?=$list['trx_code'];?>"> 
                                 <input type="hidden" name="status" class="status_edit" value="<?=$list['status'];?>"> 
-                                <button type="submit" title="Edit" class="btn btn-sm btn-warning">Edit</button>
+                                <button type="submit" title="Edit" class="btn btn-sm text-white btn-warning">Edit</button>
                               </form>
                             </td>
                           </tr>

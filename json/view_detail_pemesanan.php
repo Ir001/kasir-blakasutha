@@ -27,7 +27,7 @@
               <tr>
                 <?php $barang = $system->detail_barang_pesanan($data['id_barang']); ?>
                 <td><?=$no;?></td>
-                <td><?=$barang['nama_pesanan'];?></td>
+                <td><?=$barang['length'];?> (<?=$barang['type'];?>s)</td>
                 <td><?=$barang['ukuran'];?></td>
                 <td><?=$data['jumlah'];?></td>
                 <?php $no++; ?>

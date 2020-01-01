@@ -64,7 +64,6 @@ $data = $system->show_pelunasan();
                       <tr>
                         <th>Nama Pemesan</th>
                         <th>Jenis Pesanan</th>
-                        <th>File Desain</th>
                         <th>Jumlah</th>
                         <th>Total Harga</th>
                         <th>Uang Muka</th>
@@ -81,7 +80,6 @@ $data = $system->show_pelunasan();
                         <tr>
                           <td><?=ucwords($customer['nama_lengkap']);?></td>
                           <td><?=ucwords($data['jenis_pemesanan']);?></td>
-                          <td><a href="<?=ltrim($data['file_desain'], "\.\.\/");?>" target="_blank"><img src="<?=ltrim($data['file_desain'], "\.\.\/");?>" class="img img-thumbnail" style="max-height: 100px" alt="<?=$data['jenis_pemesanan']?>"></a></td>
                           <td><?=$data['jumlah_pesanan']?></td>
                           <td><?=number_format($data['total_harga'],0,',','.');?></td>
                           <td><?=number_format($data['jumlah_bayar'],0,',','.');?></td>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 23, 2019 at 04:29 AM
+-- Generation Time: Jan 01, 2020 at 08:03 AM
 -- Server version: 10.2.3-MariaDB-log
 -- PHP Version: 7.1.1
 
@@ -66,9 +66,9 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id_barang`, `kode_barang`, `nama_barang`, `stok`, `harga_1`, `harga_2`, `harga_3`, `updated_at`) VALUES
-(18, 'POLOSL', 'Kaos Putih Polos (L)', 4, 75000, 73000, 70000, '2019-12-11'),
-(19, 'POLOSXL', 'Kaos Putih Polos (XL)', 82, 75000, 73000, 70000, '2019-12-11'),
-(20, 'POLOSPJGL', 'Kaos Putih Polos Panjang (XL)', 64, 80000, 78000, 76000, '2019-12-11');
+(18, 'POLOSL', 'Kaos Putih Polos (L)', 49, 75000, 73000, 70000, '2019-12-11'),
+(19, 'POLOSXL', 'Kaos Putih Polos (XL)', 50, 75000, 73000, 70000, '2019-12-11'),
+(20, 'POLOSPJGL', 'Kaos Putih Polos Panjang (XL)', 50, 80000, 78000, 76000, '2019-12-11');
 
 -- --------------------------------------------------------
 
@@ -78,11 +78,12 @@ INSERT INTO `barang` (`id_barang`, `kode_barang`, `nama_barang`, `stok`, `harga_
 
 CREATE TABLE `barang_pesanan` (
   `id_barang` int(11) NOT NULL,
-  `nama_pesanan` varchar(255) DEFAULT NULL,
+  `length` enum('Panjang','Pendek') NOT NULL,
   `ukuran` varchar(255) NOT NULL,
   `harga_1` float DEFAULT NULL,
   `harga_2` float DEFAULT NULL,
   `harga_3` float DEFAULT NULL,
+  `type` enum('30','24') DEFAULT '30',
   `updated_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
@@ -90,19 +91,31 @@ CREATE TABLE `barang_pesanan` (
 -- Dumping data for table `barang_pesanan`
 --
 
-INSERT INTO `barang_pesanan` (`id_barang`, `nama_pesanan`, `ukuran`, `harga_1`, `harga_2`, `harga_3`, `updated_at`) VALUES
-(1, 'Panjang S', 'S', 75000, 70000, 68000, '2019-11-30'),
-(2, 'Panjang M', 'M', 75000, 70000, 68000, '2019-11-30'),
-(3, 'Panjang L', 'L', 75000, 70000, 68000, '2019-11-30'),
-(4, 'Panjang XL', 'XL', 75000, 70000, 68000, '2019-11-30'),
-(5, 'Panjang XXL', 'XXL', 75000, 70000, 68000, '2019-11-30'),
-(6, 'Panjang XXXL', 'XXXL', 75000, 70000, 68000, '2019-11-30'),
-(7, 'Pendek S', 'S', 75000, 70000, 68000, '2019-11-30'),
-(8, 'Pendek M', 'M', 75000, 70000, 68000, '2019-11-30'),
-(9, 'Pendek L', 'L', 75000, 70000, 68000, '2019-11-30'),
-(10, 'Pendek XL', 'XL', 75000, 70000, 68000, '2019-11-30'),
-(11, 'Pendek XXL', 'XXL', 75000, 70000, 68000, '2019-11-30'),
-(12, 'Pendek XXXL', 'XXXL', 75000, 70000, 68000, '2019-11-30');
+INSERT INTO `barang_pesanan` (`id_barang`, `length`, `ukuran`, `harga_1`, `harga_2`, `harga_3`, `type`, `updated_at`) VALUES
+(1, 'Panjang', 'S', 75000, 70000, 68000, '30', '2019-11-30'),
+(2, 'Panjang', 'M', 75000, 70000, 68000, '30', '2019-11-30'),
+(3, 'Panjang', 'L', 75000, 70000, 68000, '30', '2019-11-30'),
+(4, 'Panjang', 'XL', 75000, 70000, 68000, '30', '2019-11-30'),
+(5, 'Panjang', 'XXL', 75000, 70000, 68000, '30', '2019-11-30'),
+(6, 'Panjang', 'XXXL', 75000, 70000, 68000, '30', '2019-11-30'),
+(7, 'Pendek', 'S', 75000, 70000, 68000, '30', '2019-11-30'),
+(8, 'Pendek', 'M', 75000, 70000, 68000, '30', '2019-11-30'),
+(9, 'Pendek', 'L', 75000, 70000, 68000, '30', '2019-11-30'),
+(10, 'Pendek', 'XL', 75000, 70000, 68000, '30', '2019-11-30'),
+(11, 'Pendek', 'XXL', 75000, 70000, 68000, '30', '2019-11-30'),
+(12, 'Pendek', 'XXXL', 75000, 70000, 68000, '30', '2019-11-30'),
+(14, 'Panjang', 'S', 80000, 75000, 70000, '24', '2019-11-30'),
+(15, 'Panjang', 'M', 80000, 75000, 70000, '24', '2019-11-30'),
+(16, 'Panjang', 'L', 80000, 70000, 68000, '24', '2019-11-30'),
+(17, 'Panjang', 'XL', 75000, 70000, 68000, '24', '2019-11-30'),
+(18, 'Panjang', 'XXL', 75000, 70000, 68000, '24', '2019-11-30'),
+(19, 'Panjang', 'XXXL', 75000, 70000, 68000, '24', '2019-11-30'),
+(20, 'Pendek', 'S', 75000, 70000, 68000, '24', '2019-11-30'),
+(21, 'Pendek', 'M', 75000, 70000, 68000, '24', '2019-11-30'),
+(22, 'Pendek', 'L', 75000, 70000, 68000, '24', '2019-11-30'),
+(23, 'Pendek', 'XL', 75000, 70000, 68000, '24', '2019-11-30'),
+(24, 'Pendek', 'XXL', 75000, 70000, 68000, '24', '2019-11-30'),
+(25, 'Pendek', 'XXXL', 75000, 70000, 68000, '24', '2019-11-30');
 
 -- --------------------------------------------------------
 
@@ -124,9 +137,9 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id_customer`, `nama_lengkap`, `phone`, `instagram`, `role`, `created_at`) VALUES
-(9, 'Irwan Antonio', '082243440959', '@hjkwz', 'reseller', '2019-12-13'),
 (12, 'Blakasutha', '085727298470', '@blakablaka', 'customer', '2019-12-13'),
-(13, 'Jaka', '0912341521', '@jaka123', 'customer', '2019-12-22');
+(14, 'Alfa', '089609506242', '@alfaabad20', 'customer', '2020-01-01'),
+(15, 'Dalpin', '085726562670', '@dkaalfi_', 'reseller', '2020-01-01');
 
 -- --------------------------------------------------------
 
@@ -163,20 +176,7 @@ CREATE TABLE `pemesanan` (
 --
 
 INSERT INTO `pemesanan` (`id_pemesanan`, `id_customer`, `id_barang`, `trx_code`, `subharga`, `jumlah`, `tanggal_order`) VALUES
-(4, 9, 10, 'fC6Lv9kcjx', 75000, 12, '2019-12-21 12:34:51');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pengeluaran`
---
-
-CREATE TABLE `pengeluaran` (
-  `id_pengeluaran` int(11) NOT NULL,
-  `kebutuhan` varchar(255) NOT NULL,
-  `deskripsi` text NOT NULL,
-  `tgl_pengeluaran` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+(1, 15, 23, 't4rYHmthwV', 75000, 10, '2020-01-01 14:51:34');
 
 -- --------------------------------------------------------
 
@@ -199,19 +199,7 @@ CREATE TABLE `penjualan` (
 --
 
 INSERT INTO `penjualan` (`id_penjualan`, `id_customer`, `id_barang`, `trx_code`, `subharga`, `jumlah`, `tgl_penjualan`) VALUES
-(1, 12, 20, 'TG0TXMMAcn', 72400, 6, '2019-12-19 12:46:04'),
-(2, 12, 19, 'TG0TXMMAcn', 68000, 10, '2019-12-19 12:46:04'),
-(3, 9, 18, 'CaVuFHd3oj', 68000, 10, '2019-12-19 12:46:43'),
-(4, 9, 19, 'CaVuFHd3oj', 68000, 5, '2019-12-19 12:46:44'),
-(5, 12, 20, 'qbtOpBI8XC', 80000, 1, '2019-12-21 12:17:47'),
-(6, 12, 18, 'UxIn41og2u', 75000, 5, '2019-12-21 12:33:35'),
-(7, 12, 20, 'UxIn41og2u', 80000, 2, '2019-12-21 12:33:36'),
-(8, 9, 18, '7pibiL4sYx', 68000, 1, '2019-12-21 17:21:14'),
-(9, 9, 19, '7pibiL4sYx', 68000, 2, '2019-12-21 17:21:14'),
-(10, 13, 20, 'ZYeyfTmptQ', 80000, 1, '2019-11-22 09:36:23'),
-(11, 12, 20, 'Nwv8NNr7DG', 80000, 1, '2019-10-23 09:48:11'),
-(12, 12, 19, 'Nwv8NNr7DG', 75000, 6, '2019-10-23 09:48:12'),
-(13, 13, 20, 'kpB8BKNnYI', 80000, 1, '2019-12-23 10:02:58');
+(1, 14, 18, 'SmDV0aCT7u', 75000, 1, '2020-01-01 15:01:37');
 
 -- --------------------------------------------------------
 
@@ -235,7 +223,7 @@ CREATE TABLE `setting` (
 --
 
 INSERT INTO `setting` (`id`, `nama_bisnis`, `alamat`, `phone`, `email`, `instagram`, `ucapan`, `update_at`) VALUES
-(1, 'BLAKA', 'Depan SMP 3 Pbg Lawas, Jln. Patung Knalpot', '082243440959', 'blaka@gmail.com', '@blakasuhta', 'Terimakasih', '2019-12-06 14:22:30');
+(1, 'Blakasutha', 'Depan SMP 3 Pbg Lawas, Jln. Patung Knalpot', '082243440959', 'blaka@gmail.com', '@blakasuhta', 'Terimakasih', '2020-01-01 11:25:58');
 
 -- --------------------------------------------------------
 
@@ -256,12 +244,7 @@ CREATE TABLE `transaksi` (
 --
 
 INSERT INTO `transaksi` (`id_trx`, `trx_code`, `total_harga`, `jumlah_bayar`, `tgl_transaksi`) VALUES
-(4, 'UxIn41og2u', 535000, 540000, '2019-12-21 12:33:35'),
-(5, '7pibiL4sYx', 202500, 202500, '2019-12-21 17:21:14'),
-(6, 'ZYeyfTmptQ', 80000, 80000, '2019-11-22 09:36:22'),
-(7, 'Nwv8NNr7DG', 530000, 530000, '2019-10-23 09:48:10'),
-(8, 'kpB8BKNnYI', 80000, 80000, '2019-12-23 10:02:58'),
-(9, 'kpB8BKNnYI', 80000, 80000, '2019-12-23 10:02:59');
+(1, 'SmDV0aCT7u', 75000, 80000, '2020-01-01 15:01:37');
 
 -- --------------------------------------------------------
 
@@ -280,7 +263,8 @@ CREATE TABLE `transaksi_pemesanan` (
   `jumlah_pesanan` int(11) DEFAULT NULL,
   `total_harga` float DEFAULT NULL,
   `jumlah_bayar` float DEFAULT NULL,
-  `kurang` enum('true','false') DEFAULT NULL,
+  `kurang` enum('true','false') DEFAULT 'true',
+  `type` enum('30','24') DEFAULT '30',
   `status` enum('diproses','selesai','lunas') DEFAULT 'diproses',
   `perkiraan_selesai` date DEFAULT NULL,
   `tgl_transaksi` datetime DEFAULT NULL
@@ -290,8 +274,8 @@ CREATE TABLE `transaksi_pemesanan` (
 -- Dumping data for table `transaksi_pemesanan`
 --
 
-INSERT INTO `transaksi_pemesanan` (`id_tp`, `trx_code`, `jenis_pemesanan`, `model_baju`, `jenis_sablon`, `file_desain`, `deskripsi`, `jumlah_pesanan`, `total_harga`, `jumlah_bayar`, `kurang`, `status`, `perkiraan_selesai`, `tgl_transaksi`) VALUES
-(8, 'fC6Lv9kcjx', 'kaos', 'kerah', 'plastisol', '../image/fC6Lv9kcjx.jpg', 'Miring Food, belakang kaos', 12, 780000, 400000, 'true', 'selesai', '2020-01-04', '2019-12-21 12:34:51');
+INSERT INTO `transaksi_pemesanan` (`id_tp`, `trx_code`, `jenis_pemesanan`, `model_baju`, `jenis_sablon`, `file_desain`, `deskripsi`, `jumlah_pesanan`, `total_harga`, `jumlah_bayar`, `kurang`, `type`, `status`, `perkiraan_selesai`, `tgl_transaksi`) VALUES
+(25, 't4rYHmthwV', 'kaos', 'u-neck', 'plastisol', '../file_desain/t4rYHmthwV.zip', 'asd', 10, 650000, 325000, 'true', '30', 'selesai', '2020-01-25', '2020-01-01 14:51:34');
 
 --
 -- Indexes for dumped tables
@@ -335,12 +319,6 @@ ALTER TABLE `pemesanan`
   ADD PRIMARY KEY (`id_pemesanan`),
   ADD KEY `FK__customer` (`id_customer`),
   ADD KEY `Index 3` (`id_barang`);
-
---
--- Indexes for table `pengeluaran`
---
-ALTER TABLE `pengeluaran`
-  ADD PRIMARY KEY (`id_pengeluaran`);
 
 --
 -- Indexes for table `penjualan`
@@ -389,13 +367,13 @@ ALTER TABLE `barang`
 -- AUTO_INCREMENT for table `barang_pesanan`
 --
 ALTER TABLE `barang_pesanan`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id_customer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_customer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `pelunasan`
@@ -407,19 +385,13 @@ ALTER TABLE `pelunasan`
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `pengeluaran`
---
-ALTER TABLE `pengeluaran`
-  MODIFY `id_pengeluaran` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `setting`
@@ -431,13 +403,13 @@ ALTER TABLE `setting`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_trx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_trx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `transaksi_pemesanan`
 --
 ALTER TABLE `transaksi_pemesanan`
-  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables

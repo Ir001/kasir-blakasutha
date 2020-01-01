@@ -29,6 +29,17 @@ class System extends mysqli{
 		$info_setting = $query->fetch_assoc();
 		return @$info_setting;
 	}
+	function isAdmin(){
+		if (isset($_SESSION['user'])) {
+			if ($_SESSION['user']['role'] == "administrator") {
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+				return false;
+		}
+	}
 
 	/*Form Login*/
 
@@ -453,8 +464,14 @@ class System extends mysqli{
 		}
 		return $msg;
 	}
-	function list_trx_pemesanan(){
-		$sql = "SELECT * FROM transaksi_pemesanan INNER JOIN pemesanan ON transaksi_pemesanan.trx_code = pemesanan.trx_code WHERE status != 'lunas' GROUP BY pemesanan.trx_code";
+	function list_trx_pemesanan($type="pelunasan"){
+		if ($type == "pelunasan") {
+			$sql = "SELECT * FROM transaksi_pemesanan INNER JOIN pemesanan ON transaksi_pemesanan.trx_code = pemesanan.trx_code WHERE status != 'lunas' GROUP BY pemesanan.trx_code";
+
+		}elseif($type == "lunas"){
+			$sql = "SELECT * FROM transaksi_pemesanan INNER JOIN pemesanan ON transaksi_pemesanan.trx_code = pemesanan.trx_code WHERE status = 'lunas' GROUP BY pemesanan.trx_code";
+
+		}
 		$query = $this->query($sql);
 		$row = $query->num_rows;
 		$i = 0;
@@ -472,6 +489,7 @@ class System extends mysqli{
 				'deskripsi' => $res['deskripsi'],
 				'file_desain' => $res['file_desain'],
 				'model_baju' => $res['model_baju'],
+				'tgl_transaksi' => $res['tgl_transaksi'],
 				'perkiraan_selesai' => $res['perkiraan_selesai'],
 			);
 			$i++;
@@ -495,6 +513,30 @@ class System extends mysqli{
 			);
 		}
 		
+		return @$msg;
+
+	}
+	function edit_data_barang_pemesanan($data=array()){
+		$id_barang = $data['id_barang'];
+		$type = $data['type'];
+		$length = $data['length'];
+		$harga_1 = $data['harga_1'];
+		$harga_2 = $data['harga_2'];
+		$harga_3 = $data['harga_3'];
+
+		$sql = "UPDATE barang_pesanan SET type = '$type', length = '$length', harga_1 ='$harga_1',harga_2 = '$harga_2', harga_3 ='$harga_3' WHERE id_barang = $id_barang";
+		$query = $this->query($sql);
+		if ($query) {
+			$msg = array(
+				'success' => true,
+				'message' => "Barang berhasil diubah!"
+			);
+		}else{
+			$msg = array(
+				'success' => false,
+				'message' => "Error!"
+			);
+		}
 		return @$msg;
 
 	}
@@ -542,15 +584,24 @@ class System extends mysqli{
 		}
 		return @$data;
 	}
-	function list_barang_pesanan(){
-		$sql = "SELECT * FROM barang_pesanan WHERE 1=1";
+	function list_barang_pesanan($type="all"){
+		if ($type == "all") {
+			$sql = "SELECT * FROM barang_pesanan WHERE 1=1";
+		}elseif($type == "30"){
+			$sql = "SELECT * FROM barang_pesanan WHERE type = '$type'";
+		}elseif($type == "24"){
+			$sql = "SELECT * FROM barang_pesanan WHERE type = '$type'";
+		}
 		$query = $this->query($sql);
 		$i = 0;
 		while ($res = $query->fetch_assoc()) {
+			$nama_pesanan = $res['length']." ".$res['ukuran'];
 			$data[$i] = array(
 				'id_barang' => $res['id_barang'],
-				'nama_pesanan' => $res['nama_pesanan'],
+				'nama_pesanan' => $nama_pesanan,
 				'ukuran' => $res['ukuran'],
+				'length' => $res['length'],
+				'type' => $res['type'],
 				'harga_1' => $res['harga_1'],
 				'harga_2' => $res['harga_2'],
 				'harga_3' => $res['harga_3'],
@@ -1008,4 +1059,5 @@ class System extends mysqli{
 		$setting = $system->get_setting();
 		$logged = $system->check_logged();
 		$admin = $system->get_admin();
+		$isAdmin = $system->isAdmin();
 		?>

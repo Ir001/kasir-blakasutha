@@ -45,7 +45,7 @@ if (isset($_GET['status']) && $_GET['status'] == "pelunasan") {
 			<div id="table">
 				<table>
 					<tr class="tabletitle">
-						<th>Produk</th>
+						<th>Lengan</th>
 						<th>Ukuran</th>
 						<th>Jumlah</th>
 						<th>Subharga</th>
@@ -62,7 +62,7 @@ if (isset($_GET['status']) && $_GET['status'] == "pelunasan") {
 						$total = $data['jumlah']*$data['subharga'];
 						?>
 						<tr class="service">
-							<td class="tableitem"><p class="itemtext"><?=$barang['nama_pesanan'];?></p></td>
+							<td class="tableitem"><p class="itemtext"><?=$barang['length']." (".$barang['ukuran'].")";?></p></td>
 							<td class="tableitem"><p class="itemtext"><?=$barang['ukuran'];?></p></td>
 							<td class="tableitem"><p class="itemtext"><?=$data['jumlah'];?></p></td>
 							<td class="tableitem"><p class="itemtext"><?=number_format($data['subharga'],0,',','.');?></p></td>

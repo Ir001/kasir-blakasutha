@@ -17,7 +17,13 @@ require '../application/system.php';
 
 			?>
 			<tr>
-				<td><?=$list['nama_lengkap'];?> <span class="badge badge-sm badge-info"><?=ucwords($list['role']);?></span></td>
+				<td><?=$list['nama_lengkap'];?> 
+				<?php if ($list['role'] == "customer"): ?>
+					<span class="badge badge-sm badge-info"><?=ucwords($list['role']);?></span>
+				<?php else: ?>
+					<span class="badge badge-sm badge-warning text-white"><?=ucwords($list['role']);?></span>
+				<?php endif ?>
+				</td>
 				<td><?=$list['phone'];?></td>
 			<td><?=$list['instagram'];?></td>
 			<td class="text-center">

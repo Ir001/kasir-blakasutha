@@ -1,5 +1,6 @@
 <?php 
-	require 'system.php';
+	// require 'system.php';
+	require_once (dirname(__FILE__)."/system.php");
 	if (isset($_POST['detail_customer'])) {
 		$id_user = $_POST['id'];
 		$detail = $system->detail_customer($id_user);

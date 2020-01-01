@@ -53,5 +53,9 @@ if (isset($_POST['id_barang'])) {
 	);
 	$edit_akun = $system->edit_akun($data);
 	echo $system->convert_to_json($edit_akun);
+}elseif (isset($_POST['edit_barang_pemesanan'])) {
+	$id = $_POST['id'];
+	$data = $system->detail_barang_pesanan($id);
+	echo json_encode($data);
 }
 ?>

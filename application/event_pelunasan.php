@@ -1,5 +1,6 @@
 <?php 
-	require 'system.php';
+	// require 'system.php';
+	require_once (dirname(__FILE__)."/system.php");
 	if(isset($_POST['get_pelunasan'])):
 		$trx_code = $_POST['trx_code'];
 		$pemesanan = $system->get_detail_pelunasan($trx_code);

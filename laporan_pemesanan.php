@@ -3,7 +3,10 @@ require 'application/system.php';
 if (!$logged) {
   header("location:login.php");
 }
-$data = $system->list_trx_penjualan();
+if (!$isAdmin) {
+  exit('Akses tidak diijinkan');
+}
+$data = $system->list_trx_pemesanan('lunas');
 $menu = "laporan";
 $menuItem = "pemesanan_l";
 ?>
@@ -54,7 +57,7 @@ $menuItem = "pemesanan_l";
               <div class="card" id="hide-customer">
                 <div class="card-header border-0">
                   <div class="d-flex justify-content-between">
-                    <h3 class="card-title">Daftar Laporan Penjualan</h3>
+                    <h3 class="card-title">Daftar Laporan Pemesanan</h3>
                   </div>
                 </div>
                 <div class="card-body">
@@ -63,8 +66,11 @@ $menuItem = "pemesanan_l";
                       <tr>
                         <th>No</th>
                         <th>Customer</th>
-                        <th>Total</th>
                         <th>Tanggal</th>
+                        <th>Status</th>
+                        <th>Grand Total</th>
+                        <th>DP</th>
+                        <th>Pelunasan</th>
                         <th>Opsi</th>
                       </tr>
                     </thead>
@@ -73,12 +79,16 @@ $menuItem = "pemesanan_l";
                        $no = 1; 
                        foreach ($data as $data):
                         $customer = $system->detail_customer($data['id_customer']);
+                        $pelunasan = $system->get_detail_pelunasan($data['trx_code']);
                         ?>
                         <tr>
                           <td><?=$no;?></span></td>
                           <td><?=$customer['nama_lengkap'];?></td>
-                          <td>Rp. <?=number_format($data['total_harga'],0,',','.');?></td>
                           <td><?=$data['tgl_transaksi'];?></td>
+                          <td><span class="badge badge-success"><?=ucwords($data['status']);?></span></td>
+                          <td>Rp. <?=number_format($data['total_harga'],0,',','.');?></td>
+                          <td>Rp. <?=number_format($data['jumlah_bayar'],0,',','.');?></td>
+                          <td>Rp. <?=number_format($pelunasan['jumlah_bayar'],0,',','.');?></td>
                           <td>
                             <!-- <button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> Detail</button> -->
                             <button trx_code="<?=$data['trx_code'];?>" class="btn-cetak btn btn-primary btn-sm"><i class="fa fa-print"></i> Cetak</button>
@@ -178,7 +188,7 @@ $menuItem = "pemesanan_l";
     //
     $('.btn-cetak').click(function(){
       var trx_code = $('.btn-cetak').attr('trx_code');
-      window.open('print.php?trx_code='+trx_code);
+      window.open('print_pemesanan.php?trx_code='+trx_code+'&status=pelunasan');
     })
 
   })
