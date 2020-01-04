@@ -71,6 +71,7 @@ $menuItem = "pemesanan_m";
                         <th>File Desain</th>
                         <th>Deskripsi</th>
                         <th>Status</th>
+                        <th>Tgl Trx</th>
                         <th>Aksi</th>
 
                       </tr>
@@ -85,10 +86,10 @@ $menuItem = "pemesanan_m";
                         <tr>
                           <td><?=$customer['nama_lengkap'];?> 
                           <?php if ($customer['role'] == "customer"): ?>
-                          <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span>
-                          <?php else: ?>
-                          <span class="badge badge-sm badge-warning text-white"><?=ucwords($customer['role']);?></span>
-                          <?php endif ?>
+                            <span class="badge badge-sm badge-info"><?=ucwords($customer['role']);?></span>
+                            <?php else: ?>
+                              <span class="badge badge-sm badge-warning text-white"><?=ucwords($customer['role']);?></span>
+                            <?php endif ?>
                           </td>
                           <td><?=ucwords($list['jenis_pemesanan']);?></td>
                           <td><?=ucwords($list['jenis_sablon']);?></td>
@@ -101,19 +102,32 @@ $menuItem = "pemesanan_m";
                               <?php else: ?>
                                 <span class="badge badge-success"><?=ucwords($list['status']);?></span>
                               <?php endif ?>
-                            </td>
+                          </td>
+                          <?php
+                            $tgl = explode(" ", $list['tgl_transaksi']);
+                            $jam = explode(":", $tgl[1]);
+                            $jam_menit = $jam[0].":".$jam[1];
+                          ?>
+                          <td><?=$tgl[0]." Pkl ".$jam_menit?></td>
+
                             <td class="d-flex">
                               <form class="detail_pemesanan">
                                 <input type="hidden" name="detail_pemesanan" value="1"> 
                                 <input type="hidden" name="trx_code" value="<?=$list['trx_code'];?>"> 
-                                <button type="submit" title="Detail" class="btn btn-sm btn-info">Detail</button>
+                                <button type="submit" title="Detail" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
                               </form>
                               |
                               <form class="edit_pemesanan">
                                 <input type="hidden" name="edit_pemesanan" value="1"> 
                                 <input type="hidden" name="trx_code" class="trx_code_edit" value="<?=$list['trx_code'];?>"> 
                                 <input type="hidden" name="status" class="status_edit" value="<?=$list['status'];?>"> 
-                                <button type="submit" title="Edit" class="btn btn-sm text-white btn-warning">Edit</button>
+                                <button type="submit" title="Edit" class="btn btn-sm text-white btn-warning"><i class="fa fa-pen"></i></button>
+                              </form>
+                              |
+                              <form class="hapus_pemesanan">
+                                <input type="hidden" name="hapus_pemesanan" value="1"> 
+                                <input type="hidden" name="trx_code" class="trx_code_edit" value="<?=$list['trx_code'];?>"> 
+                                <button type="submit" title="Delete" class="btn btn-delete btn-sm  btn-danger"><i class="fa fa-trash"></i></button>
                               </form>
                             </td>
                           </tr>
@@ -222,7 +236,7 @@ $menuItem = "pemesanan_m";
             $('#editModal').modal('hide');
             $('#editTrx').val('');
             $('#editStatus').val('');
-            setTimeout(function(){window.location.replace('manage_pemesanan.php')},500);
+            setTimeout(function(){window.location.href="manage_pemesanan.php"},500);
           }else{
             toastr['error'](data.message);
           }
@@ -230,6 +244,31 @@ $menuItem = "pemesanan_m";
       })
 
     })
+    $('.btn-delete').click(function(){
+      if (confirm('Apakah anda yakin?')) {
+        $('.hapus_pemesanan').submit(function(e){
+          e.preventDefault();
+          $.ajax({
+            type : 'POST',
+            url : 'application/event_pemesanan.php',
+            data : $(this).serialize(),
+            dataType : 'json',
+            success : function(data){
+              if (data.success) {
+                toastr['success'](data.message);
+                setTimeout(function(){window.location.replace="manage_pemesanan.php"},800);
+              } else {
+                toastr['error'](data.message);
+              }
+            }
+          })
+        });
+      } else {
+        $('.hapus_pemesanan').submit(function(e){
+          e.preventDefault();
+        });
+      }
+    });
 
   })
 </script>

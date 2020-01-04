@@ -448,6 +448,31 @@ class System extends mysqli{
 	}
 
 	/*Pemesanan Form*/
+	function delete_pemesanan($trx_code){
+		$sql = "SELECT file_desain FROM transaksi_pemesanan WHERE trx_code = '$trx_code'";
+		$query = $this->query($sql);
+		$res = $query->fetch_assoc();
+		$file_desain = $res['file_desain'];
+		//
+		if (file_exists("$file_desain")) {
+			unlink("$file_desain");
+		}
+		$delete = "DELETE FROM transaksi_pemesanan WHERE trx_code = '$trx_code'";
+		$query_delete = $this->query($delete);
+		if ($query_delete) {
+			$msg = array(
+				'success' => true,
+				'message' => 'Berhasil menghapus data pemesanan',
+			);
+		}else{
+			$msg = array(
+				'success' => false,
+				'message' => 'Gagal menghapus data pemesanan',
+			);
+		}
+		return $msg;
+
+	}
 	function edit_status_pemesanan($status, $trx_code){
 		$sql = "UPDATE transaksi_pemesanan SET status='$status' WHERE trx_code = '$trx_code'";
 		$query = $this->query($sql);
@@ -623,6 +648,7 @@ class System extends mysqli{
 		$model_baju = $data['model_baju'];
 		$jenis_sablon = $data['jenis_sablon'];
 		$keterangan = $data['keterangan'];
+		$harga_tambahan = $data['harga_tambahan'];
 		$perkiraan_selesai = $data['perkiraan_selesai'];
 		$file_desain = @$data['file_desain'] ? $data['file_desain'] : "";
 		//
@@ -634,7 +660,7 @@ class System extends mysqli{
 				'message' => 'Trx code telah terdaftar, harap refresh halaman',
 			);
 		}else{
-			$sql = "INSERT INTO transaksi_pemesanan (trx_code, jenis_pemesanan, model_baju, jenis_sablon, file_desain , deskripsi, perkiraan_selesai, status) VALUES ('$trx_code','$jenis_pemesanan','$model_baju','$jenis_sablon','$file_desain', '$keterangan', '$perkiraan_selesai', 'diproses')";
+			$sql = "INSERT INTO transaksi_pemesanan (trx_code, jenis_pemesanan, model_baju, jenis_sablon, file_desain , harga_tambahan, deskripsi, perkiraan_selesai, status) VALUES ('$trx_code','$jenis_pemesanan','$model_baju','$jenis_sablon','$file_desain', '$harga_tambahan', '$keterangan', '$perkiraan_selesai', 'diproses')";
 			$query = $this->query($sql);
 			if ($query) {
 				$msg = array(
@@ -657,7 +683,7 @@ class System extends mysqli{
 		$jumlah_pesanan = $data['jumlah_pesanan'];
 		$trx_code = $data['trx_code'];
 		$kurang = $data['kurang'];
-			//
+		//
 		$sql = "UPDATE transaksi_pemesanan SET total_harga = '$total_harga', jumlah_bayar ='$jumlah_bayar', jumlah_pesanan='$jumlah_pesanan', kurang = '$kurang', tgl_transaksi = NOW() WHERE trx_code = '$trx_code'";
 		$query = $this->query($sql);
 		if ($query) {
@@ -687,15 +713,6 @@ class System extends mysqli{
 		}
 
 	}
-	function delete_trx_pemesanan($trx_code){
-		$delete = $this->query("DELETE FROM transaksi_pemesanan WHERE trx_code = '$trx_code'");
-		if ($delete) {
-			return 1;
-		}else{
-			return 0;
-		}
-	}
-
 	/*Keranjang Pemesanan*/
 	function add_cart_pemesanan($id, $jumlah){
 		if (empty($_SESSION['cart_pemesanan'][$id])) {
@@ -1049,6 +1066,12 @@ class System extends mysqli{
 				}
 				return $row;
 
+			}
+			function get_harga_tambahan($trx_code){
+				$sql = "SELECT harga_tambahan FROM transaksi_pemesanan WHERE trx_code = '$trx_code'";
+				$query = $this->query($sql);
+				$res = $query->fetch_assoc();
+				return @$res['harga_tambahan'];
 			}
 
 

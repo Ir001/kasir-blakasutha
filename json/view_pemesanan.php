@@ -10,7 +10,7 @@ require '../application/system.php';
     </div>
     <div class="card-body">
       <div id="step1">
-        <form id="form_pemesanan" method="post" action="application/event.php" enctype="multipart/form-data">
+        <form id="form_pemesanan" method="post" action="application/event_pemesanan.php" enctype="multipart/form-data">
           <input type="hidden" name="add_pesanan" value="1">
           <input type="hidden" name="trx_code" id="trx_code">
 
@@ -89,6 +89,11 @@ require '../application/system.php';
             </div>
           </div>
           <div class="form-group">
+            <label>Biaya Tambahan</label>
+            <br>
+            <input type="number" class="form-control" name="harga_tambahan" min="0" placeholder="Harga tambahan">
+          </div>
+          <div class="form-group">
             <label>Keterangan</label>
             <textarea class="form-control" name="keterangan" placeholder="Deskripsi"></textarea>
           </div>
@@ -129,7 +134,6 @@ Post an files
 */
 $('#form_pemesanan').submit(function(e){
   e.preventDefault();
-
   var formData = new FormData(this);
 
   $.ajax({
@@ -140,8 +144,9 @@ $('#form_pemesanan').submit(function(e){
     success: function (data) {
       if (data.transaksi.success) {
        step1.hide();
-       $('#load-barang').load('json/barang_pesanan.php');
        step2.show();
+       $('#load-barang').load('json/barang_pesanan.php');
+       window.$('#load-cart').load('json/cart_pemesanan.php');
        toastr['success'](data.transaksi.message);
        if (data.upload.success) {
         toastr['success'](data.upload.message);

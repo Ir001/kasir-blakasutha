@@ -26,6 +26,7 @@
 		$_SESSION['type'] = $type;
 		$jenis_pemesanan = @$_POST['jenis_pemesanan'];
 		$type = @$_POST['type'];
+		$harga_tambahan = @$_POST['harga_tambahan'] ? $_POST['harga_tambahan'] : 0;
 		$model_baju = @$_POST['model_baju'];
 		$jenis_sablon = implode(",", @$_POST['jenis_sablon']);
 		$keterangan = @$_POST['keterangan'];
@@ -52,6 +53,7 @@
 			'model_baju' => $model_baju,
 			'type' => $type,
 			'jenis_pemesanan' => $jenis_pemesanan,
+			'harga_tambahan' => $harga_tambahan,
 			'jenis_sablon' => $jenis_sablon,
 			'keterangan' => $keterangan,
 			'file_desain' => $image_file_desain,
@@ -66,22 +68,15 @@
 		echo json_encode($msg);
 	}elseif (isset($_POST['batalkan_pesanan'])) {
 		$trx_code = $_SESSION['trx_code'];
-		$delete = $system->delete_trx_pemesanan($trx_code);
-		if ($delete) {
-			unset($_SESSION['id_customer']);
-			unset($_SESSION['cart_pemesanan']);
-			unset($_SESSION['trx_code']);
-			unset($_SESSION['type']);
-			$msg = array(
-				'success' => true,
-				'message' => 'Berhasil mereset!'
-			);
-		}else{
-			$msg = array(
-				'success' => false,
-				'message' => 'Gagal!'
-			);
-		}
+		$delete = $system->delete_pemesanan($trx_code);
+		unset($_SESSION['id_customer']);
+		unset($_SESSION['cart_pemesanan']);
+		unset($_SESSION['trx_code']);
+		unset($_SESSION['type']);
+		$msg = array(
+			'success' => true,
+			'message' => 'Berhasil mereset!'
+		);
 		echo json_encode($msg);
 	}elseif(isset($_POST['form_bayar_pesanan'])){
 		$id_customer = $_POST['id_customer'];
@@ -132,5 +127,9 @@
 			unset($_SESSION['type']);
 		}
 		
+	}elseif (isset($_POST['hapus_pemesanan'])) {
+		$trx_code = $_POST['trx_code'];
+		$delete = $system->delete_pemesanan($trx_code);
+		echo json_encode($delete);
 	}
  ?>

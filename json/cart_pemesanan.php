@@ -1,5 +1,7 @@
 <?php   
 require '../application/system.php';
+$trx_code = @$_SESSION['trx_code'];
+$harga_tambahan = $system->get_harga_tambahan($trx_code);
 ?>
 <div class="card">
   <div class="card-body">
@@ -112,8 +114,12 @@ require '../application/system.php';
     <input type="number" class="form-control" name="jumlah_pesanan" id="jumlah_pesanan" style="pointer-events:none" value="<?=@$jumlah_semua?>" readonly></input>
   </div>
   <div class="form-group">
+    <label>Harga Tambahan</label>
+    <input type="number" class="form-control" value="<?=@$harga_tambahan?>" disabled></input>
+  </div>
+  <div class="form-group">
     <label>Grand Total</label>
-    <input type="number" class="form-control" name="total_harga" id="total_harga" style="pointer-events:none" value="<?=@$total_semua?>" readonly></input>
+    <input type="number" class="form-control" name="total_harga" id="total_harga" style="pointer-events:none" value="<?=@$total_semua+$harga_tambahan?>" readonly></input>
   </div>
   <div class="form-group">
     <label>Harga 50%</label>
@@ -185,6 +191,7 @@ require '../application/system.php';
     }
     $('#kembalian').val(kembalian);
   });
+
   //Kekurangan Check
 
   $('#reset_user').submit(function(e){
