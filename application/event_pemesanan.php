@@ -27,6 +27,7 @@
 		$jenis_pemesanan = @$_POST['jenis_pemesanan'];
 		$type = @$_POST['type'];
 		$harga_tambahan = @$_POST['harga_tambahan'] ? $_POST['harga_tambahan'] : 0;
+		$biaya_desain = @$_POST['biaya_desain'] ? $_POST['biaya_desain'] : 0;
 		$model_baju = @$_POST['model_baju'];
 		$jenis_sablon = implode(",", @$_POST['jenis_sablon']);
 		$keterangan = @$_POST['keterangan'];
@@ -54,6 +55,7 @@
 			'type' => $type,
 			'jenis_pemesanan' => $jenis_pemesanan,
 			'harga_tambahan' => $harga_tambahan,
+			'biaya_desain' => $biaya_desain,
 			'jenis_sablon' => $jenis_sablon,
 			'keterangan' => $keterangan,
 			'file_desain' => $image_file_desain,

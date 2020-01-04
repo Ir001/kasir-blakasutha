@@ -2,6 +2,7 @@
 require '../application/system.php';
 $trx_code = @$_SESSION['trx_code'];
 $harga_tambahan = $system->get_harga_tambahan($trx_code);
+$harga_desain = $system->get_harga_desain($trx_code);
 ?>
 <div class="card">
   <div class="card-body">
@@ -114,12 +115,16 @@ $harga_tambahan = $system->get_harga_tambahan($trx_code);
     <input type="number" class="form-control" name="jumlah_pesanan" id="jumlah_pesanan" style="pointer-events:none" value="<?=@$jumlah_semua?>" readonly></input>
   </div>
   <div class="form-group">
-    <label>Harga Tambahan</label>
+    <label>Harga Lainnya</label>
     <input type="number" class="form-control" value="<?=@$harga_tambahan?>" disabled></input>
+  </div>
+   <div class="form-group">
+    <label>Biaya Desain</label>
+    <input type="number" class="form-control" value="<?=@$harga_desain?>" disabled></input>
   </div>
   <div class="form-group">
     <label>Grand Total</label>
-    <input type="number" class="form-control" name="total_harga" id="total_harga" style="pointer-events:none" value="<?=@$total_semua+$harga_tambahan?>" readonly></input>
+    <input type="number" class="form-control" name="total_harga" id="total_harga" style="pointer-events:none" value="<?=@$total_semua+$harga_tambahan+$harga_desain?>" readonly></input>
   </div>
   <div class="form-group">
     <label>Harga 50%</label>

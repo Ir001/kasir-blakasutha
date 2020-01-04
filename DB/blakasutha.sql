@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 04, 2020 at 03:01 AM
+-- Generation Time: Jan 04, 2020 at 03:16 AM
 -- Server version: 10.2.3-MariaDB-log
 -- PHP Version: 7.1.1
 
@@ -257,6 +257,7 @@ CREATE TABLE `transaksi_pemesanan` (
   `total_harga` float DEFAULT NULL,
   `jumlah_bayar` float DEFAULT NULL,
   `harga_tambahan` float DEFAULT 0,
+  `biaya_desain` float DEFAULT 0,
   `keterangan` varchar(255) DEFAULT NULL,
   `kurang` enum('true','false') DEFAULT 'true',
   `type` enum('30','24') DEFAULT '30',
@@ -373,7 +374,7 @@ ALTER TABLE `pelunasan`
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `penjualan`
@@ -397,7 +398,7 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT for table `transaksi_pemesanan`
 --
 ALTER TABLE `transaksi_pemesanan`
-  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- Constraints for dumped tables

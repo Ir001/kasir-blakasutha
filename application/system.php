@@ -652,6 +652,7 @@ class System extends mysqli{
 		$jenis_sablon = $data['jenis_sablon'];
 		$keterangan = $data['keterangan'];
 		$harga_tambahan = $data['harga_tambahan'];
+		$biaya_desain = $data['biaya_desain'];
 		$perkiraan_selesai = $data['perkiraan_selesai'];
 		$file_desain = @$data['file_desain'] ? $data['file_desain'] : "";
 		//
@@ -663,7 +664,7 @@ class System extends mysqli{
 				'message' => 'Trx code telah terdaftar, harap refresh halaman',
 			);
 		}else{
-			$sql = "INSERT INTO transaksi_pemesanan (trx_code, jenis_pemesanan, model_baju, jenis_sablon, file_desain , harga_tambahan, deskripsi, perkiraan_selesai, status) VALUES ('$trx_code','$jenis_pemesanan','$model_baju','$jenis_sablon','$file_desain', '$harga_tambahan', '$keterangan', '$perkiraan_selesai', 'diproses')";
+			$sql = "INSERT INTO transaksi_pemesanan (trx_code, jenis_pemesanan, model_baju, jenis_sablon, file_desain , harga_tambahan, biaya_desain, deskripsi, perkiraan_selesai, status) VALUES ('$trx_code','$jenis_pemesanan','$model_baju','$jenis_sablon','$file_desain', '$harga_tambahan', '$biaya_desain', '$keterangan', '$perkiraan_selesai', 'diproses')";
 			$query = $this->query($sql);
 			if ($query) {
 				$msg = array(
@@ -1075,6 +1076,12 @@ class System extends mysqli{
 				$query = $this->query($sql);
 				$res = $query->fetch_assoc();
 				return @$res['harga_tambahan'];
+			}
+			function get_harga_desain($trx_code){
+				$sql = "SELECT biaya_desain FROM transaksi_pemesanan WHERE trx_code = '$trx_code'";
+				$query = $this->query($sql);
+				$res = $query->fetch_assoc();
+				return @$res['biaya_desain'];
 			}
 
 

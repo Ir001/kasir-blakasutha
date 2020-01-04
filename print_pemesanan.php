@@ -73,8 +73,15 @@ if (isset($_GET['status']) && $_GET['status'] == "pelunasan") {
 						<td></td>
 						<td></td>
 						<td></td>
-						<td class="Rate"><h2>Harga Tambahan</h2></td>
+						<td class="Rate"><h2>Harga Lainnya</h2></td>
 						<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['harga_tambahan'],0,',','.');?></h2></td>
+					</tr>
+					<tr class="tabletitle">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td class="Rate"><h2>Biaya Desain</h2></td>
+						<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['biaya_desain'],0,',','.');?></h2></td>
 					</tr>
 					<tr class="tabletitle">
 						<td></td>

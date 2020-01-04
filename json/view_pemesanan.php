@@ -89,9 +89,14 @@ require '../application/system.php';
             </div>
           </div>
           <div class="form-group">
-            <label>Biaya Tambahan</label>
+            <label>Harga lainnya</label>
             <br>
             <input type="number" class="form-control" name="harga_tambahan" min="0" placeholder="Harga tambahan">
+          </div>
+           <div class="form-group">
+            <label>Biaya desain</label>
+            <br>
+            <input type="number" class="form-control" name="biaya_desain" min="0" placeholder="Biaya desain">
           </div>
           <div class="form-group">
             <label>Keterangan</label>
