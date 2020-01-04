@@ -1,5 +1,5 @@
 <?php
-// error_reporting(0);
+error_reporting(0);
 date_default_timezone_set('Asia/Jakarta');
 date("Y-m-d H:i:s"); 
 ob_start();
@@ -448,7 +448,7 @@ class System extends mysqli{
 	}
 
 	/*Pemesanan Form*/
-	function delete_pemesanan($trx_code){
+	function delete_pemesanan($trx_code, $type="manage"){
 		$sql = "SELECT file_desain FROM transaksi_pemesanan WHERE trx_code = '$trx_code'";
 		$query = $this->query($sql);
 		$res = $query->fetch_assoc();
@@ -456,6 +456,9 @@ class System extends mysqli{
 		//
 		if (file_exists("$file_desain")) {
 			unlink("$file_desain");
+		}
+		if ($type == "manage") {
+			$delete_pemesanan = $this->query("DELETE FROM pemesanan WHERE trx_code = '$trx_code'");
 		}
 		$delete = "DELETE FROM transaksi_pemesanan WHERE trx_code = '$trx_code'";
 		$query_delete = $this->query($delete);

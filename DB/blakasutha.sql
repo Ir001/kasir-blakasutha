@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 01, 2020 at 08:03 AM
+-- Generation Time: Jan 04, 2020 at 03:01 AM
 -- Server version: 10.2.3-MariaDB-log
 -- PHP Version: 7.1.1
 
@@ -171,13 +171,6 @@ CREATE TABLE `pemesanan` (
   `tanggal_order` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
---
--- Dumping data for table `pemesanan`
---
-
-INSERT INTO `pemesanan` (`id_pemesanan`, `id_customer`, `id_barang`, `trx_code`, `subharga`, `jumlah`, `tanggal_order`) VALUES
-(1, 15, 23, 't4rYHmthwV', 75000, 10, '2020-01-01 14:51:34');
-
 -- --------------------------------------------------------
 
 --
@@ -263,19 +256,14 @@ CREATE TABLE `transaksi_pemesanan` (
   `jumlah_pesanan` int(11) DEFAULT NULL,
   `total_harga` float DEFAULT NULL,
   `jumlah_bayar` float DEFAULT NULL,
+  `harga_tambahan` float DEFAULT 0,
+  `keterangan` varchar(255) DEFAULT NULL,
   `kurang` enum('true','false') DEFAULT 'true',
   `type` enum('30','24') DEFAULT '30',
   `status` enum('diproses','selesai','lunas') DEFAULT 'diproses',
   `perkiraan_selesai` date DEFAULT NULL,
   `tgl_transaksi` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `transaksi_pemesanan`
---
-
-INSERT INTO `transaksi_pemesanan` (`id_tp`, `trx_code`, `jenis_pemesanan`, `model_baju`, `jenis_sablon`, `file_desain`, `deskripsi`, `jumlah_pesanan`, `total_harga`, `jumlah_bayar`, `kurang`, `type`, `status`, `perkiraan_selesai`, `tgl_transaksi`) VALUES
-(25, 't4rYHmthwV', 'kaos', 'u-neck', 'plastisol', '../file_desain/t4rYHmthwV.zip', 'asd', 10, 650000, 325000, 'true', '30', 'selesai', '2020-01-25', '2020-01-01 14:51:34');
 
 --
 -- Indexes for dumped tables
@@ -379,13 +367,13 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `pelunasan`
 --
 ALTER TABLE `pelunasan`
-  MODIFY `id_pelunasan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pelunasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `penjualan`
@@ -409,7 +397,7 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT for table `transaksi_pemesanan`
 --
 ALTER TABLE `transaksi_pemesanan`
-  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- Constraints for dumped tables

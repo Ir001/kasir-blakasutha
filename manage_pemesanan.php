@@ -236,7 +236,7 @@ $menuItem = "pemesanan_m";
             $('#editModal').modal('hide');
             $('#editTrx').val('');
             $('#editStatus').val('');
-            setTimeout(function(){window.location.href="manage_pemesanan.php"},500);
+            setTimeout(function(){window.location.reload()},500);
           }else{
             toastr['error'](data.message);
           }
@@ -256,7 +256,7 @@ $menuItem = "pemesanan_m";
             success : function(data){
               if (data.success) {
                 toastr['success'](data.message);
-                setTimeout(function(){window.location.replace="manage_pemesanan.php"},800);
+                setTimeout(function(){window.location.reload()},800);
               } else {
                 toastr['error'](data.message);
               }

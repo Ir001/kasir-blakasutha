@@ -68,7 +68,7 @@
 		echo json_encode($msg);
 	}elseif (isset($_POST['batalkan_pesanan'])) {
 		$trx_code = $_SESSION['trx_code'];
-		$delete = $system->delete_pemesanan($trx_code);
+		$delete = $system->delete_pemesanan($trx_code, "batalkan");
 		unset($_SESSION['id_customer']);
 		unset($_SESSION['cart_pemesanan']);
 		unset($_SESSION['trx_code']);
