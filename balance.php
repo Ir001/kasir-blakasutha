@@ -178,7 +178,7 @@ $statistik_pemesanan = $system->statistik_pemesanan();
                 <div class="card-header border-0">
                   <div class="d-flex justify-content-between">
                     <h3 class="card-title">Laporan Pemesanan</h3>
-                    <a href="javascript:void(0);">Lihat Laporan</a>
+                    <a href="laporan_pemesanan.php">Lihat Laporan</a>
                   </div>
                 </div>
                 <div class="card-body">

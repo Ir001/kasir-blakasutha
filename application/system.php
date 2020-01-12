@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+//error_reporting(0);
 date_default_timezone_set('Asia/Jakarta');
 date("Y-m-d H:i:s"); 
 ob_start();
@@ -85,6 +85,22 @@ class System extends mysqli{
 		}else{
 			return false;
 		}
+	}
+	function edit_upload($trx_code, $file){
+		$sql = "UPDATE transaksi_pemesanan SET file_desain = '$file' WHERE trx_code = '$trx_code'";
+		$query = $this->query($sql);
+		if($query){
+			$msg = array(
+				'success'=> true,
+				'message'=> 'Berhasil'
+			);
+		}else{
+			$msg = array(
+				'success'=> false,
+				'message'=> 'Gagal'
+			);
+		}
+		return $msg;
 	}
 	function logout(){
 		session_destroy();
@@ -373,8 +389,14 @@ class System extends mysqli{
 		return $msg;
 
 	}
-	function trx($trx_code, $total_harga, $jumlah_bayar){
-		$sql = "INSERT INTO transaksi (trx_code, total_harga, jumlah_bayar, tgl_transaksi) VALUES ('$trx_code', '$total_harga', '$jumlah_bayar', NOW())";
+	function trx($data = array()){
+		$trx_code = $data['trx_code']; /*Kode transaksi*/
+		$subharga = $data['subharga']; /*Total harga asli*/
+		$total_harga = $data['total']; /*Termasuk harga setelah diskon*/
+		$diskon = $data['diskon'];
+		$dibayar = $data['dibayar'];
+		/*Transaksi Code*/
+		$sql = "INSERT INTO transaksi (trx_code, before_diskon, total_harga, diskon, jumlah_bayar, tgl_transaksi) VALUES ('$trx_code', '$subharga', '$total_harga', '$diskon', '$dibayar', NOW())";
 		$query = $this->query($sql);
 		if($query){
 			return true;
@@ -384,7 +406,7 @@ class System extends mysqli{
 	}
 	function detail_trx($trx_code){
 		$trx_code = trim($this->real_escape_string($trx_code));
-		$sql = "SELECT transaksi.trx_code,total_harga, jumlah_bayar, tgl_transaksi,id_customer  FROM transaksi INNER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code WHERE transaksi.trx_code = '$trx_code'";
+		$sql = "SELECT transaksi.trx_code,total_harga, jumlah_bayar,diskon, before_diskon, tgl_transaksi,id_customer  FROM transaksi INNER JOIN penjualan ON transaksi.trx_code = penjualan.trx_code WHERE transaksi.trx_code = '$trx_code'";
 		$query = $this->query($sql);
 		$res = $query->fetch_assoc();
 		return $res;
@@ -425,6 +447,7 @@ class System extends mysqli{
 				'id_customer' => $res['id_customer'],
 				'trx_code' => $res['trx_code'],
 				'total_harga' => $res['total_harga'],
+				'diskon' => $res['diskon'],
 				'jumlah_bayar' => $res['jumlah_bayar'],
 				'tgl_transaksi' => $res['tgl_transaksi'],
 			);
@@ -687,8 +710,10 @@ class System extends mysqli{
 		$jumlah_pesanan = $data['jumlah_pesanan'];
 		$trx_code = $data['trx_code'];
 		$kurang = $data['kurang'];
+		$diskon = $data['diskon'];
+		$after_diskon = $data['after_diskon'];
 		//
-		$sql = "UPDATE transaksi_pemesanan SET total_harga = '$total_harga', jumlah_bayar ='$jumlah_bayar', jumlah_pesanan='$jumlah_pesanan', kurang = '$kurang', tgl_transaksi = NOW() WHERE trx_code = '$trx_code'";
+		$sql = "UPDATE transaksi_pemesanan SET before_diskon = '$total_harga', total_harga = '$after_diskon', diskon='$diskon', jumlah_bayar ='$jumlah_bayar', jumlah_pesanan='$jumlah_pesanan', kurang = '$kurang', tgl_transaksi = NOW() WHERE trx_code = '$trx_code'";
 		$query = $this->query($sql);
 		if ($query) {
 			return 1;
@@ -1082,6 +1107,17 @@ class System extends mysqli{
 				$query = $this->query($sql);
 				$res = $query->fetch_assoc();
 				return @$res['biaya_desain'];
+			}
+
+			/*Log*/
+			function logs_barang($id_barang, $type, $detail){
+				$sql = "INSERT INTO logs_barang (id_barang, type, detail, updated_at) VALUES ('$id_barang', '$type', '$detail', NOW())";
+				$query = $this->query($sql);
+				if ($query) {
+					return 1;
+				}else{
+					return 0;
+				}
 			}
 
 

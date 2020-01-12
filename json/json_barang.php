@@ -27,10 +27,15 @@ require '../application/system.php';
         <td><?=number_format($list['harga_1'],0,',','.');?></td>
         <td>
           <form class="add_to_cart">
-            <input type="hidden" name="add_barang" value="1"> 
-            <input type="hidden" name="id" value="<?=$list['id_barang'];?>"> 
-            <input type="number" class="jmlh form-control" name="jumlah" value="1" min="0" max="<?=$list['stok'];?>">
-            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-cart-plus"></i></button>
+            <div class="input-group">
+              <input type="hidden" name="add_barang" value="1"> 
+              <input type="hidden" name="id" value="<?=$list['id_barang'];?>"> 
+              <input type="number" class="jmlh form-control" name="jumlah" value="1" min="0" max="<?=$list['stok'];?>">
+              <div class="input-group-btn ml-1">
+                <button type="submit" class="btn btn btn-success"><i class="fa fa-cart-plus"></i></button>
+              </div>
+            </div>
+            
           </form>
         </td>
       </tr>

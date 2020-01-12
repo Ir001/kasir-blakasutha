@@ -25,18 +25,18 @@
      
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="background: #2E8B57">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Penjualan</h1>
+            <h1 class="m-0 text-white" style="font-family: 'Impact';">Penjualan</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-              <li class="breadcrumb-item active">Penjualan</li>
+              <li class="breadcrumb-item text-white"><a href="index.php">Home</a></li>
+              <li class="breadcrumb-item text-white active">Penjualan</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -48,7 +48,7 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-7">
             <div class="card" id="hide-customer">
               <div class="card-header border-0">
                 <div class="d-flex justify-content-between">
@@ -74,7 +74,7 @@
             <!-- /.card-body -->
           </div>
           <!-- /.col-md-6 -->
-          <div class="col-md-6">
+          <div class="col-md-5">
             <div id="load-cart"></div>
           </div>
           <!-- /.col-md-6 -->

@@ -65,7 +65,8 @@ $menuItem = "penjualan_l";
                       <tr>
                         <th>Customer</th>
                         <th>Barang</th>
-                        <th>Grand Total</th>
+                        <th>Diskon</th>
+                        <th>Total <span class="badge badge-sm badge-primary"><small>setelah diskon</small></span></th>
                         <th>Jumlah Bayar</th>
                         <th>Tanggal Transaksi</th>
                         <th>Aksi</th>
@@ -96,6 +97,7 @@ $menuItem = "penjualan_l";
                             <?php endforeach ?>
                           </ul>
                         </td>
+                        <td>Rp. <?=number_format($data['diskon'],0,',','.');?></td>
                         <td>Rp. <?=number_format($data['total_harga'],0,',','.');?></td>
                         <td>Rp. <?=number_format($data['jumlah_bayar'],0,',','.');?></td>
                         <td><?=$data['tgl_transaksi']?></td>

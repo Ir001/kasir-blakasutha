@@ -80,16 +80,42 @@
 			'message' => 'Berhasil mereset!'
 		);
 		echo json_encode($msg);
+	}elseif(isset($_POST['edit_file_desain'])){
+		$trx_code = $_POST['trx_code'];
+			//Memanggil fungsi
+		include 'upload_files.php';
+			//Sablon Depan
+		$file_desain = @$_FILES['file_desain'];
+		$data_file_desain = array(
+			'nama_file' => $file_desain['name'], 
+			'ukuran_file' => $file_desain['size'], 
+			'tipe_file' => $file_desain['type'], 
+			'tmp_file' => $file_desain['tmp_name'], 
+			'lokasi' => "file_desain", 
+			'trx_code' => $trx_code, 
+		);
+			//Proses Upload
+		$upload_file_desain = upload_image($data_file_desain);		
+			//Selesai upload
+		$image_file_desain = @$upload_file_desain['image'];
+			//
+		$edit_upload = $system->edit_upload($trx_code, $image_file_desain);
+		echo json_encode($edit_upload);
+		
 	}elseif(isset($_POST['form_bayar_pesanan'])){
 		$id_customer = $_POST['id_customer'];
 		$jumlah_bayar = $_POST['total_bayar'];
 		$total_harga = $_POST['total_harga'];
+		$after_diskon = $_POST['after_diskon'];
+		$diskon = $_POST['diskon'];
 		$jumlah_pesanan = $_POST['jumlah_pesanan'];
 		$trx_code = $_POST['trx_code'];
 		$kurang = $_POST['kekurangan'];
 		$data = array (
 			'trx_code' => $trx_code,
 			'total_harga' => $total_harga,
+			'after_diskon' => $after_diskon,
+			'diskon' => $diskon,
 			'jumlah_bayar' => $jumlah_bayar,
 			'jumlah_pesanan' => $jumlah_pesanan,
 			'kurang' => $kurang,

@@ -69,13 +69,22 @@ if (isset($_POST['user_login'])) {
 		'message' => 'Berhasil menghapus keranjang',
 	);
 	echo $system->convert_to_json($msg);
-
 }elseif(isset($_POST['form_bayar'])){
 	$id_customer = $_POST['id_customer'];
 	$jumlah_bayar = $_POST['jumlah_bayar'];
 	$total = $_POST['total'];
+	$setelah_diskon = $_POST['setelah_diskon'];
+	$diskon = $_POST['potongan_harga'];
 	$trx_code = $_POST['trx_code'];
-	$transaksi = $system->trx($trx_code, $total, $jumlah_bayar);
+	/*Data Array */
+	$data = array(
+		'trx_code' => $trx_code,
+		'subharga' => $total,
+		'total' => $setelah_diskon,
+		'diskon' => $diskon,
+		'dibayar' => $jumlah_bayar,
+	);
+	$transaksi = $system->trx($data);
 	$customer = $system->get_info_customer($id_customer);
 	if ($transaksi) {  
 		foreach ($_SESSION['cart'] as $id_barang => $jumlah) {
@@ -123,10 +132,11 @@ if (isset($_POST['user_login'])) {
 			'trx_code' => null,
 		);
 	}
-	unset($_SESSION['cart']);
-	unset($_SESSION['id_customer']);
-	echo $system->convert_to_json($msg);
-
+	if ($msg['success']) {
+		unset($_SESSION['cart']);
+		unset($_SESSION['id_customer']);
+	}
+	echo json_encode($msg);
 }elseif(isset($_POST['form_bayar_pesanan'])){
 	$id_customer = $_POST['id_customer'];
 	$jumlah_bayar = $_POST['total_bayar'];
@@ -192,6 +202,16 @@ if (isset($_POST['user_login'])) {
 	$harga_1 = $_POST['harga_1'];
 	$harga_2 = $_POST['harga_2'];
 	$harga_3 = $_POST['harga_3'];
+	#Data Array
+	$data = array(
+		'id_barang' => $id_barang,
+		'kode_barang' => $kode_barang,
+		'nama_barang' => $nama_barang,
+		'stok' => $stok,
+		'harga_1' => $harga_1,
+		'harga_2' => $harga_2,
+		'harga_3' => $harga_3,
+	);
 	$edit_data_barang = $system->edit_data_barang($id_barang,$kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3);
 	echo $system->convert_to_json($edit_data_barang);
 }elseif(isset($_POST['delete_barang'])){

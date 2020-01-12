@@ -94,7 +94,24 @@ $menuItem = "pemesanan_m";
                           <td><?=ucwords($list['jenis_pemesanan']);?></td>
                           <td><?=ucwords($list['jenis_sablon']);?></td>
                           <td><?=@$list['model_baju'] ? ucwords($list['model_baju']) : "-";?></td>
-                          <td><a target="_blank" href="<?=ltrim($list['file_desain'], "\.\.\.\/");?>" class="btn btn-sm btn-info"><i class="fa fa-download"></i> Download</a></td>
+                          <td>
+						  <?php
+						   $file_desain = ltrim($list['file_desain'], "\.\.\.\/");
+							if (file_exists("$file_desain")):
+							
+							
+						  ?>
+						  <a target="_blank" href="<?=$file_desain;?>" class="btn btn-sm btn-info"><i class="fa fa-download"></i> Download</a>
+						  <?php else: ?>
+						  <span class="badge badge-danger">File belum ada.</span>
+						  <form class="upload">
+						  <input type="hidden" name="trx_code" value="<?=$list['trx_code'];?>">
+						  <input type="hidden" name="edit_file_desain">
+						  <input type="file" name="file_desain">
+						  <button type="submit" class="btn btn-sm btn-primary text-center">Upload</button>
+						  </form>
+						  <?php endif; ?>
+						  </td>
                           <td><?=$list['deskripsi'];?></td>
                           <td>
                             <?php if ($list['status'] == "diproses"): ?>
@@ -113,6 +130,7 @@ $menuItem = "pemesanan_m";
                             <td class="d-flex">
                               <form class="detail_pemesanan">
                                 <input type="hidden" name="detail_pemesanan" value="1"> 
+								<input type="hidden" name="upload_file" value="1">
                                 <input type="hidden" name="trx_code" value="<?=$list['trx_code'];?>"> 
                                 <button type="submit" title="Detail" class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
                               </form>
@@ -191,7 +209,29 @@ $menuItem = "pemesanan_m";
     //Setup
     $.ajaxSetup({
       cache:false
-    }); 
+    });
+	$('.upload').submit(function(e){
+		e.preventDefault();
+		var formData = new FormData(this);
+		$.ajax({
+			url: 'application/event_pemesanan.php',
+			type: 'POST',
+			data: formData,
+			dataType: 'json',
+			success: function (data) {
+				if(data.success){
+					toastr['success'](data.message);
+					setTimeout(function(){window.location.reload()}, 500);
+				}else{
+					toastr['error'](data.message);
+				}
+			  
+		  },
+		  cache: false,
+		  contentType: false,
+		  processData: false
+		});
+	});
     $('#tb_pemesanan').DataTable();
     //Get Detail
     $('.detail_pemesanan') .submit(function(e){

@@ -34,10 +34,10 @@ $harga_desain = $system->get_harga_desain($trx_code);
       <input type="hidden" name="reset_cart_pesanan" value="1">
       <button type="submit" id="reset_cart_btn" class="float-right btn btn-sm btn-danger">Hapus Semua</button>
     </form>
-    <h6>Rincian</h6>
+    <h4>Rincian</h4>
   </div>
 
-  <table id="data_pemesanan" class="mt-5 table table-bordered table-striped">
+  <table id="data_pemesanan" class="mt-3 table table-bordered table-striped">
     <thead>
       <tr>
         <th>Ukuran</th>
@@ -87,18 +87,20 @@ $harga_desain = $system->get_harga_desain($trx_code);
       <td><?=$harga;?></td>
       <td><?=$total;?></td>
       <td>
-        <form class="edit_cart">
-          <input type="hidden" name="edit_cart" value="1">
-          <input type="hidden" name="id" class="id" value="<?=$id;?>">
-          <input type="hidden" name="nama_pesanan" class="nama_pesanan" value="<?=$data['length']." (".$data['ukuran'].")";?>">
-          <input type="hidden" name="jumlah" class="jumlah" value="<?=$jumlah;?>">
-          <button type="submit" class="btn btn-sm btn-success" title="Edit"><i class="fa fa-pen"></i></button>
-        </form>
-        <form class="delete_cart">
-          <input type="hidden" name="delete_cart" value="1">
-          <input type="hidden" name="id" value="<?=$id;?>">
-          <button type="submit" class="delete_btn btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
-        </form>
+        <div class="input-group">
+          <form class="edit_cart mr-1">
+            <input type="hidden" name="edit_cart" value="1">
+            <input type="hidden" name="id" class="id" value="<?=$id;?>">
+            <input type="hidden" name="nama_pesanan" class="nama_pesanan" value="<?=$data['length']." (".$data['ukuran'].")";?>">
+            <input type="hidden" name="jumlah" class="jumlah" value="<?=$jumlah;?>">
+            <button type="submit" class="btn btn-sm btn-success" title="Edit"><i class="fa fa-pen"></i></button>
+          </form>
+          <form class="delete_cart">
+            <input type="hidden" name="delete_cart" value="1">
+            <input type="hidden" name="id" value="<?=$id;?>">
+            <button type="submit" class="delete_btn btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash"></i></button>
+          </form>
+        </div>
       </td>
     </tr> 
     <?php @$total_semua+=$total; ?>
@@ -106,36 +108,68 @@ $harga_desain = $system->get_harga_desain($trx_code);
   <?php }} ?>              
 </tbody>
 </table>
+<?php if (isset($_SESSION['cart_pemesanan'])): ?>
+  <p><b>Jumlah Pesanan: <?=@$jumlah_semua ? $jumlah_semua : 0;?></b></p>
+<?php endif ?>
 <form id="form_bayar">
   <input type="hidden" name="form_bayar_pesanan" value="1">
   <input type="hidden" id="trx_code_1" name="trx_code">
   <input type="hidden" name="id_customer" value="<?=$customer['id_customer'];?>">
+  <input type="hidden" class="form-control" name="jumlah_pesanan" id="jumlah_pesanan" style="pointer-events:none" value="<?=@$jumlah_semua?>"></input>
   <div class="form-group">
-    <label>Jumlah Pesanan</label>
-    <input type="number" class="form-control" name="jumlah_pesanan" id="jumlah_pesanan" style="pointer-events:none" value="<?=@$jumlah_semua?>" readonly></input>
+    <div class="row">
+      <div class="col-6">
+        <label>Harga Lainnya</label>
+        <input type="number" class="form-control" value="<?=@$harga_tambahan?>" disabled></input>
+      </div>
+      <div class="col-6">
+        <label>Biaya Desain</label>
+        <input type="number" class="form-control" value="<?=@$harga_desain?>" disabled></input>
+      </div>
+    </div>
   </div>
   <div class="form-group">
-    <label>Harga Lainnya</label>
-    <input type="number" class="form-control" value="<?=@$harga_tambahan?>" disabled></input>
-  </div>
-   <div class="form-group">
-    <label>Biaya Desain</label>
-    <input type="number" class="form-control" value="<?=@$harga_desain?>" disabled></input>
-  </div>
-  <div class="form-group">
-    <label>Grand Total</label>
-    <input type="number" class="form-control" name="total_harga" id="total_harga" style="pointer-events:none" value="<?=@$total_semua+$harga_tambahan+$harga_desain?>" readonly></input>
-  </div>
-  <div class="form-group">
-    <label>Harga 50%</label>
-    <input type="number" class="form-control" name="harga_setengah" id="harga_setengah" style="pointer-events:none" value="<?=@$total_semua?>" readonly></input>
+    <div class="row">
+      <div class="col-6">
+        <label>Grand Total</label>
+        <input type="number" class="form-control" name="total_harga" id="total_harga" style="pointer-events:none" value="<?=@$total_semua+$harga_tambahan+$harga_desain?>" readonly></input>
+      </div>
+      <div class="col-6">
+        <label>Harga 50%</label>
+        <input type="number" class="form-control" name="harga_setengah" id="harga_setengah" style="pointer-events:none" value="<?=@$total_semua?>" readonly></input>
+      </div>
+    </div>
   </div>
   <div class="form-group">
-    <label>Jumlah Bayar</label>
-    <input type="hidden" name="kekurangan" id="kekuranan_check"></input>
-    <input type="number" class="form-control" name="total_bayar" id="total_bayar" min="0"></input>
-    <label id="check_cash"></label>
-    <input type="number" class="form-control" name="kembalian" id="kembalian" min="0" style="pointer-events:none" readonly></input>
+
+    <div class="row">
+      <div class="col-6">
+        <label>Diskon</label>
+        <input type="number" class="form-control" name="diskon" id="diskon" min="0" max="<?=@$total_semua+$harga_tambahan+$harga_desain?>" placeholder="Masukan potongan harga"></input>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-6">
+            <label>After Disc.</label>
+            <input type="number" class="form-control" name="after_diskon" id="after_diskon" value="<?=@$total_semua+$harga_tambahan+$harga_desain?>" style="pointer-events:none" readonly></input>
+          </div>
+          <div class="col-6">
+            <label>After Disc. 50%</label>
+            <input type="number" class="form-control" name="after_diskon_50" id="after_diskon_50" value="<?=@$total_semua*50/100?>" style="pointer-events:none" readonly></input>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-6">
+        <label>Jumlah Bayar</label>
+        <input type="hidden" name="kekurangan" id="kekuranan_check"></input>
+        <input type="number" class="form-control" name="total_bayar" placeholder="Masukan jumlah bayar" id="total_bayar" min="0"></input>
+      </div>
+      <div class="col-6">
+        <label id="check_cash"></label>
+        <input type="number" class="form-control" name="kembalian" id="kembalian" min="0" style="pointer-events:none" readonly></input>
+      </div>
+    </div>    
   </div>
   <button class="mt-3 float-right btn btn-success">Buat Pesanan</button>
 </form>
@@ -179,12 +213,30 @@ $harga_desain = $system->get_harga_desain($trx_code);
   </div>
 </div>
 <script type="text/javascript">
+  $('#data_pemesanan').DataTable();
+
+  // Diskon
+  $('#diskon').keyup(function(){
+    var total = parseInt($('#total_harga').val());
+    var diskon = parseInt($(this).val());
+    var after_diskon = total-diskon;
+    var after_diskon_50 = after_diskon*50/100;
+    if (diskon > total) {
+      $('#after_diskon').val(0);
+      $('#after_diskon_50').val(0);
+    } else {
+      $('#after_diskon').val(after_diskon);
+      $('#after_diskon_50').val(after_diskon_50);
+    }
+  })
+
+
   var total_harga = parseInt($('#total_harga').val());
 
   $('#harga_setengah').val(total_harga*50/100);
   $('#check_cash').append('Kembalian');
   $('#total_bayar').keyup(function(){
-    var total = parseInt($('#total_harga').val());
+    var total = parseInt($('#after_diskon').val());
     var jumlah_bayar = parseInt($('#total_bayar').val());
     var kembalian = jumlah_bayar-total;
     if (kembalian < 0) {

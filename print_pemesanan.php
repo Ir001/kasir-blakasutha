@@ -88,6 +88,20 @@ if (isset($_GET['status']) && $_GET['status'] == "pelunasan") {
 						<td></td>
 						<td></td>
 						<td class="Rate"><h2>Grand Total</h2></td>
+						<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['before_diskon'],0,',','.');?></h2></td>
+					</tr>
+					<tr class="tabletitle">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td class="Rate"><h2>Diskon</h2></td>
+						<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['diskon'],0,',','.');?></h2></td>
+					</tr>
+					<tr class="tabletitle">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td class="Rate"><h2>After Disc.</h2></td>
 						<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['total_harga'],0,',','.');?></h2></td>
 					</tr>
 					<?php if (isset($_GET['status']) && $_GET['status'] == "pelunasan"): ?>
@@ -95,7 +109,7 @@ if (isset($_GET['status']) && $_GET['status'] == "pelunasan") {
 							<td></td>
 							<td></td>
 							<td></td>
-							<td class="Rate"><h2>Uang Muka</h2></td>
+							<td class="Rate"><h2>DP</h2></td>
 							<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['jumlah_bayar'],0,',','.');?></h2></td>
 						</tr>
 					<?php else: ?>

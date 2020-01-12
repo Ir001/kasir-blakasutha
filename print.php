@@ -56,12 +56,26 @@
 	                          <td class="tableitem"><p class="itemtext"><?=number_format($data['subharga'],0,',','.');?></p></td>
 	                          <td class="tableitem"><p class="itemtext"><?=number_format($total,0,',','.');?></p></td>
 	                        </tr> 
-	                        <?php } ?>  
+	                        <?php } ?>
 							<tr class="tabletitle">
 								<td></td>
 								<td></td>
 								<td></td>
 								<td class="Rate"><h2>Total</h2></td>
+								<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['before_diskon'],0,',','.');?></h2></td>
+							</tr>
+							<tr class="tabletitle">
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="Rate"><h2>Diskon</h2></td>
+								<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['diskon'],0,',','.');?></h2></td>
+							</tr>
+							<tr class="tabletitle">
+								<td></td>
+								<td></td>
+								<td></td>
+								<td class="Rate"><h2>Setelah diskon</h2></td>
 								<td class="payment"><h2>Rp.<?=number_format(@$detail_trx['total_harga'],0,',','.');?></h2></td>
 							</tr>
 							<tr class="tabletitle">

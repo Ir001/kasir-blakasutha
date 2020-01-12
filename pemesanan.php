@@ -25,13 +25,13 @@
      
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="background:#FFFF66">
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Pemesanan</h1>
+            <h1 class="m-0 text-danger" style="font-family : 'Impact';">Pemesanan</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -48,6 +48,7 @@
     <div class="content">
       <div class="container-fluid">
         <div class="row">
+		
           <div class="col-md-6" id="show-content">
               <div id="load-pemesanan"></div>
           </div>

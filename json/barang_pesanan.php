@@ -3,7 +3,7 @@ require '../application/system.php';
 $type = @$_SESSION['type'] ? $_SESSION['type'] : 'all';
 ?>
 <?php if (isset($_SESSION['id_customer'])): ?>
-  <p>Type : <b><?=$type;?>s</b></p>
+  <p>Bahan : <b>Katun <?=$type;?>s</b></p>
   <table id="data_barang" class="table table-bordered table-striped">
     <thead>
       <tr> 
@@ -32,9 +32,12 @@ $type = @$_SESSION['type'] ? $_SESSION['type'] : 'all';
         <td>
           <form class="add_to_cart">
             <input type="hidden" name="add_barang_pesanan" value="1"> 
-            <input type="hidden" name="id" value="<?=$list['id_barang'];?>"> 
-            <input type="number" style="width: 50%" class="jmlh float-left form-control" name="jumlah" value="1" min="0" max="<?=$list['stok'];?>">
-            <button type="submit" class="btn float-right btn-add btn-lg btn-success"><i class="fa fa-cart-plus"></i></button>
+            <input type="hidden" name="id" value="<?=$list['id_barang'];?>">
+            <div class="input-group">
+              <input type="number" class="jmlh form-control mr-1" name="jumlah" value="1" min="0" max="<?=$list['stok'];?>">
+              <button type="submit" class="btn btn-add btn-success"><i class="fa fa-cart-plus"></i></button>
+            </div> 
+            
           </form>
         </td>
       </tr>
