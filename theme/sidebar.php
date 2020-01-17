@@ -149,18 +149,20 @@
                   <p>Pemesanan</p>
                 </a>
               </li>
-
-              <!-- <li class="nav-item">
-                <a href="manage_barang.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buat Pengeluaran</p>
-                </a>
-              </li> -->
             </ul>
 
           </li>
           <?php endif ?>
-          
+          <li class="nav-item">
+            <a href="activity.php" class="nav-link <?php if ($menu == "activity"): ?>
+              active
+            <?php endif ?>">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Aktivitas
+              </p>
+            </a>
+          </li>
           <li class="nav-header">Konfigurasi</li>
           <li class="nav-item">
             <a href="setting.php" class="nav-link <?php if ($menu == "setting"): ?>

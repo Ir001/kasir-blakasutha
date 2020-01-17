@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 04, 2020 at 03:16 AM
+-- Generation Time: Jan 17, 2020 at 02:40 PM
 -- Server version: 10.2.3-MariaDB-log
 -- PHP Version: 7.1.1
 
@@ -66,9 +66,19 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id_barang`, `kode_barang`, `nama_barang`, `stok`, `harga_1`, `harga_2`, `harga_3`, `updated_at`) VALUES
-(18, 'POLOSL', 'Kaos Putih Polos (L)', 49, 75000, 73000, 70000, '2019-12-11'),
-(19, 'POLOSXL', 'Kaos Putih Polos (XL)', 50, 75000, 73000, 70000, '2019-12-11'),
-(20, 'POLOSPJGL', 'Kaos Putih Polos Panjang (XL)', 50, 80000, 78000, 76000, '2019-12-11');
+(18, 'POLOSL', 'Kaos Putih Polos (L)', 44, 75000, 73000, 70000, '2019-12-11'),
+(19, 'POLOSXL', 'Kaos Putih Polos (XL)', 49, 75000, 73000, 70000, '2019-12-11'),
+(20, 'POLOSPJGL', 'Kaos Putih Polos Panjang (XL)', 45, 80000, 77000, 78000, '2019-12-11');
+
+--
+-- Triggers `barang`
+--
+DELIMITER $$
+CREATE TRIGGER `barang_after_update` AFTER UPDATE ON `barang` FOR EACH ROW BEGIN
+INSERT INTO logs_barang(id_barang, old_harga1, old_harga2, old_harga3, new_harga1, new_harga2, new_harga3, updated_at) VALUES (OLD.id_barang, OLD.harga_1, OLD.harga_2, OLD.harga_3, NEW.harga_1, NEW.harga_2, NEW.harga_3, NOW());
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -144,6 +154,24 @@ INSERT INTO `customer` (`id_customer`, `nama_lengkap`, `phone`, `instagram`, `ro
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `logs_barang`
+--
+
+CREATE TABLE `logs_barang` (
+  `id_logs` int(11) NOT NULL,
+  `id_barang` int(11) NOT NULL DEFAULT 0,
+  `old_harga1` float DEFAULT NULL,
+  `old_harga2` float DEFAULT NULL,
+  `old_harga3` float DEFAULT NULL,
+  `new_harga1` float DEFAULT NULL,
+  `new_harga2` float DEFAULT NULL,
+  `new_harga3` float DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pelunasan`
 --
 
@@ -187,13 +215,6 @@ CREATE TABLE `penjualan` (
   `tgl_penjualan` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `penjualan`
---
-
-INSERT INTO `penjualan` (`id_penjualan`, `id_customer`, `id_barang`, `trx_code`, `subharga`, `jumlah`, `tgl_penjualan`) VALUES
-(1, 14, 18, 'SmDV0aCT7u', 75000, 1, '2020-01-01 15:01:37');
-
 -- --------------------------------------------------------
 
 --
@@ -226,18 +247,13 @@ INSERT INTO `setting` (`id`, `nama_bisnis`, `alamat`, `phone`, `email`, `instagr
 
 CREATE TABLE `transaksi` (
   `id_trx` int(11) NOT NULL,
-  `trx_code` varchar(255) NOT NULL,
-  `total_harga` float NOT NULL,
-  `jumlah_bayar` float NOT NULL,
-  `tgl_transaksi` datetime NOT NULL
+  `trx_code` varchar(255) DEFAULT NULL,
+  `before_diskon` float DEFAULT NULL,
+  `total_harga` float DEFAULT NULL,
+  `diskon` float DEFAULT 0,
+  `jumlah_bayar` float DEFAULT NULL,
+  `tgl_transaksi` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `transaksi`
---
-
-INSERT INTO `transaksi` (`id_trx`, `trx_code`, `total_harga`, `jumlah_bayar`, `tgl_transaksi`) VALUES
-(1, 'SmDV0aCT7u', 75000, 80000, '2020-01-01 15:01:37');
 
 -- --------------------------------------------------------
 
@@ -254,7 +270,9 @@ CREATE TABLE `transaksi_pemesanan` (
   `file_desain` varchar(255) DEFAULT NULL,
   `deskripsi` text DEFAULT NULL,
   `jumlah_pesanan` int(11) DEFAULT NULL,
+  `before_diskon` float DEFAULT NULL,
   `total_harga` float DEFAULT NULL,
+  `diskon` float DEFAULT NULL,
   `jumlah_bayar` float DEFAULT NULL,
   `harga_tambahan` float DEFAULT 0,
   `biaya_desain` float DEFAULT 0,
@@ -293,6 +311,13 @@ ALTER TABLE `barang_pesanan`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id_customer`);
+
+--
+-- Indexes for table `logs_barang`
+--
+ALTER TABLE `logs_barang`
+  ADD PRIMARY KEY (`id_logs`),
+  ADD KEY `FK_logs_barang_barang` (`id_barang`);
 
 --
 -- Indexes for table `pelunasan`
@@ -365,22 +390,28 @@ ALTER TABLE `customer`
   MODIFY `id_customer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT for table `logs_barang`
+--
+ALTER TABLE `logs_barang`
+  MODIFY `id_logs` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `pelunasan`
 --
 ALTER TABLE `pelunasan`
-  MODIFY `id_pelunasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_pelunasan` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pemesanan` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `setting`
@@ -392,17 +423,23 @@ ALTER TABLE `setting`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_trx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_trx` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `transaksi_pemesanan`
 --
 ALTER TABLE `transaksi_pemesanan`
-  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `logs_barang`
+--
+ALTER TABLE `logs_barang`
+  ADD CONSTRAINT `FK_logs_barang_barang` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pelunasan`

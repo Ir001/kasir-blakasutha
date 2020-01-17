@@ -1119,6 +1119,17 @@ class System extends mysqli{
 					return 0;
 				}
 			}
+			function list_logs_barang(){
+				$sql = "SELECT * FROM logs_barang ORDER BY updated_at DESC";
+				$query = $this->query($sql);
+				$i=0;
+				while ($result = $query->fetch_assoc()) {
+					
+					$data[$i] = $result;
+					$i++;
+				}
+				return @$data;
+			}
 
 
 
