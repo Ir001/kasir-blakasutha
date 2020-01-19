@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 17, 2020 at 02:40 PM
+-- Generation Time: Jan 19, 2020 at 09:49 AM
 -- Server version: 10.2.3-MariaDB-log
 -- PHP Version: 7.1.1
 
@@ -58,6 +58,7 @@ CREATE TABLE `barang` (
   `harga_1` float DEFAULT NULL,
   `harga_2` float DEFAULT NULL,
   `harga_3` float DEFAULT NULL,
+  `harga_beli` float DEFAULT NULL,
   `updated_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -65,10 +66,10 @@ CREATE TABLE `barang` (
 -- Dumping data for table `barang`
 --
 
-INSERT INTO `barang` (`id_barang`, `kode_barang`, `nama_barang`, `stok`, `harga_1`, `harga_2`, `harga_3`, `updated_at`) VALUES
-(18, 'POLOSL', 'Kaos Putih Polos (L)', 44, 75000, 73000, 70000, '2019-12-11'),
-(19, 'POLOSXL', 'Kaos Putih Polos (XL)', 49, 75000, 73000, 70000, '2019-12-11'),
-(20, 'POLOSPJGL', 'Kaos Putih Polos Panjang (XL)', 45, 80000, 77000, 78000, '2019-12-11');
+INSERT INTO `barang` (`id_barang`, `kode_barang`, `nama_barang`, `stok`, `harga_1`, `harga_2`, `harga_3`, `harga_beli`, `updated_at`) VALUES
+(18, 'POLOSL', 'Kaos Putih Polos (L)', 50, 75000, 73000, 70000, 50000, '2019-12-11'),
+(19, 'POLOSXL', 'Kaos Putih Polos (XL)', 49, 75000, 73000, 70000, NULL, '2019-12-11'),
+(20, 'POLOSPJGL', 'Kaos Putih Polos Panjang (XL)', 45, 80000, 77000, 78000, NULL, '2019-12-11');
 
 --
 -- Triggers `barang`
@@ -168,6 +169,15 @@ CREATE TABLE `logs_barang` (
   `new_harga3` float DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `logs_barang`
+--
+
+INSERT INTO `logs_barang` (`id_logs`, `id_barang`, `old_harga1`, `old_harga2`, `old_harga3`, `new_harga1`, `new_harga2`, `new_harga3`, `updated_at`) VALUES
+(1, 18, 75000, 73000, 70000, 75000, 73000, 70000, '2020-01-19 17:37:32'),
+(2, 18, 75000, 73000, 70000, 75000, 73000, 70000, '2020-01-19 17:41:47'),
+(3, 18, 75000, 73000, 70000, 75000, 73000, 70000, '2020-01-19 17:45:34');
 
 -- --------------------------------------------------------
 
@@ -375,7 +385,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `barang_pesanan`
@@ -393,7 +403,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `logs_barang`
 --
 ALTER TABLE `logs_barang`
-  MODIFY `id_logs` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_logs` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pelunasan`
@@ -429,7 +439,7 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT for table `transaksi_pemesanan`
 --
 ALTER TABLE `transaksi_pemesanan`
-  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_tp` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
