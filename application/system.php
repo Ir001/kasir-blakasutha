@@ -1,5 +1,5 @@
 <?php
-//error_reporting(0);
+error_reporting(0);
 date_default_timezone_set('Asia/Jakarta');
 date("Y-m-d H:i:s"); 
 ob_start();
@@ -233,16 +233,7 @@ class System extends mysqli{
 		$query = $this->query($sql);
 		$i = 0;
 		while ($res = $query->fetch_assoc()) {
-			$data[$i] = array(
-				'id_barang' => $res['id_barang'],
-				'kode_barang' => $res['kode_barang'],
-				'nama_barang' => $res['nama_barang'],
-				'stok' => $res['stok'],
-				'harga_1' => $res['harga_1'],
-				'harga_2' => $res['harga_2'],
-				'harga_3' => $res['harga_3'],
-				'updated_at' => $res['updated_at'],
-			);
+			$data[$i] = $res;
 			$i++;
 		}
 		return @$data;
@@ -253,9 +244,15 @@ class System extends mysqli{
 		$res = $query->fetch_assoc();
 		return @$res;
 	}
-	function add_data_barang($kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3){
-		$kode_barang = $this->real_escape_string($kode_barang);
-		$nama_barang = $this->real_escape_string($nama_barang);
+	function add_data_barang($data = array()){
+		$kode_barang = $this->real_escape_string($data['kode_barang']);
+		$nama_barang = $this->real_escape_string($data['nama_barang']);
+		$stok = $this->real_escape_string($data['stok']);
+		$harga_1 = $this->real_escape_string($data['harga_1']);
+		$harga_2 = $this->real_escape_string($data['harga_2']);
+		$harga_3 = $this->real_escape_string($data['harga_3']);
+		$harga_beli = $this->real_escape_string($data['harga_beli']);
+		// 
 		$sql_check_kode = $this->query("SELECT kode_barang FROM barang WHERE kode_barang = '$kode_barang'");
 		$checked_kode = $sql_check_kode->num_rows;
 		if ($checked_kode >= 1) {
@@ -265,7 +262,7 @@ class System extends mysqli{
 			);
 		}else{
 
-			$sql = "INSERT INTO barang (kode_barang, nama_barang, stok, harga_1, harga_2, harga_3, updated_at) VALUES ('$kode_barang', '$nama_barang', '$stok', '$harga_1', '$harga_2', '$harga_3', NOW())";
+			$sql = "INSERT INTO barang (kode_barang, nama_barang, harga_beli, stok, harga_1, harga_2, harga_3, updated_at) VALUES ('$kode_barang', '$nama_barang', '$harga_beli', '$stok', '$harga_1', '$harga_2', '$harga_3', NOW())";
 			$query = $this->query($sql);
 			if ($query) {
 				$msg = array(
@@ -282,9 +279,16 @@ class System extends mysqli{
 		return @$msg;
 
 	}
-	function edit_data_barang($id_barang, $kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3){
-		$kode_barang = $this->real_escape_string($kode_barang);
-		$nama_barang = $this->real_escape_string($nama_barang);
+	function edit_data_barang($data=array()){
+		$id_barang = $this->real_escape_string($data['id_barang']);
+		$kode_barang = $this->real_escape_string($data['kode_barang']);
+		$nama_barang = $this->real_escape_string($data['nama_barang']);
+		$stok = $this->real_escape_string($data['stok']);
+		$harga_beli = $this->real_escape_string($data['harga_beli']);
+		$harga_1 = $this->real_escape_string($data['harga_1']);
+		$harga_2 = $this->real_escape_string($data['harga_2']);
+		$harga_3 = $this->real_escape_string($data['harga_3']);
+		//
 		$sql_check_kode = $this->query("SELECT kode_barang FROM barang WHERE kode_barang = '$kode_barang'");
 		$checked_kode = $sql_check_kode->num_rows;
 		if ($checked_kode > 1) {
@@ -294,7 +298,7 @@ class System extends mysqli{
 			);
 		}else{
 
-			$sql = "UPDATE barang SET kode_barang = '$kode_barang', nama_barang = '$nama_barang', stok = '$stok', harga_1 ='$harga_1',harga_2 = '$harga_2', harga_3 ='$harga_3' WHERE id_barang = $id_barang";
+			$sql = "UPDATE barang SET kode_barang = '$kode_barang', nama_barang = '$nama_barang', harga_beli ='$harga_beli', stok = '$stok', harga_1 ='$harga_1',harga_2 = '$harga_2', harga_3 ='$harga_3' WHERE id_barang = $id_barang";
 			$query = $this->query($sql);
 			if ($query) {
 				$msg = array(

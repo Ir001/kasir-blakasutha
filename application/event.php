@@ -189,15 +189,28 @@ if (isset($_POST['user_login'])) {
 	$kode_barang = $_POST['kode_barang'];
 	$nama_barang = $_POST['nama_barang'];
 	$stok = $_POST['stok'];
+	$harga_beli = $_POST['harga_beli'];
 	$harga_1 = $_POST['harga_1'];
 	$harga_2 = $_POST['harga_2'];
 	$harga_3 = $_POST['harga_3'];
-	$add_data_barang = $system->add_data_barang($kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3);
-	echo $system->convert_to_json($add_data_barang);
+
+	$data = array(
+		'kode_barang' => $kode_barang,
+		'nama_barang' => $nama_barang,
+		'stok' => $stok,
+		'harga_beli' => $harga_beli,
+		'harga_1' => $harga_1,
+		'harga_2' => $harga_2,
+		'harga_3' => $harga_3,
+	);
+	$add_data_barang = $system->add_data_barang($data);
+	echo json_encode($add_data_barang, JSON_PRETTY_PRINT);
+
 }elseif(isset($_POST['edit_data_barang'])){
 	$id_barang = $_POST['id_barang'];
 	$kode_barang = $_POST['kode_barang'];
 	$nama_barang = $_POST['nama_barang'];
+	$harga_beli = $_POST['harga_beli'];
 	$stok = $_POST['stok'];
 	$harga_1 = $_POST['harga_1'];
 	$harga_2 = $_POST['harga_2'];
@@ -207,13 +220,15 @@ if (isset($_POST['user_login'])) {
 		'id_barang' => $id_barang,
 		'kode_barang' => $kode_barang,
 		'nama_barang' => $nama_barang,
+		'harga_beli' => $harga_beli,
 		'stok' => $stok,
 		'harga_1' => $harga_1,
 		'harga_2' => $harga_2,
 		'harga_3' => $harga_3,
 	);
-	$edit_data_barang = $system->edit_data_barang($id_barang,$kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3);
-	echo $system->convert_to_json($edit_data_barang);
+	// $edit_data_barang = $system->edit_data_barang($id_barang,$kode_barang, $nama_barang, $stok, $harga_1, $harga_2, $harga_3);
+	$edit_data_barang = $system->edit_data_barang($data);
+	echo json_encode($edit_data_barang, JSON_PRETTY_PRINT);
 }elseif(isset($_POST['delete_barang'])){
 	$id_barang = $_POST['id'];
 	$delete_barang = $system->delete_data_barang($id_barang);

@@ -110,16 +110,20 @@
                     <input type="number" class="form-control" name="stok" placeholder="Stok" required>
                   </div>
                   <div class="form-group">
+                    <label>Harga Beli:</label>
+                    <input type="number" class="form-control" name="harga_beli" placeholder="Harga Beli" value="0">
+                  </div>
+                  <div class="form-group">
                     <label>Harga Satuan:</label>
-                    <input type="number" class="form-control" name="harga_1" placeholder="Harga 1 lusin" required>
+                    <input type="number" class="form-control" name="harga_1" placeholder="Harga 1pcs" required>
                   </div>
                   <div class="form-group">
                     <label>Harga 1 lusin:</label>
-                    <input type="number" class="form-control" name="harga_2" placeholder="Harga 1 lusin" required>
+                    <input type="number" class="form-control" name="harga_2" placeholder="Harga 12pcs" required>
                   </div>
                   <div class="form-group">
                     <label>Harga 2 lusin:</label>
-                    <input type="number" class="form-control" name="harga_3" placeholder="Harga 2 lusin" required>
+                    <input type="number" class="form-control" name="harga_3" placeholder="Harga 24pcs" required>
                   </div>
                   <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
