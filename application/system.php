@@ -551,6 +551,28 @@ class System extends mysqli{
 		}
 		return @$data;
 	}
+	function add_produk_pemesanan($data=array()){
+		$length = @$data['length'] ? $data['length'] : 'Other';
+		$ukuran = @$data['ukuran'] ? $data['ukuran'] : 'Other';
+		$harga_1 = $data['harga_1'];
+		$harga_2 = $data['harga_2'];
+		$harga_3 = $data['harga_3'];
+		$type = @$data['type'] ? $data['type'] : 'other';
+		$sql = "INSERT INTO barang_pesanan (length, ukuran, harga_1, harga_2, harga_3, type, updated_at) VALUES ('$length', '$ukuran', '$harga_1', '$harga_2', '$harga_3', '$type', NOW())";
+		$query = $this->query($sql);
+		if ($query) {
+			$msg = array(
+				'success' => true,
+				'message' => "Barang berhasil ditambahkan!"
+			);
+		}else{
+			$msg = array(
+				'success' => false,
+				'message' => "SQL Syntax Error!"
+			);
+		}
+		return $msg;
+	} 
 	function add_data_barang_pesanan($nama_pesanan, $ukuran, $harga_1, $harga_2, $harga_3){
 		$nama_pesanan = $this->real_escape_string($nama_pesanan);
 			//
@@ -645,6 +667,8 @@ class System extends mysqli{
 		}elseif($type == "30"){
 			$sql = "SELECT * FROM barang_pesanan WHERE type = '$type'";
 		}elseif($type == "24"){
+			$sql = "SELECT * FROM barang_pesanan WHERE type = '$type'";
+		}elseif($type == "other"){
 			$sql = "SELECT * FROM barang_pesanan WHERE type = '$type'";
 		}
 		$query = $this->query($sql);

@@ -61,17 +61,17 @@ $menuItem = "pemesanan_m";
                   </div>
                 </div>
                 <div class="card-body">
-                  <table id="tb_pemesanan" class="table table-bordered table-striped">
+                  <table id="tb_pemesanan" class="table table-bordered table-striped table-responsive">
                     <thead>
                       <tr>
                         <th>Customer</th>
-                        <th>Jenis</th>
-                        <th>Sablon</th>
-                        <th>Model Baju</th>
+                        <!-- <th>Jenis</th> -->
+                        <th>Keterangan</th>
+                        <!-- <th>Model Baju</th> -->
                         <th>File Desain</th>
                         <th>Deskripsi</th>
                         <th>Status</th>
-                        <th>Tgl Trx</th>
+                        <th>Tanggal</th>
                         <th>Aksi</th>
 
                       </tr>
@@ -91,9 +91,14 @@ $menuItem = "pemesanan_m";
                               <span class="badge badge-sm badge-warning text-white"><?=ucwords($customer['role']);?></span>
                             <?php endif ?>
                           </td>
-                          <td><?=ucwords($list['jenis_pemesanan']);?></td>
-                          <td><?=ucwords($list['jenis_sablon']);?></td>
-                          <td><?=@$list['model_baju'] ? ucwords($list['model_baju']) : "-";?></td>
+                          <!-- <td></td> -->
+                            <td>
+                              <ul>
+                                <li>Jenis : <?=ucwords($list['jenis_pemesanan']);?></li>
+                                <li>Sablon : <?=ucwords($list['jenis_sablon']);?></li>
+                                <li>Model Baju : <?=@$list['model_baju'] ? ucwords($list['model_baju']) : "-";?></li>
+                              </ul>
+                            </td>
                           <td>
 						  <?php
 						   $file_desain = ltrim($list['file_desain'], "\.\.\.\/");
@@ -122,10 +127,18 @@ $menuItem = "pemesanan_m";
                           </td>
                           <?php
                             $tgl = explode(" ", $list['tgl_transaksi']);
+                            $tgl_jadi = explode(" ", $list['perkiraan_selesai']);
                             $jam = explode(":", $tgl[1]);
+                            $jam_jadi = explode(":", $tgl_jadi[1]);
                             $jam_menit = $jam[0].":".$jam[1];
+                            $jam_menit_jadi = $jam_jadi[0].":".$jam_jadi[1];
                           ?>
-                          <td><?=$tgl[0]." Pkl ".$jam_menit?></td>
+                          <td>
+                            <ul>
+                              <li>Tgl Trx:<?=$tgl[0]." Pkl ".$jam_menit?></li>
+                              <li>Tgl Selesai:<?=$tgl_jadi[0]." Pkl ".$jam_menit_jadi?></li>
+                            </ul>
+                          </td>
 
                             <td class="d-flex">
                               <form class="detail_pemesanan">

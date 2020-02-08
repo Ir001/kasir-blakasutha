@@ -145,7 +145,7 @@ $harga_desain = $system->get_harga_desain($trx_code);
     <div class="row">
       <div class="col-6">
         <label>Diskon</label>
-        <input type="number" class="form-control" name="diskon" id="diskon" min="0" max="<?=@$total_semua+$harga_tambahan+$harga_desain?>" placeholder="Masukan potongan harga"></input>
+        <input type="number" class="form-control" value="0" name="diskon" id="diskon" min="0" max="<?=@$total_semua+$harga_tambahan+$harga_desain?>" placeholder="Masukan potongan harga"></input>
       </div>
       <div class="col-6">
         <div class="row">

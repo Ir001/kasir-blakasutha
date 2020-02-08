@@ -66,6 +66,7 @@ $menuItem = "barang_pemesanan";
                     <option value="all">Semua</option>
                     <option value="30">Type 30s</option>
                     <option value="24">Type 24s</option>
+                    <option value="other">Lainnya</option>
                   </select>
                 </div>
                 <div class="card-body" id="show-barang">
@@ -118,24 +119,32 @@ $menuItem = "barang_pemesanan";
                   <input id="pendek" type="radio" class="length" name="length" value="Pendek">
                   Pendek
                 </label>
+                <label id="other">
+                  <input id="other" type="radio" class="length" name="length" value="Other">
+                  Lainnya
+                </label>
               </div>
             </div>
             <div class="form-group">
-              <label>Type Kaos:</label>
+              <label>Bahan Katun:</label>
               <div class="radio">
                 <label id="type-30">
                   <input id="type-30" type="radio" class="type" name="type" value="30">
-                  Type 30
+                  Katun 30s
                 </label>
                 <label id="type-24">
                   <input id="type-24" type="radio" class="type" name="type" value="24">
-                  Type 24
+                  Katun 24s
+                </label>
+                <label id="other_type">
+                  <input id="other_type" type="radio" class="type" name="type" value="other">
+                  Lainnya
                 </label>
               </div>
             </div>
             <div class="form-group">
               <label>Harga Satuan:</label>
-              <input type="number" class="form-control" id="harga_1" name="harga_1" placeholder="Harga 1 lusin" required>
+              <input type="number" class="form-control" id="harga_1" name="harga_1" placeholder="Harga satuan" required>
             </div>
             <div class="form-group">
               <label>Harga 1 lusin:</label>

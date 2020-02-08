@@ -16,13 +16,15 @@ require '../application/system.php';
   <tbody>
    <?php 
    $type = @$_GET['type'] ? trim($_GET['type']) : 'all';
-    if (isset($_GET['type']) && $_GET['type'] == "30") {
-       $list_barang = $system->list_barang_pesanan($type);
-    }elseif(isset($_GET['type']) && $_GET['type'] == "24"){
-       $list_barang = $system->list_barang_pesanan($type);
-    }else{
-       $list_barang = $system->list_barang_pesanan($type);
-    }
+   if (isset($_GET['type']) && $_GET['type'] == "30") {
+     $list_barang = $system->list_barang_pesanan($type);
+   }elseif(isset($_GET['type']) && $_GET['type'] == "24"){
+     $list_barang = $system->list_barang_pesanan($type);
+   }elseif(isset($_GET['type']) && $_GET['type'] == "other"){
+     $list_barang = $system->list_barang_pesanan($type);
+   }else{
+     $list_barang = $system->list_barang_pesanan($type);
+   }
    foreach ($list_barang as $list) {
 
     ?>
@@ -34,16 +36,18 @@ require '../application/system.php';
       <td><?=number_format($list['harga_2'],0,',','.');?></td>
       <td><?=number_format($list['harga_3'],0,',','.');?></td>
       <td>
-        <form class="btn-edit">
-          <input type="hidden" name="edit_barang_pemesanan" value="1">
-          <input type="hidden" name="id" value="<?=$list['id_barang'];?>">
-          <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</button>
-        </form>
-        <form class="form-delete">
-          <input type="hidden" name="delete_barang_pesanan" value="1">
-          <input type="hidden" name="id" value="<?=$list['id_barang'];?>">
-          <button type="submit" class="btn btn-delete btn-danger btn-sm"><i class="fa fa-remove"></i> Hapus</button>
-        </form>
+        <div class="btn-group">
+          <form class="btn-edit">
+            <input type="hidden" name="edit_barang_pemesanan" value="1">
+            <input type="hidden" name="id" value="<?=$list['id_barang'];?>">
+            <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> Edit</button>
+          </form>
+          <form class="form-delete ml-2">
+            <input type="hidden" name="delete_barang_pesanan" value="1">
+            <input type="hidden" name="id" value="<?=$list['id_barang'];?>">
+            <button type="submit" class="btn btn-delete btn-danger btn-sm"><i class="fa fa-remove"></i> Hapus</button>
+          </form>
+        </div>
       </td>
     </tr>
   <?php } ?>
@@ -63,7 +67,7 @@ require '../application/system.php';
         <form id="form_barang_edit">
           <input type="hidden" name="edit_data_barang_pemesanan" value="1">
           <input type="hidden" name="id_barang" id="id_barang">
-           <div class="form-group">
+          <div class="form-group">
             <label>Length:</label>
             <div class="radio">
               <label id="panjang">
@@ -164,55 +168,55 @@ require '../application/system.php';
               }
               /*
                 Type
-              */
-              if(data.type == "30"){
-                setRadio('type', '30');
-              }else if(data.type == "24"){
-                setRadio('type', '24');
+                */
+                if(data.type == "30"){
+                  setRadio('type', '30');
+                }else if(data.type == "24"){
+                  setRadio('type', '24');
+                }
+                id_barang.val(data.id_barang);
+                harga_1.val(data.harga_1);
+                harga_2.val(data.harga_2);
+                harga_3.val(data.harga_3);
+                $('#edit_modal').modal('show');
               }
-              id_barang.val(data.id_barang);
-              harga_1.val(data.harga_1);
-              harga_2.val(data.harga_2);
-              harga_3.val(data.harga_3);
-              $('#edit_modal').modal('show');
-            }
-          })
+            })
         });
 
         /*
           Edit Barang Form
-        */
-        $('#form_barang_edit').submit(function(e){
-          e.preventDefault();
-          $('#edit_modal').modal('hide');
-          $.ajax({
-            type : 'POST',
-            url : 'application/event_barang_pemesanan.php',
-            data : $(this).serialize(),
-            dataType : 'json',
-            success : function(data){
-              if(data.success){
-                var value = <?=@$_GET['type'] ? $_GET['type'] : 'all'?>;
-                window.$('#show-barang').empty();
-                window.$('#show-barang').load("json/show_barang_pesanan.php?type="+value);
-                toastr['success'](data.message);
-              }else{
-                toastr['error'](data.message);
+          */
+          $('#form_barang_edit').submit(function(e){
+            e.preventDefault();
+            $('#edit_modal').modal('hide');
+            $.ajax({
+              type : 'POST',
+              url : 'application/event_barang_pemesanan.php',
+              data : $(this).serialize(),
+              dataType : 'json',
+              success : function(data){
+                if(data.success){
+                  var value = <?=@$_GET['type'] ? $_GET['type'] : 'all'?>;
+                  window.$('#show-barang').empty();
+                  window.$('#show-barang').load("json/show_barang_pesanan.php?type="+value);
+                  toastr['success'](data.message);
+                }else{
+                  toastr['error'](data.message);
+                }
               }
-            }
+            })
           })
-        })
 
 
         /*
           Function
-        */
-        function setRadio(name, value){
-          $('input[name="'+name+'"][value="'+value+'"]').prop('checked', true);
+          */
+          function setRadio(name, value){
+            $('input[name="'+name+'"][value="'+value+'"]').prop('checked', true);
+          }
+
+
         }
-        
 
-      }
-
-    });
-  </script>
+      });
+    </script>

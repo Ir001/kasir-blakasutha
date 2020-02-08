@@ -1,4 +1,4 @@
-<?php 
+<?php  
 	// require 'system.php';
 	require_once (dirname(__FILE__)."/system.php");
 	if(isset($_POST['add_data_barang_pesanan'])){
@@ -30,9 +30,25 @@
 		);
 		$edit_data_barang = $system->edit_data_barang_pemesanan($data);
 		echo json_encode($edit_data_barang);
+	}elseif(isset($_POST['form_barang_add'])){
+		$type = $_POST['type'];
+		$length = $_POST['length'];
+		$harga_1 = $_POST['harga_1'];
+		$harga_2 = $_POST['harga_2'];
+		$harga_3 = $_POST['harga_3'];
+		$data = array(
+			'type' => $type,
+			'length' => $length,
+			'harga_1' => $harga_1,
+			'harga_2' => $harga_2,
+			'harga_3' => $harga_3,
+		);
+		$add = $system->add_produk_pemesanan($data);
+		echo json_encode($add);
+
 	}else{
 		$data['success'] = false;
 		$data['message'] = "Server sedang sibuk";
 		echo json_encode($data);
-	}
+	} 
 ?>
